@@ -5,5 +5,5 @@ Button examples:
 ```jsx
 import { Demo } from 'react-crossword';
 
-<Demo type="success">Hello</Demo>
+<Demo type="success">Hello</Demo>;
 ```

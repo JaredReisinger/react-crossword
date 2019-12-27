@@ -1,2 +1,2 @@
 module.exports = () =>
-	require('./babelrc.base')({ pure: true, withModules: false });
+  require('./babelrc.base')({ pure: true, withModules: false });
