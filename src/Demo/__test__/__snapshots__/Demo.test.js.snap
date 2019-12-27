@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="sc-bdVaJa ePuhSX"
+  data-testid="DemoMessage"
+  type="danger"
+>
+  Errors
+</div>
+`;

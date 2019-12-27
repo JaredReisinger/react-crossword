@@ -1,20 +1,20 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-node_modules
+node_modules/
 
 # builds
-build
-dist
+build/
+dist/
 .rpt2_cache
 
 #docs
 .docz
-docs
+docs/
 
 
 # misc
-.editorconfig
+#.editorconfig
 .gitattributes
 .DS_Store
 .env
