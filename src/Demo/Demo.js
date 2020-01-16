@@ -17,22 +17,22 @@ const DEMODiv = styled.div`
   background: ${props => types[props.type] || 'black'};
 `;
 
-const DemoStyled = ({ children, type = 'info', ...rest }) => (
+const Demo = ({ children, type = 'info', ...rest }) => (
   <DEMODiv data-testid="DemoMessage" type={type} {...rest}>
     {children}
   </DEMODiv>
 );
 
-DemoStyled.propTypes = {
+Demo.propTypes = {
   children: PropTypes.node,
   type: PropTypes.oneOf(['info', 'success', 'danger', 'warning']),
 };
 
-DemoStyled.defaultProps = {
+Demo.defaultProps = {
   children: undefined,
   type: 'info',
 };
 
-const Demo = props => <DemoStyled {...props} />;
+// const Demo = props => <DemoStyled {...props} />;
 
 export default Demo;

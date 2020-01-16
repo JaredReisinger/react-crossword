@@ -1,1 +1,4 @@
-export default from './Demo/Demo';
+import Demo from './Demo/Demo';
+import Crossword from './Crossword/Crossword';
+
+export { Crossword, Demo };
