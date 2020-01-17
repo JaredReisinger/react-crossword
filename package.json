@@ -31,6 +31,7 @@
     "lint": "eslint src/**/*.{js,jsx}",
     "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
     "commit": "git-cz",
+    "codecov": "codecov",
     "#release": "standard-version",
     "release": "npm run build && semantic-release --dry-run",
     "#release:tags": "git push --follow-tags origin master",
