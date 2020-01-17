@@ -1,135 +1,136 @@
 {
-	"name": "react-crossword",
-	"homepage": "http://JaredReisinger.github.io/react-crossword",
-	"version": "0.0.1",
-	"description": "A flexible, responsive, and easy-to-use crossword component for React apps",
-	"author": {
-		"name": "JaredReisinger",
-		"email": "jaredreisinger@hotmail.com"
-	},
-	"keywords": [
-		"react",
-		"react-crossword",
-		"library"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/JaredReisinger/react-crossword"
-	},
-	"license": "MIT",
-	"engines": {
-		"node": ">=8.0.0"
-	},
-	"main": "dist/cjs",
-	"module": "dist/es",
-	"sideEffects": false,
-	"scripts": {
-		"installPeer": "node build-tool/peerDep.js",
-		"test": "jest",
-		"test:dev": "jest --watch",
-		"lint": "eslint src/**/*.{js,jsx}",
-		"stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
-		"commit": "git-cz",
-		"#release": "standard-version",
-		"release": "semantic-release",
-		"#release:tags": "git push --follow-tags origin master",
-		"build": "node build-tool/build.js",
-		"pre-publish": "npm run lint && npm run build",
-		"publish": "npm run pre-publish && npm publish",
-		"doc:dev": "styleguidist server",
-		"doc:build": "styleguidist build",
-		"doc:deploy": "npm run doc:build && gh-pages -d docs"
-	},
-	"files": [
-		"dist"
-	],
-	"husky": {
-		"hooks": {
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-			"pre-commit": "lint-staged && git add ."
-		}
-	},
-	"config": {
-		"commitizen": {
-			"path": "cz-conventional-changelog"
-		}
-	},
-	"lint-staged": {
-		"{src,docs}/**/*.{js,json,css,jsx,ts,tsx} *.js": [
-			"pretty-quick --staged",
-			"npm run stylelint",
-			"eslint --fix --quiet --ignore-path .gitignore",
-			"git add"
-		]
-	},
-	"devDependencies": {
-		"@babel/cli": "^7.7.0",
-		"@babel/core": "^7.7.2",
-		"@babel/plugin-proposal-class-properties": "^7.7.0",
-		"@babel/plugin-proposal-object-rest-spread": "^7.6.2",
-		"@babel/plugin-transform-runtime": "^7.6.2",
-		"@babel/preset-env": "^7.7.1",
-		"@babel/preset-react": "^7.7.0",
-		"@commitlint/cli": "^8.2.0",
-		"@commitlint/config-conventional": "^8.2.0",
-		"@rollup/plugin-replace": "^2.2.1",
-		"@semantic-release/changelog": "^3.0.6",
-		"@semantic-release/git": "^8.0.0",
-		"@testing-library/jest-dom": "^5.0.0",
-		"@testing-library/react": "^9.3.2",
-		"babel-eslint": "^10.0.3",
-		"babel-jest": "^24.9.0",
-		"babel-plugin-minify-dead-code-elimination": "^0.5.1",
-		"babel-plugin-styled-components": "^1.10.6",
-		"babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-		"commitizen": "^4.0.3",
-		"concurrently": "^5.0.0",
-		"cross-spawn": "^7.0.1",
-		"eslint": "^6.6.0",
-		"eslint-config-airbnb": "^18.0.1",
-		"eslint-config-airbnb-base": "^14.0.0",
-		"eslint-config-prettier": "^6.7.0",
-		"eslint-plugin-import": "^2.18.2",
-		"eslint-plugin-jsx-a11y": "^6.2.3",
-		"eslint-plugin-prettier": "^3.1.1",
-		"eslint-plugin-react": "^7.16.0",
-		"eslint-plugin-react-hooks": "^2.3.0",
-		"gh-pages": "^2.1.1",
-		"glob": "^7.1.6",
-		"husky": "^4.0.10",
-		"inflected": "^2.0.4",
-		"jest": "^24.9.0",
-		"lint-staged": "^9.4.2",
-		"prettier": "^1.19.1",
-		"pretty-quick": "^2.0.1",
-		"prop-types": "^15.7.2",
-		"react": "^16.12.0",
-		"react-dom": "^16.12.0",
-		"react-styleguidist": "^10.2.1",
-		"react-test-renderer": "^16.12.0",
-		"read-pkg-up": "^7.0.0",
-		"rimraf": "^3.0.0",
-		"rollup": "^1.26.5",
-		"rollup-plugin-babel": "^4.3.3",
-		"rollup-plugin-commonjs": "^10.1.0",
-		"rollup-plugin-node-resolve": "^5.2.0",
-		"rollup-plugin-peer-deps-external": "^2.2.0",
-		"rollup-plugin-size-snapshot": "^0.10.0",
-		"rollup-plugin-terser": "^5.1.2",
-		"semantic-release": "^16.0.2",
-		"styled-components": "^5.0.0",
-		"stylelint": "^13.0.0",
-		"stylelint-config-prettier": "^8.0.0",
-		"stylelint-config-standard": "^19.0.0",
-		"stylelint-prettier": "^1.1.2",
-		"webpack-blocks": "^2.0.1",
-		"which": "^2.0.2",
-		"yargs-parser": "^16.1.0"
-	},
-	"peerDependencies": {
-		"prop-types": "^15.7.2",
-		"react-dom": "^16.12.0",
-		"react": "^16.12.0",
-		"styled-components": "^4.4.1"
-	}
+  "name": "react-crossword",
+  "homepage": "http://JaredReisinger.github.io/react-crossword",
+  "version": "0.0.1",
+  "description": "A flexible, responsive, and easy-to-use crossword component for React apps",
+  "author": {
+    "name": "JaredReisinger",
+    "email": "jaredreisinger@hotmail.com"
+  },
+  "keywords": [
+    "react",
+    "react-crossword",
+    "library"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaredReisinger/react-crossword"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "main": "dist/cjs",
+  "module": "dist/es",
+  "sideEffects": false,
+  "scripts": {
+    "installPeer": "node build-tool/peerDep.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:dev": "jest --watch",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
+    "commit": "git-cz",
+    "#release": "standard-version",
+    "release": "semantic-release",
+    "#release:tags": "git push --follow-tags origin master",
+    "build": "node build-tool/build.js",
+    "pre-publish": "npm run lint && npm run build",
+    "publish": "npm run pre-publish && npm publish",
+    "doc:dev": "styleguidist server",
+    "doc:build": "styleguidist build",
+    "doc:deploy": "npm run doc:build && gh-pages -d docs"
+  },
+  "files": [
+    "dist"
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged && git add ."
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "{src,docs}/**/*.{js,json,css,jsx,ts,tsx} *.js": [
+      "pretty-quick --staged",
+      "npm run stylelint",
+      "eslint --fix --quiet --ignore-path .gitignore",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@rollup/plugin-replace": "^2.2.1",
+    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/git": "^8.0.0",
+    "@testing-library/jest-dom": "^5.0.0",
+    "@testing-library/react": "^9.3.2",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-plugin-minify-dead-code-elimination": "^0.5.1",
+    "babel-plugin-styled-components": "^1.10.6",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "commitizen": "^4.0.3",
+    "concurrently": "^5.0.0",
+    "cross-spawn": "^7.0.1",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "gh-pages": "^2.1.1",
+    "glob": "^7.1.6",
+    "husky": "^4.0.10",
+    "inflected": "^2.0.4",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-styleguidist": "^10.2.1",
+    "react-test-renderer": "^16.12.0",
+    "read-pkg-up": "^7.0.0",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.26.5",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-size-snapshot": "^0.10.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "semantic-release": "^16.0.2",
+    "styled-components": "^5.0.0",
+    "stylelint": "^13.0.0",
+    "stylelint-config-prettier": "^8.0.0",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-prettier": "^1.1.2",
+    "webpack-blocks": "^2.0.1",
+    "which": "^2.0.2",
+    "yargs-parser": "^16.1.0"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react-dom": "^16.12.0",
+    "react": "^16.12.0",
+    "styled-components": "^4.4.1"
+  }
 }

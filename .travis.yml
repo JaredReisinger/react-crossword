@@ -1,0 +1,36 @@
+language: node_js
+
+node_js:
+  - lts/*
+  - node
+
+branches:
+  only:
+    - master
+    - /^greenkeeper/.*$/
+
+# this is the default script that runs across *all* versions
+#script: npm run test
+script:
+  - npm run lint
+  - npm run stylelint
+  - npm run test:coverage
+
+jobs:
+  include:
+    # - stage: test
+    #   node_js: lts/*
+    #   script: npm run coverage
+    #   after_success: npm run codecov
+
+    - stage: release
+      node_js: lts/*
+      if: branch = master
+      # overwrite default script?
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npm run build
+          - npx semantic-release --dry-run
