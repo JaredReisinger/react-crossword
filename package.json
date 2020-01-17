@@ -32,7 +32,7 @@
     "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
     "commit": "git-cz",
     "#release": "standard-version",
-    "release": "semantic-release",
+    "release": "npm run build && semantic-release --dry-run",
     "#release:tags": "git push --follow-tags origin master",
     "build": "node build-tool/build.js",
     "pre-publish": "npm run lint && npm run build",

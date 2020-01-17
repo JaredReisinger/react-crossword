@@ -31,6 +31,4 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script:
-          - npm run build
-          - npx semantic-release --dry-run
+        script: npm run release
