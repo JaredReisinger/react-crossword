@@ -83,6 +83,7 @@
     "babel-plugin-minify-dead-code-elimination": "^0.5.1",
     "babel-plugin-styled-components": "^1.10.6",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "codecov": "^3.6.1",
     "commitizen": "^4.0.3",
     "concurrently": "^5.0.0",
     "cross-spawn": "^7.0.1",

@@ -14,14 +14,14 @@ branches:
 script:
   - npm run lint
   - npm run stylelint
-  - npm run test:coverage
+  - npm run test
 
 jobs:
   include:
-    # - stage: test
-    #   node_js: lts/*
-    #   script: npm run coverage
-    #   after_success: npm run codecov
+    - stage: test
+      node_js: lts/*
+      script: npm run test:coverage
+      after_success: npm run codecov
 
     - stage: release
       node_js: lts/*
