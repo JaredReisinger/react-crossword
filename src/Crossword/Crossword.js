@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class Crossword extends React.Component {
   render() {
     return (
