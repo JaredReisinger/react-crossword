@@ -795,22 +795,21 @@ class Crossword extends React.Component {
   }
 }
 
+const clueShape = PropTypes.shape({
+  clue: PropTypes.string.isRequired,
+  answer: PropTypes.string.isRequired,
+  row: PropTypes.number.isRequired,
+  col: PropTypes.number.isRequired,
+});
+
 Crossword.propTypes = {
   data: PropTypes.shape({
-    across: PropTypes.objectOf({
-      clue: PropTypes.string.isRequired,
-      answer: PropTypes.string.isRequired,
-      row: PropTypes.number.isRequired,
-      col: PropTypes.number.isRequired,
-    }),
-    down: PropTypes.objectOf({
-      clue: PropTypes.string.isRequired,
-      answer: PropTypes.string.isRequired,
-      row: PropTypes.number.isRequired,
-      col: PropTypes.number.isRequired,
-    }),
+    across: PropTypes.objectOf(clueShape),
+    down: PropTypes.objectOf(clueShape),
   }).isRequired,
+
   columnBreakpoint: PropTypes.string,
+
   gridBackground: PropTypes.string,
   cellBackground: PropTypes.string,
   cellBorder: PropTypes.string,
