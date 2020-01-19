@@ -1,4 +1,5 @@
-import Demo from './Demo/Demo';
+import Cell from './Cell/Cell';
 import Crossword from './Crossword/Crossword';
+import Demo from './Demo/Demo';
 
-export { Crossword, Demo };
+export { Cell, Crossword, Demo };

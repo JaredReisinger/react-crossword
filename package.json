@@ -32,12 +32,10 @@
     "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
     "commit": "git-cz",
     "codecov": "codecov",
-    "#release": "standard-version",
-    "release": "npm run build && semantic-release --dry-run",
-    "#release:tags": "git push --follow-tags origin master",
+    "release": "npm run build && semantic-release",
     "build": "node build-tool/build.js",
-    "pre-publish": "npm run lint && npm run build",
-    "publish": "npm run pre-publish && npm publish",
+    "#pre-publish": "npm run lint && npm run build",
+    "#publish": "npm run pre-publish && npm publish",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
     "doc:deploy": "npm run doc:build && gh-pages -d docs"
@@ -100,6 +98,7 @@
     "gh-pages": "^2.1.1",
     "glob": "^7.1.6",
     "husky": "^4.0.10",
+    "immer": "^5.3.2",
     "inflected": "^2.0.4",
     "jest": "^24.9.0",
     "lint-staged": "^9.4.2",
@@ -130,6 +129,7 @@
     "yargs-parser": "^16.1.0"
   },
   "peerDependencies": {
+    "immer": "^5.3.2",
     "prop-types": "^15.7.2",
     "react-dom": "^16.12.0",
     "react": "^16.12.0",

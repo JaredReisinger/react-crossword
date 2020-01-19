@@ -1,6 +1,6 @@
 parser: babel-eslint
 
-extends: [airbnb, plugin:react/recommended, prettier/react]
+extends: [airbnb, plugin:react/recommended, plugin:prettier/recommended, prettier/react]
 
 env:
   browser: true
@@ -22,91 +22,12 @@ parserOptions:
 #       extensions: [.js, .mjs]
 
 rules:
-  # arrow-body-style: [error, always]
   arrow-parens: [error, as-needed]
-  # comma-dangle:
-  #   - error
-  #   - arrays: always-multiline
-  #     objects: always-multiline
-  #     imports: always-multiline
-  #     exports: always-multiline
-  #     functions: never
-  # import/extensions: [error, always, { js: never, mjs: never }]
-  # import/no-extraneous-dependencies:
-  #   - error
-  #   - devDependencies: ['test/**', '**/*.spec.mjs']
-  #     optionalDependencies: false
-  # import/prefer-default-export: [off, never]
-  # linebreak-style: off
-  # no-console: off
-  # no-continue: off
-  # no-param-reassign: [error, { props: false }]
-  # no-plusplus: off
-  # no-restricted-syntax: [error, ForInStatement, LabeledStatement, WithStatement]
-  # no-underscore-dangle:
-  #   - error
-  #   - allow: [_filename, _missing]
-  #     allowAfterThis: true
-  #     allowAfterSuper: true
-  # no-use-before-define: [error, nofunc]
-  # # operator-linebreak: [error, after]
-  # promise/prefer-await-to-callbacks: error
-  # promise/prefer-await-to-then: error
+  no-nested-ternary: off
   react/jsx-filename-extension:
     - error
     - extensions: [.js, .jsx]
   react/jsx-props-no-spreading: off
-  # # sort-keys: error
-  # sort-keys: off
-
-  # "rules": {
-  #   "arrow-body-style": [2, "as-needed"],
-  #   "arrow-parens": ["error", "always"],
-  #   "camelcase": 1,
-  #   "class-methods-use-this": 0,
-  #   "comma-dangle": ["error", "only-multiline"],
-  #   "function-paren-newline": "off",
-  #   "global-require": 0,
-  #   "implicit-arrow-linebreak": 0,
-  #   "import/extensions": 0,
-  #   "import/namespace": "error",
-  #   "import/no-extraneous-dependencies": 0,
-  #   "import/no-unresolved": "error",
-  #   "import/prefer-default-export": 0,
-  #   "indent": [2, "tab", { "SwitchCase": 1 }],
-  #   "jsx-a11y/anchor-is-valid": 0,
-  #   "jsx-a11y/click-events-have-key-events": 0,
-  #   "jsx-a11y/no-static-element-interactions": 0,
-  #   "jsx-closing-bracket-location": 0,
-  #   "jsx-quotes": ["error", "prefer-single"],
-  #   "max-len": 0,
-  #   "no-console": 1,
-  #   "no-nested-ternary": 0,
-  #   "no-param-reassign": "off",
-  #   "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-  #   "no-tabs": 0,
-  #   "no-underscore-dangle": ["error", { "allowAfterThis": true }],
-  #   "object-curly-newline": 0,
-  #   "prefer-destructuring": 1,
-  #   "prefer-rest-params": 0,
-  #   "radix": 0,
-  #   "react-hooks/rules-of-hooks": "error",
-  #   "react/destructuring-assignment": 1,
-  #   "react/forbid-prop-types": 0,
-  #   "react/jsx-curly-brace-presence": "off",
-  #   "react/jsx-filename-extension": 0,
-  #   "react/jsx-first-prop-new-line": [2, "multiline"],
-  #   "react/jsx-indent-props": [2, "tab"],
-  #   "react/jsx-indent": [2, "tab"],
-  #   "react/jsx-props-no-spreading": 0,
-  #   "react/no-array-index-key": 1
-  #   "react/no-find-dom-node": 0,
-  #   "react/no-unused-state": 1,
-  #   "react/prop-types": 0,
-  #   "react/require-default-props": 0,
-  #   "react/self-closing-comp": 0,
-  #   "react/sort-comp": 0,
-  # }
 
 # overrides:
 #   - files: ['test/**', '**/*.spec.mjs']
