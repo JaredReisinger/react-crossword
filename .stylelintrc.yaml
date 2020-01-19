@@ -1,8 +1,13 @@
-extends: [stylelint-config-standard]
+processors:
+  - stylelint-processor-styled-components
 
-rules:
-  declaration-empty-line-before: never
-  
+extends:
+  - stylelint-config-recommended
+  - stylelint-config-prettier
+  - stylelint-config-styled-components
+# rules:
+#   declaration-empty-line-before: never
+
 # module.exports = {
 #   extends: ['stylelint-config-standard'],
 #   rules: {

@@ -46,7 +46,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged && git add ."
+      "pre-commit": "pretty-quick --staged && lint-staged"
     }
   },
   "config": {
@@ -55,9 +55,8 @@
     }
   },
   "lint-staged": {
-    "{src,docs}/**/*.{js,json,css,jsx,ts,tsx} *.js": [
-      "pretty-quick --staged",
-      "npm run stylelint",
+    "{src,docs}/**/*.{js,json,css,jsx,ts,tsx}": [
+      "stylelint",
       "eslint --fix --quiet --ignore-path .gitignore",
       "git add"
     ]
@@ -122,8 +121,11 @@
     "styled-components": "^5.0.0",
     "stylelint": "^13.0.0",
     "stylelint-config-prettier": "^8.0.0",
+    "stylelint-config-recommended": "^3.0.0",
     "stylelint-config-standard": "^19.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
     "stylelint-prettier": "^1.1.2",
+    "stylelint-processor-styled-components": "^1.9.0",
     "webpack-blocks": "^2.0.1",
     "which": "^2.0.2",
     "yargs-parser": "^16.1.0"

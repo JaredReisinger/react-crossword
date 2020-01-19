@@ -6,8 +6,10 @@ import styled from 'styled-components';
 
 import Cell from '../Cell/Cell';
 
-const storageKey = 'guesses';
+// TODO: make this a component property!
+const defaultStorageKey = 'guesses';
 
+// eslint-disable-next-line
 const Wrapper = styled.div.attrs(props => ({
   className: 'crossword',
 }))`
@@ -86,6 +88,8 @@ class Crossword extends React.Component {
     this.svgRef = React.createRef();
     this.inputRef = React.createRef();
 
+    this.storageKey = defaultStorageKey; // TODO take from props
+
     const { size, gridData, clues } = createGridData(props.data);
     this.loadGuesses(gridData);
 
@@ -111,16 +115,17 @@ class Crossword extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    let { bulkChange } = this.state;
     const { data } = this.props;
-    let { gridData, bulkChange } = this.state;
     if (data !== prevProps.data) {
-      const { size, gridData, clues } = createGridData(data);
+      const { size, gridData: newGridData, clues } = createGridData(data);
       this.loadGuesses(gridData);
 
       bulkChange = null;
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         size,
-        gridData,
+        gridData: newGridData,
         clues,
 
         // focsued: false,
@@ -146,9 +151,11 @@ class Crossword extends React.Component {
       if (bulkChange.length === 0) {
         bulkChange = null;
       }
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ bulkChange });
     }
 
+    const { gridData } = this.state;
     if (gridData && gridData !== prevState.gridData) {
       this.saveGuesses();
     }
@@ -159,7 +166,7 @@ class Crossword extends React.Component {
       return;
     }
 
-    window.localStorage.removeItem(storageKey);
+    window.localStorage.removeItem(this.storageKey);
   }
 
   // Take the guesses from data, generate the save state, and persist.
@@ -171,12 +178,12 @@ class Crossword extends React.Component {
     const { gridData } = this.state;
 
     const guesses = gridData.reduce((memo, row, r) => {
-      return row.reduce((memo, cellData, c) => {
+      return row.reduce((memoInner, cellData, c) => {
         const { guess } = cellData;
         if (guess !== '') {
-          memo[`${r}_${c}`] = cellData.guess;
+          memoInner[`${r}_${c}`] = cellData.guess;
         }
-        return memo;
+        return memoInner;
       }, memo);
     }, {});
 
@@ -185,7 +192,7 @@ class Crossword extends React.Component {
       guesses,
     };
 
-    window.localStorage.setItem(storageKey, JSON.stringify(saveData));
+    window.localStorage.setItem(this.storageKey, JSON.stringify(saveData));
   }
 
   loadGuesses(gridData) {
@@ -193,7 +200,7 @@ class Crossword extends React.Component {
       return;
     }
 
-    const saveRaw = window.localStorage.getItem(storageKey);
+    const saveRaw = window.localStorage.getItem(this.storageKey);
     if (!saveRaw) {
       return;
     }
@@ -251,7 +258,7 @@ class Crossword extends React.Component {
             }
           });
         });
-      }),
+      })
     );
 
     // fake a loadedCorrect for everything...
@@ -275,11 +282,12 @@ class Crossword extends React.Component {
         gridData.forEach((row, r) => {
           row.forEach((cellData, c) => {
             if (cellData.used) {
+              // eslint-disable-next-line no-param-reassign
               cellData.guess = '';
             }
           });
         });
-      }),
+      })
     );
 
     this.clearGuesses();
@@ -288,7 +296,8 @@ class Crossword extends React.Component {
   handleCellClick(cellData) {
     // TODO: if the same cell is clicked, switch directions if possible?
     // for now, we simply prefer across...
-    let { focused, currentDirection, focusedRow, focusedCol } = this.state;
+    const { focused, focusedRow, focusedCol } = this.state;
+    let { currentDirection } = this.state;
     const other = currentDirection === 'across' ? 'down' : 'across';
 
     // switch directions if we're already focused and the same cell is clicked
@@ -320,7 +329,8 @@ class Crossword extends React.Component {
 
     // Clicking on the input field necessarily means a re-click on the focused
     // cell.  Try switching directions...
-    let { focused, currentDirection, focusedRow, focusedCol } = this.state;
+    const { focused, focusedRow, focusedCol } = this.state;
+    let { currentDirection } = this.state;
     const other = currentDirection === 'across' ? 'down' : 'across';
 
     const cellData = this.getCellData(focusedRow, focusedCol);
@@ -339,8 +349,8 @@ class Crossword extends React.Component {
     event.preventDefault();
     const { direction, number } = event.target.dataset;
     // console.log('CLUE CLICK', event.target.dataset, direction, number);
-    const { data } = this.props;
-    const info = data[direction][number];
+    // eslint-disable-next-line react/destructuring-assignment
+    const info = this.props.data[direction][number];
     // console.log('data...', data, info);
     this.moveTo(info.row, info.col, direction);
     this.setFocus();
@@ -384,6 +394,7 @@ class Crossword extends React.Component {
           // skip the current cell, as that state hasn't updated yet?
           // should the check be in componentDidUpdate?
           if (col === info.col + i) {
+            // eslint-disable-next-line no-continue
             continue;
           }
           if (gridData[info.row][info.col + i].guess !== info.answer[i]) {
@@ -403,6 +414,7 @@ class Crossword extends React.Component {
           // skip the current cell, as that state hasn't updated yet?
           // should the check be in componentDidUpdate?
           if (row === info.row + i) {
+            // eslint-disable-next-line no-continue
             continue;
           }
           if (gridData[info.row + i][info.col].guess !== info.answer[i]) {
@@ -454,7 +466,7 @@ class Crossword extends React.Component {
     }
 
     let preventDefault = true;
-    let key = event.key;
+    const { key } = event;
     // console.log('CROSSWORD KEYDOWN', event.key);
 
     // FUTURE: should we "jump" over black space?  That might help some for
@@ -478,12 +490,8 @@ class Crossword extends React.Component {
 
       case ' ': // treat space like tab?
       case 'Tab': {
-        let {
-          currentDirection,
-          focusedRow,
-          focusedCol,
-          highlight,
-        } = this.state;
+        const { focusedRow, focusedCol } = this.state;
+        let { currentDirection, highlight } = this.state;
         const other = currentDirection === 'across' ? 'down' : 'across';
         const current = this.getCellData(focusedRow, focusedCol);
         if (current[other]) {
@@ -503,7 +511,7 @@ class Crossword extends React.Component {
         if (key === 'Backspace') {
           this.moveRelative(
             currentDirection === 'across' ? 0 : -1,
-            currentDirection === 'across' ? -1 : 0,
+            currentDirection === 'across' ? -1 : 0
           );
         }
         break;
@@ -513,8 +521,10 @@ class Crossword extends React.Component {
       case 'End': {
         // move to beginning/end of this entry?
         const { currentDirection, highlight } = this.state;
-        const info = this.props.data[currentDirection][highlight];
-        let { row, col, answer } = info;
+        const { data } = this.props;
+        const info = data[currentDirection][highlight];
+        const { answer } = info;
+        let { row, col } = info;
         if (key === 'End') {
           const isAcross = currentDirection === 'across';
           if (isAcross) {
@@ -572,11 +582,13 @@ class Crossword extends React.Component {
   }
 
   moveForward() {
+    // eslint-disable-next-line react/destructuring-assignment
     const isAcross = this.state.currentDirection === 'across';
     this.moveRelative(isAcross ? 0 : 1, isAcross ? 1 : 0);
   }
 
   moveBackward() {
+    // eslint-disable-next-line react/destructuring-assignment
     const isAcross = this.state.currentDirection === 'across';
     this.moveRelative(isAcross ? 0 : -1, isAcross ? -1 : 0);
   }
@@ -695,6 +707,7 @@ class Crossword extends React.Component {
         }
         cells.push(
           <Cell
+            // eslint-disable-next-line react/no-array-index-key
             key={`R${row}C${col}`}
             cellData={cellData}
             renderContext={renderContext}
@@ -703,7 +716,7 @@ class Crossword extends React.Component {
               focused && highlight && cellData[currentDirection] === highlight
             }
             onClick={this.handleCellClick}
-          />,
+          />
         );
       });
     });
@@ -807,6 +820,7 @@ Crossword.propTypes = {
   highlightBackground: PropTypes.string,
 
   onCorrect: PropTypes.func,
+  onLoadedCorrect: PropTypes.func,
 };
 
 Crossword.defaultProps = {
@@ -819,6 +833,7 @@ Crossword.defaultProps = {
   focusBackground: 'rgb(255,255,0)',
   highlightBackground: 'rgb(255,255,204)',
   onCorrect: null,
+  onLoadedCorrect: null,
 };
 
 export default Crossword;
