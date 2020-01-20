@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import { Demo } from 'react-crossword';
+import Crossword from '@jaredreisinger/react-crossword';
 import './App.css';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Demo type="success">HELLO World</Demo>
+        <Crossword data={data} />
       </header>
     </div>
   );

@@ -844,7 +844,7 @@ function createGridData(data) {
   let rowMax = 0;
 
   Object.entries(data.across).forEach(([i, info]) => {
-    const col = info.col + info.answer.length;
+    const col = info.col + info.answer.length - 1;
     if (col > colMax) {
       colMax = col;
     }
@@ -854,7 +854,7 @@ function createGridData(data) {
   });
 
   Object.entries(data.down).forEach(([i, info]) => {
-    const row = info.row + info.answer.length;
+    const row = info.row + info.answer.length - 1;
     if (row > rowMax) {
       rowMax = row;
     }

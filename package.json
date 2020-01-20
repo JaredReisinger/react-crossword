@@ -1,5 +1,5 @@
 {
-  "name": "react-crossword",
+  "name": "@jaredreisinger/react-crossword",
   "homepage": "http://JaredReisinger.github.io/react-crossword",
   "version": "0.0.1",
   "description": "A flexible, responsive, and easy-to-use crossword component for React apps",
@@ -10,6 +10,8 @@
   "keywords": [
     "react",
     "react-crossword",
+    "crossword",
+    "puzzle",
     "library"
   ],
   "repository": {
@@ -38,11 +40,14 @@
     "#publish": "npm run pre-publish && npm publish",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
-    "doc:deploy": "npm run doc:build && gh-pages -d docs"
+    "doc:deploy": "npm run doc:build && gh-pages --dist docs"
   },
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",

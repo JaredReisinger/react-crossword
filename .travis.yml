@@ -31,4 +31,4 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: npm run release
+        script: npm run release && npm run doc:deploy
