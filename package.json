@@ -1,7 +1,7 @@
 {
   "name": "@jaredreisinger/react-crossword",
   "homepage": "http://JaredReisinger.github.io/react-crossword",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A flexible, responsive, and easy-to-use crossword component for React apps",
   "author": {
     "name": "JaredReisinger",
