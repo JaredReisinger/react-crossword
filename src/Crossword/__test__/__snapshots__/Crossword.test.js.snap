@@ -1,7 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matches snapshot 1`] = `
-<div>
-  THIS IS THE CROSSWORD
+<div
+  className="sc-AykKC cTFyfK crossword"
+>
+  <div
+    className="sc-AykKD VGLTd grid"
+  >
+    <div
+      style={
+        Object {
+          "margin": 0,
+          "padding": 0,
+          "position": "relative",
+        }
+      }
+    >
+      <svg
+        viewBox="0 0 100 100"
+      >
+        <rect
+          fill="rgb(0,0,0)"
+          height={100}
+          width={100}
+          x={0}
+          y={0}
+        />
+      </svg>
+      <input
+        autoComplete="off"
+        autoCorrect="off"
+        onChange={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        spellCheck="false"
+        style={
+          Object {
+            "backgroundColor": "transparent",
+            "border": 0,
+            "caretColor": "transparent",
+            "cursor": "default",
+            "fontSize": "418.94999999999993px",
+            "height": "calc(100% - 4px)",
+            "left": "calc(0% + 2px)",
+            "margin": 0,
+            "padding": 0,
+            "position": "absolute",
+            "textAlign": "center",
+            "textAnchor": "middle",
+            "top": "calc(0% + 2px)",
+            "width": "calc(100% - 4px)",
+          }
+        }
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    className="sc-AykKE hQcWUb clues"
+  >
+    <div
+      className="direction"
+    >
+      <h3
+        className="header"
+      >
+        ACROSS
+      </h3>
+    </div>
+    <div
+      className="direction"
+    >
+      <h3
+        className="header"
+      >
+        DOWN
+      </h3>
+    </div>
+  </div>
 </div>
 `;
