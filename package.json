@@ -62,8 +62,7 @@
   "lint-staged": {
     "{src,docs}/**/*.{js,json,css,jsx,ts,tsx}": [
       "stylelint",
-      "eslint --fix --quiet --ignore-path .gitignore",
-      "git add"
+      "eslint --fix --quiet --ignore-path .gitignore"
     ]
   },
   "devDependencies": {
@@ -105,7 +104,7 @@
     "immer": "^5.3.2",
     "inflected": "^2.0.4",
     "jest": "^24.9.0",
-    "lint-staged": "^9.4.2",
+    "lint-staged": "^10.0.1",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "prop-types": "^15.7.2",
@@ -140,6 +139,6 @@
     "prop-types": "^15.7.2",
     "react-dom": "^16.12.0",
     "react": "^16.12.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^5.0.0"
   }
 }
