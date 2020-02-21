@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/JaredReisinger/react-crossword/compare/v1.0.0...v1.0.1) (2020-02-21)
+
+
+### Bug Fixes
+
+* **package:** update react-scripts to version 3.4.0 ([aa0744b](https://github.com/JaredReisinger/react-crossword/commit/aa0744b506fb656204016d5776a18f5f424e1e4a)), closes [#6](https://github.com/JaredReisinger/react-crossword/issues/6)
+
 # 1.0.0 (2020-01-20)
 
 
