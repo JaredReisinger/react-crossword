@@ -121,7 +121,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-size-snapshot": "^0.10.0",
     "rollup-plugin-terser": "^5.1.2",
-    "semantic-release": "^16.0.2",
+    "semantic-release": "^17.0.0",
     "styled-components": "^5.0.0",
     "stylelint": "^13.0.0",
     "stylelint-config-prettier": "^8.0.0",
