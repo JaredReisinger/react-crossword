@@ -135,10 +135,10 @@
     "yargs-parser": "^17.0.0"
   },
   "peerDependencies": {
-    "immer": "^5.3.2",
+    "immer": "^5.3.6",
     "prop-types": "^15.7.2",
-    "react-dom": "^16.12.0",
-    "react": "^16.12.0",
-    "styled-components": "^5.0.0"
+    "react-dom": "^16.13.0",
+    "react": "^16.13.0",
+    "styled-components": "^5.0.1"
   }
 }

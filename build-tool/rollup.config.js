@@ -65,7 +65,7 @@ const output = [
     name: pkg.name,
     file: path.join('dist', filename),
     format: esm ? 'es' : format,
-    exports: esm ? 'named' : 'auto',
+    exports: esm || umd ? 'named' : 'auto',
     globals: umd ? globals : {},
   },
 ];

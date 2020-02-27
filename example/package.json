@@ -4,9 +4,12 @@
   "private": true,
   "dependencies": {
     "@jaredreisinger/react-crossword": "file:..",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0"
+    "immer": "file:../node_modules/immer",
+    "prop-types": "file:../node_modules/prop-types",
+    "react": "file:../node_modules/react",
+    "react-dom": "file:../node_modules/react-dom",
+    "react-scripts": "3.4.0",
+    "styled-components": "file:../node_modules/styled-components"
   },
   "scripts": {
     "start": "react-scripts start",
