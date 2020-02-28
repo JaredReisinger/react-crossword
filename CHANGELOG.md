@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/JaredReisinger/react-crossword/compare/v1.0.1...v1.0.2) (2020-02-28)
+
+
+### Bug Fixes
+
+* set minimum node version to 10.18 ([22f7167](https://github.com/JaredReisinger/react-crossword/commit/22f71679595b0bca94a5dfb42168afa43e74c8d9))
+
 ## [1.0.1](https://github.com/JaredReisinger/react-crossword/compare/v1.0.0...v1.0.1) (2020-02-21)
 
 
