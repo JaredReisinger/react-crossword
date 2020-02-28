@@ -106,5 +106,5 @@ it('fillClues can fill down', () => {
   expect(gridData[2][2].answer).toBe('E');
   expect(gridData[2][2].down).toBe('2');
 
-  expect(clues).toEqual({ down: [{ clue: 'two minus one', number: '2' }] });
+  expect(clues).toEqual({ down: [{ clue: 'three minus two', number: '2' }] });
 });
