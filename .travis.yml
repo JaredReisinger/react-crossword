@@ -29,19 +29,18 @@ jobs:
       # overwrite default script?
       script: skip
       deploy:
-        provider: script
-        skip_cleanup: true
-        script: npm run release
+        - provider: script
+          skip_cleanup: true
+          script: npm run release
 
-    - stage: release
-      node_js: lts/*
-      if: branch = master
-      script: npm run doc:build
-      deploy:
-        provider: pages
-        skip_cleanup: true
-        github_token: $GH_TOKEN
-        keep_history: true
-        on:
-          branch: master
-        local_dir: docs
+        - provider: script
+          skip_cleanup: true
+          script: npm run doc:build
+
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GH_TOKEN
+          keep_history: true
+          on:
+            branch: master
+          local_dir: docs
