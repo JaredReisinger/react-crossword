@@ -9,6 +9,8 @@ const directionInfo = {
   },
 };
 
+export const bothDirections = Object.keys(directionInfo);
+
 export function calculateExtents(data, direction) {
   const dir = directionInfo[direction];
   let primaryMax = 0;
@@ -118,4 +120,51 @@ export function byNumber(a, b) {
   const bNum = Number.parseInt(b.number, 10);
 
   return aNum - bNum;
+}
+
+export function serializeGuesses(gridData) {
+  const guesses = gridData.reduce((memo, row, r) => {
+    return row.reduce((memoInner, cellData, c) => {
+      const { guess } = cellData;
+      if (guess !== '') {
+        memoInner[`${r}_${c}`] = cellData.guess;
+      }
+      return memoInner;
+    }, memo);
+  }, {});
+
+  return guesses;
+}
+
+export function deserializeGuesses(gridData, guesses) {
+  Object.entries(guesses).forEach(([key, val]) => {
+    const [r, c] = key.split('_');
+    gridData[r][c].guess = val;
+  });
+}
+
+export function findCorrectAnswers(data, gridData) {
+  const correctAnswers = [];
+
+  bothDirections.forEach(direction => {
+    const isAcross = direction === 'across';
+    Object.entries(data[direction]).forEach(([num, info]) => {
+      const { row, col } = info;
+      let correct = true;
+      for (let i = 0; i < info.answer.length; i++) {
+        const r = isAcross ? row : row + i;
+        const c = isAcross ? col + i : col;
+        if (gridData[r][c].guess !== info.answer[i]) {
+          correct = false;
+          break;
+        }
+      }
+      if (correct) {
+        // same args as notifyCorrect: direction, number, answer
+        correctAnswers.push([direction, num, info.answer]);
+      }
+    });
+  });
+
+  return correctAnswers;
 }

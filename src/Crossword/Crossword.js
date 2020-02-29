@@ -5,7 +5,13 @@ import produce from 'immer';
 import styled from 'styled-components';
 
 import Cell from '../Cell/Cell';
-import { createGridData } from './util';
+import {
+  bothDirections,
+  createGridData,
+  serializeGuesses,
+  deserializeGuesses,
+  findCorrectAnswers,
+} from './util';
 
 // TODO: make this a component property!
 const defaultStorageKey = 'guesses';
@@ -172,28 +178,20 @@ class Crossword extends React.Component {
 
   // Take the guesses from data, generate the save state, and persist.
   saveGuesses() {
-    if (!window.localStorage) {
+    const { localStorage } = window;
+    if (!localStorage) {
       return;
     }
 
     const { gridData } = this.state;
-
-    const guesses = gridData.reduce((memo, row, r) => {
-      return row.reduce((memoInner, cellData, c) => {
-        const { guess } = cellData;
-        if (guess !== '') {
-          memoInner[`${r}_${c}`] = cellData.guess;
-        }
-        return memoInner;
-      }, memo);
-    }, {});
+    const guesses = serializeGuesses(gridData);
 
     const saveData = {
       date: Date.now(),
       guesses,
     };
 
-    window.localStorage.setItem(this.storageKey, JSON.stringify(saveData));
+    localStorage.setItem(this.storageKey, JSON.stringify(saveData));
   }
 
   loadGuesses(gridData) {
@@ -209,37 +207,11 @@ class Crossword extends React.Component {
     }
 
     const saveData = JSON.parse(saveRaw);
-
     // TODO: check date for expiration?
-
-    // split the guesses key to get row and column indexes...
-    Object.entries(saveData.guesses).forEach(([key, val]) => {
-      const [r, c] = key.split('_');
-      gridData[r][c].guess = val;
-    });
+    deserializeGuesses(gridData, saveData.guesses);
 
     // check all clues to see what (if any) have been answered
-    const loadedCorrect = [];
-
-    ['across', 'down'].forEach(direction => {
-      const isAcross = direction === 'across';
-      Object.entries(data[direction]).forEach(([num, info]) => {
-        const { row, col } = info;
-        let correct = true;
-        for (let i = 0; i < info.answer.length; i++) {
-          const r = isAcross ? row : row + i;
-          const c = isAcross ? col + i : col;
-          if (gridData[r][c].guess !== info.answer[i]) {
-            correct = false;
-            break;
-          }
-        }
-        if (correct) {
-          // same args as notifyCorrect: direction, number, answer
-          loadedCorrect.push([direction, num, info.answer]);
-        }
-      });
-    });
+    const loadedCorrect = findCorrectAnswers(data, gridData);
 
     // console.log('LOADED GUESSES correct:', loadedCorrect);
     if (onLoadedCorrect) {
@@ -264,7 +236,7 @@ class Crossword extends React.Component {
     // fake a loadedCorrect for everything...
     const { data, onLoadedCorrect } = this.props;
     const loadedCorrect = [];
-    ['across', 'down'].forEach(direction => {
+    bothDirections.forEach(direction => {
       Object.entries(data[direction]).forEach(([num, info]) => {
         loadedCorrect.push([direction, num, info.answer]);
       });
@@ -774,7 +746,7 @@ class Crossword extends React.Component {
           </div>
         </GridWrapper>
         <ClueWrapper>
-          {['across', 'down'].map(direction => (
+          {bothDirections.map(direction => (
             <div key={direction} className="direction">
               <h3 className="header">{direction.toUpperCase()}</h3>
               {clues[direction].map(({ number, clue }) => (
