@@ -197,11 +197,13 @@ class Crossword extends React.Component {
   }
 
   loadGuesses(gridData) {
-    if (!window.localStorage) {
+    const { data, useStorage, onLoadedCorrect } = this.props;
+    const { localStorage } = window;
+    if (!useStorage || !localStorage) {
       return;
     }
 
-    const saveRaw = window.localStorage.getItem(this.storageKey);
+    const saveRaw = localStorage.getItem(this.storageKey);
     if (!saveRaw) {
       return;
     }
@@ -218,7 +220,6 @@ class Crossword extends React.Component {
 
     // check all clues to see what (if any) have been answered
     const loadedCorrect = [];
-    const { data } = this.props;
 
     ['across', 'down'].forEach(direction => {
       const isAcross = direction === 'across';
@@ -241,8 +242,6 @@ class Crossword extends React.Component {
     });
 
     // console.log('LOADED GUESSES correct:', loadedCorrect);
-
-    const { onLoadedCorrect } = this.props;
     if (onLoadedCorrect) {
       onLoadedCorrect(loadedCorrect);
     }
@@ -366,6 +365,7 @@ class Crossword extends React.Component {
   }
 
   setCellCharacter(row, col, char) {
+    // console.log('SETCELLCHARACTER', { row, col, char });
     const { gridData } = this.state;
     const cell = gridData[row][col];
 
@@ -432,6 +432,7 @@ class Crossword extends React.Component {
 
   notifyCorrect(direction, number, answer) {
     const { onCorrect } = this.props;
+    // console.log('NOTIFYCORRECT', { direction, number, answer, onCorrect });
 
     if (!onCorrect) {
       return;
@@ -738,6 +739,7 @@ class Crossword extends React.Component {
             </svg>
             <input
               ref={this.inputRef}
+              aria-label="crossword-input"
               type="text"
               onClick={this.handleInputClick}
               onKeyDown={this.handleInputKeyDown}
@@ -784,6 +786,7 @@ class Crossword extends React.Component {
                   onClick={this.handleClueClick}
                   data-direction={direction}
                   data-number={number}
+                  aria-label={`clue-${number}-${direction}`}
                 >
                   {number}: {clue}
                 </Clue>
@@ -819,6 +822,7 @@ Crossword.propTypes = {
   focusBackground: PropTypes.string,
   highlightBackground: PropTypes.string,
 
+  useStorage: PropTypes.bool,
   onCorrect: PropTypes.func,
   onLoadedCorrect: PropTypes.func,
 };
@@ -832,6 +836,7 @@ Crossword.defaultProps = {
   numberColor: 'rgba(0,0,0, 0.25)',
   focusBackground: 'rgb(255,255,0)',
   highlightBackground: 'rgb(255,255,204)',
+  useStorage: true,
   onCorrect: null,
   onLoadedCorrect: null,
 };

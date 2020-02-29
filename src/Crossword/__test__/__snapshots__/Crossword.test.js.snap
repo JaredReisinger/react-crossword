@@ -28,6 +28,7 @@ exports[`matches snapshot 1`] = `
         />
       </svg>
       <input
+        aria-label="crossword-input"
         autoComplete="off"
         autoCorrect="off"
         onChange={[Function]}
