@@ -74,24 +74,412 @@ it('handles typing', () => {
   userEvent.type(input, 'T');
 });
 
-it('handles keyboard navigation', () => {
-  const { getByLabelText, getByText } = render(
-    <Crossword {...defaultProps} data={simpleData} />
-  );
-  const input = getByLabelText('crossword-input');
+describe('keyboard navigation', () => {
+  const size4Data = {
+    across: {
+      1: {
+        clue: 'one plus one',
+        answer: 'TWO',
+        row: 0,
+        col: 0,
+      },
+      3: {
+        clue: 'not yes',
+        answer: 'NO',
+        row: 1,
+        col: 2,
+      },
+    },
+    down: {
+      2: {
+        clue: 'three minus two',
+        answer: 'ONE',
+        row: 0,
+        col: 2,
+      },
+    },
+  };
 
-  userEvent.click(getByLabelText('clue-1-across'));
+  it('basic typing', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
 
-  fireEvent.keyDown(input, { key: 'ArrowLeft' });
-  fireEvent.keyDown(input, { key: 'X' });
-  const rectX = getByText('X').parentElement.firstChild;
-  expect(rectX.getAttribute('x')).toBe('0.125');
-  expect(rectX.getAttribute('y')).toBe('0.125');
+    userEvent.click(getByLabelText('clue-1-across'));
 
-  fireEvent.keyDown(input, { key: 'Z' });
-  const rectZ = getByText('Z').parentElement.firstChild;
-  expect(rectZ.getAttribute('x')).toBe('33.458333333333336');
-  expect(rectZ.getAttribute('y')).toBe('0.125');
+    fireEvent.keyDown(input, { key: 'ArrowLeft' });
+    fireEvent.keyDown(input, { key: 'X' });
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('25.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('home and end (across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('home and end (down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('left and right (across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: 'ArrowLeft' });
+    fireEvent.keyDown(input, { key: 'X' });
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'ArrowRight' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('up and down (down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    fireEvent.keyDown(input, { key: 'X' });
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('tab switches direction (across to down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+
+    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('tab switches direction (down to across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+
+    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 1-across
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('space switches direction (across to down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+
+    fireEvent.keyDown(input, { key: ' ' }); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('space switches direction (down to across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+
+    fireEvent.keyDown(input, { key: ' ' }); // switches to 1-across
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('clicking on input switches direction (across to down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+
+    userEvent.click(input); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('clicking on input switches direction (down to across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+
+    userEvent.click(input); // switches to 1-across
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('clicking on cell when focused switches direction (across to down)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    userEvent.click(getByText('Z')); // switches to 2-down
+
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+  });
+
+  it('clicking on cell when focused switches direction (down to across)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+    fireEvent.keyDown(input, { key: 'Z' });
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    userEvent.click(getByText('Z')); // switches to 1-across
+
+    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('backspace clears and moves back (across)', () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    let { x, y } = posForText(getByText('Z'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'Backspace' });
+    expect(queryByText('Z')).toBeNull();
+
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('25.125'); // second col!
+    expect(y).toBe('0.125');
+  });
+
+  it('backspace clears and moves up (down)', () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    let { x, y } = posForText(getByText('Z'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+
+    fireEvent.keyDown(input, { key: 'Backspace' });
+    expect(queryByText('Z')).toBeNull();
+
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('25.125'); // second row!
+  });
+
+  it('delete clears and does not move back (across)', () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    let { x, y } = posForText(getByText('Z'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+
+    fireEvent.keyDown(input, { key: 'Delete' });
+    expect(queryByText('Z')).toBeNull();
+
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125'); // still third col!
+    expect(y).toBe('0.125');
+  });
+
+  it('delete clears and does not move up (down)', () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-2-down'));
+    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Z' });
+    let { x, y } = posForText(getByText('Z'));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125');
+
+    fireEvent.keyDown(input, { key: 'Delete' });
+    expect(queryByText('Z')).toBeNull();
+
+    fireEvent.keyDown(input, { key: 'Z' });
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('50.125'); // still third row!
+  });
+
+  it('ctrl, meta, alt character go unused', () => {
+    const { getByLabelText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { ctrlKey: true, key: 'X' });
+    expect(queryByText('X')).toBeNull();
+
+    fireEvent.keyDown(input, { altKey: true, key: 'X' });
+    expect(queryByText('X')).toBeNull();
+
+    fireEvent.keyDown(input, { metaKey: true, key: 'X' });
+    expect(queryByText('X')).toBeNull();
+  });
+
+  it('unknown keys go unused', () => {
+    const { getByLabelText, queryByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: 'BOGUS' });
+    expect(queryByText('B')).toBeNull();
+    expect(queryByText('BOGUS')).toBeNull();
+  });
+
+  it('handles "bulk" input (pasting)', () => {
+    const { getByLabelText, getByText } = render(
+      <Crossword {...defaultProps} data={size4Data} />
+    );
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+
+    fireEvent.change(input, { target: { value: 'XYZ' } });
+
+    let { x, y } = posForText(getByText('X'));
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+
+    ({ x, y } = posForText(getByText('Y')));
+    expect(x).toBe('25.125');
+    expect(y).toBe('0.125');
+
+    ({ x, y } = posForText(getByText('Z')));
+    expect(x).toBe('50.125');
+    expect(y).toBe('0.125');
+  });
 });
 
 it('fires onCorrect when an answer is entered', () => {
@@ -123,3 +511,46 @@ it('fires onCorrect when an answer is entered', () => {
     expect(answer).toBe('TWO');
   });
 });
+
+it('does not fire onCorrect when a wrong answer is entered', () => {
+  // The onCorrect happens on a delay, so we need a Promise to even wait for the
+  // call!  (and a timeout since it won't really happen...)
+
+  // Jest complains with "ReferenceError: regeneratorRuntime is not defined"
+  // when the test is defined with 'async'... despite @babel/preset-env being
+  // included already.  For now, we just use old-school Promise.then() syntax,
+  // and make sure to return the promise.
+  const onCorrect = new Promise((resolve, reject) => {
+    const { getByLabelText } = render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCorrect={(...args) => resolve(args)}
+      />
+    );
+
+    const input = getByLabelText('crossword-input');
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    // We enter an invalid answer, then a valid one (so we get the onCorrect
+    // that gets us out of this test).  Our *not* getting the onCorrect for the
+    // first answer is the actual test.
+    userEvent.type(getByLabelText('crossword-input'), 'XXX').then(() => {
+      fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
+      userEvent.type(getByLabelText('crossword-input'), 'ONE');
+    });
+  });
+
+  return onCorrect.then(([direction, number, answer]) => {
+    expect(direction).toBe('down');
+    expect(number).toBe('2');
+    expect(answer).toBe('ONE');
+  });
+});
+
+function posForText(textEl) {
+  // get the position from the <rect> that's the first child of the enclosing
+  // <g>...
+  const rect = textEl.parentElement.firstChild;
+  return { x: rect.getAttribute('x'), y: rect.getAttribute('y') };
+}
