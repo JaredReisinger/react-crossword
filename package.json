@@ -133,7 +133,7 @@
     "stylelint-processor-styled-components": "^1.10.0",
     "webpack-blocks": "^2.0.1",
     "which": "^2.0.2",
-    "yargs-parser": "^17.0.0"
+    "yargs-parser": "^18.0.0"
   },
   "peerDependencies": {
     "immer": "^5.3.6",
