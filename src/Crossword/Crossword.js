@@ -81,6 +81,10 @@ const Clue = styled.div.attrs(props => ({
       : 'transparent'};
 `;
 
+/**
+ * The primary, and default, export from the react-crossword library, Crossword
+ * renders an answer grid and clues, and manages data and user interaction.
+ */
 class Crossword extends React.Component {
   constructor(props) {
     super(props);
@@ -219,6 +223,12 @@ class Crossword extends React.Component {
     }
   }
 
+  /**
+   * Fills all the answers in the grid and calls the `onLoadedCorrect` callback
+   * with _**every**_ answer.
+   *
+   * @public
+   */
   fillAllAnswers() {
     this.setState(
       produce(draft => {
@@ -247,6 +257,12 @@ class Crossword extends React.Component {
     }
   }
 
+  /**
+   * Resets the entire crossword; clearing all answers in the grid and also any
+   * persisted data.
+   *
+   * @public
+   */
   reset() {
     this.setState(
       produce(draft => {
@@ -548,6 +564,13 @@ class Crossword extends React.Component {
     this.setState({ bulkChange: event.target.value });
   }
 
+  /**
+   * Sets focus to the crossword such that it will accept keyboard input.  You
+   * do not _need_ to call this method, but it's helpful in cases where you want
+   * to explicitly give the crossword focus.
+   *
+   * @public
+   */
   setFocus() {
     if (this.inputRef.current) {
       this.inputRef.current.focus();
@@ -779,23 +802,38 @@ const clueShape = PropTypes.shape({
 });
 
 Crossword.propTypes = {
+  /** clue/answer data */
   data: PropTypes.shape({
     across: PropTypes.objectOf(clueShape),
     down: PropTypes.objectOf(clueShape),
   }).isRequired,
 
+  /** browser-width at which the clues go from showing beneath the grid to showing beside the grid */
   columnBreakpoint: PropTypes.string,
 
+  /** overall background color (fill) for the crossword grid; can be `'transparent'` to show through a page background image */
   gridBackground: PropTypes.string,
+  /**  background for an answer cell */
   cellBackground: PropTypes.string,
+  /** border for an answer cell */
   cellBorder: PropTypes.string,
+  /** color for answer text (entered by the player) */
   textColor: PropTypes.string,
+  /** color for the across/down numbers in the grid */
   numberColor: PropTypes.string,
+  /** background color for the cell with focus, the one that the player is typing into */
   focusBackground: PropTypes.string,
+  /** background color for the cells in the answer the player is working on,
+   * helps indicate in which direction focus will be moving; also used as a
+   * background on the active clue  */
   highlightBackground: PropTypes.string,
 
+  /** whether to use browser storage to persist the player's work-in-progress */
   useStorage: PropTypes.bool,
+
+  /** callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself */
   onCorrect: PropTypes.func,
+  /** callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve */
   onLoadedCorrect: PropTypes.func,
 };
 

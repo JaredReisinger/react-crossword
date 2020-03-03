@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 
 // expected props: row, col, answer, crossword, cellSize
 
+/**
+ * An individual-letter answer cell within the crossword grid.
+ *
+ * A `Cell` lives inside the SVG for a [`Crossword`](#crossword), and renders at
+ * a location determined by the `row`, `col`, and `cellSize` properties from
+ * `cellData` and `renderContext`.
+ */
 class Cell extends React.Component {
   constructor(props) {
     super(props);
@@ -91,12 +98,15 @@ class Cell extends React.Component {
 }
 
 Cell.propTypes = {
+  /** the data specific to this cell */
   cellData: PropTypes.shape({
     row: PropTypes.number.isRequired,
     col: PropTypes.number.isRequired,
     guess: PropTypes.string.isRequired,
     number: PropTypes.string,
   }).isRequired,
+
+  /** rendering context passed from Crossword */
   // eslint-disable-next-line react/forbid-prop-types
   renderContext: PropTypes.shape({
     cellBackground: PropTypes.string.isRequired,
@@ -110,14 +120,19 @@ Cell.propTypes = {
     cellInner: PropTypes.number.isRequired,
     cellHalf: PropTypes.number.isRequired,
     fontSize: PropTypes.number.isRequired,
-  }),
+  }).isRequired,
+
+  /** whether this cell has focus */
   focus: PropTypes.bool,
+
+  /** whether this cell is highlighted */
   highlight: PropTypes.bool,
+
+  /** handler called when the cell is clicked */
   onClick: PropTypes.func,
 };
 
 Cell.defaultProps = {
-  renderContext: {},
   focus: false,
   highlight: false,
   onClick: null,

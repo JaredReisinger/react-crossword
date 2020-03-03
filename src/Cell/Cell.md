@@ -1,5 +1,3 @@
-A `Cell` lives inside the SVG for a [`Crossword`](#crossword), and renders at a location determined by the `row`, `col`, and `cellSize` properties from `cellData` and `renderContext`.
-
 ```jsx
 import { Cell } from '@jaredreisinger/react-crossword';
 
@@ -29,7 +27,7 @@ function handleClick() {
   alert('GOT CLICK!');
 }
 
-<svg viewBox="0 0 100 30">
+<svg viewBox="0 0 100 30" width="50%">
   <Cell
     renderContext={renderContext}
     cellData={{ row: 0, col: 0, guess: 'Y', number: '1' }}
