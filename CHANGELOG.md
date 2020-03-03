@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/JaredReisinger/react-crossword/compare/v1.0.2...v1.0.3) (2020-03-03)
+
+
+### Bug Fixes
+
+* improve doc commenting, force release with improved testing ([ff6957d](https://github.com/JaredReisinger/react-crossword/commit/ff6957db4e18db7058beacfa628b946b00a5ba6e))
+
 ## [1.0.2](https://github.com/JaredReisinger/react-crossword/compare/v1.0.1...v1.0.2) (2020-02-28)
 
 
