@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/JaredReisinger/react-crossword/compare/v1.0.3...v1.0.4) (2020-03-09)
+
+
+### Bug Fixes
+
+* reduce size ([f3f3050](https://github.com/JaredReisinger/react-crossword/commit/f3f3050a6639038aac69c60d8080ba6550ea93e8)), closes [#16](https://github.com/JaredReisinger/react-crossword/issues/16)
+
 ## [1.0.3](https://github.com/JaredReisinger/react-crossword/compare/v1.0.2...v1.0.3) (2020-03-03)
 
 
