@@ -22,11 +22,11 @@
   "engines": {
     "node": ">=10.18.0"
   },
-  "main": "dist/cjs",
+  "main": "dist/NOT-SUPPORTED",
   "module": "dist/es",
   "sideEffects": false,
   "scripts": {
-    "installPeer": "node build-tool/peerDep.js",
+    "#installPeer": "node build-tool/peerDep.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:dev": "jest --watch",
@@ -36,14 +36,12 @@
     "codecov": "codecov",
     "release": "npm run build && semantic-release",
     "build": "node build-tool/build.js",
-    "#pre-publish": "npm run lint && npm run build",
-    "#publish": "npm run pre-publish && npm publish",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
-    "doc:deploy": "npm run doc:build && gh-pages --dist docs"
+    "doc:deploy": "npm run doc:build && gh-pages --dist styleguide"
   },
   "files": [
-    "dist"
+    "/dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -136,10 +134,10 @@
     "yargs-parser": "^18.0.0"
   },
   "peerDependencies": {
-    "immer": "^5.3.6",
-    "prop-types": "^15.7.2",
-    "react-dom": "^16.13.0",
-    "react": "^16.13.0",
-    "styled-components": "^5.0.1"
+    "immer": "5.x",
+    "prop-types": "15.x",
+    "react-dom": "16.x",
+    "react": "16.x",
+    "styled-components": "5.x"
   }
 }

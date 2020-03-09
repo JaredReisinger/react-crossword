@@ -1,6 +1,4 @@
-# react-crossword
-
-A flexible, responsive, and easy-to-use crossword component for React apps.
+# ![react-crossword: A flexible, responsive, and easy-to-use crossword component for React apps.](./docs/react-crossword.png)
 
 [![npm version](https://img.shields.io/npm/v/@jaredreisinger/react-crossword.svg)](https://www.npmjs.com/package/@jaredreisinger/react-crossword)
 [![build status](https://img.shields.io/travis/JaredReisinger/react-crossword/master.svg)](https://travis-ci.org/JaredReisinger/react-crossword)
@@ -18,17 +16,13 @@ A flexible, responsive, and easy-to-use crossword component for React apps.
 
 ```sh
 npm install --save @jaredreisinger/react-crossword
-```
-
-or
-
-```sh
+  # or #
 yarn add @jaredreisinger/react-crossword
 ```
 
 ## Usage
 
-> Also see [the styleguidist docs for Crossword](https://jaredreisinger.github.io/react-crossword/).
+> See also the [styleguidist docs for Crossword](https://jaredreisinger.github.io/react-crossword/).
 
 ```javascript
 import React from 'react';
