@@ -107,18 +107,19 @@ function getRollupCommands() {
 }
 
 const babelFormats = [
-  {
-    name: 'esnext',
-    babelrc: here('./babelrc.esm.pure.js'),
-  },
+  // {
+  //   name: 'esnext',
+  //   babelrc: here('./babelrc.esm.pure.js'),
+  // },
   {
     name: 'es',
     babelrc: here('./babelrc.esm.js'),
   },
-  {
-    name: 'cjs',
-    babelrc: here('./babelrc.cjs.js'),
-  },
+  // We don't need CJS as we're not loaded by Node
+  // {
+  //   name: 'cjs',
+  //   babelrc: here('./babelrc.cjs.js'),
+  // },
 ];
 
 function getBabelCommands() {
@@ -140,7 +141,8 @@ function getBabelCommands() {
 
 rimraf.sync(fromRoot('dist'));
 const scripts = getConcurrentlyArgs({
-  ...getRollupCommands(),
+  // we don't need rollup-for UMD, as we aren't loaded by a browser
+  // ...getRollupCommands(),
   ...getBabelCommands(),
 });
 const result = spawn.sync(resolveBin('concurrently'), scripts, {
