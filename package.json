@@ -115,7 +115,7 @@
     "react-test-renderer": "^16.13.0",
     "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^1.32.0",
+    "rollup": "^2.0.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
