@@ -16,7 +16,7 @@ module.exports = {
   title,
   version,
 
-  styleguideDir: 'docs',
+  styleguideDir: 'styleguide',
   // components: componentsGlob,
   moduleAliases: {
     [title]: path.resolve(__dirname, 'src'),

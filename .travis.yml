@@ -43,4 +43,4 @@ jobs:
           keep_history: true
           on:
             branch: master
-          local_dir: docs
+          local_dir: styleguide
