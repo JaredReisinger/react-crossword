@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@jaredreisinger/react-crossword.svg)](https://www.npmjs.com/package/@jaredreisinger/react-crossword)
 [![build status](https://img.shields.io/travis/JaredReisinger/react-crossword/master.svg)](https://travis-ci.org/JaredReisinger/react-crossword)
 [![code coverage](https://img.shields.io/codecov/c/gh/JaredReisinger/react-crossword.svg)](https://codecov.io/gh/JaredReisinger/react-crossword)<br />
-[![greenkeeper](https://badges.greenkeeper.io/JaredReisinger/react-crossword.svg)](https://greenkeeper.io/)
+[![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/JaredReisinger/react-crossword.svg)](https://snyk.io/test/github/JaredReisinger/react-crossword?targetFile=package.json)
 [![dependencies](https://img.shields.io/david/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword)
 [![dev dependencies](https://img.shields.io/david/dev/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword?type=dev)
 [![peer dependencies](https://img.shields.io/david/peer/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword?type=peer)<br />
