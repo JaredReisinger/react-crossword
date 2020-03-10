@@ -134,7 +134,7 @@
     "yargs-parser": "^18.1.0"
   },
   "peerDependencies": {
-    "immer": "5.x",
+    "immer": "6.x",
     "prop-types": "15.x",
     "react-dom": "16.x",
     "react": "16.x",
