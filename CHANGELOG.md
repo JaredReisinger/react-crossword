@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/JaredReisinger/react-crossword/compare/v1.0.4...v1.0.5) (2020-03-17)
+
+
+### Bug Fixes
+
+* **vulnerabilities:** update dependencies ([5c08901](https://github.com/JaredReisinger/react-crossword/commit/5c08901c913490a3ea2e347a6be83882624d3134))
+
 ## [1.0.4](https://github.com/JaredReisinger/react-crossword/compare/v1.0.3...v1.0.4) (2020-03-09)
 
 
