@@ -8,7 +8,7 @@
     "prop-types": "file:../node_modules/prop-types",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
-    "react-scripts": "3.4.0",
+    "react-scripts": "3.4.1",
     "styled-components": "file:../node_modules/styled-components"
   },
   "scripts": {
