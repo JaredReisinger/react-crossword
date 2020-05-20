@@ -1,36 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matches snapshot 1`] = `
-<g
-  onClick={[Function]}
-  style={
-    Object {
-      "cursor": "default",
-      "fontSize": "7px",
-    }
-  }
+<svg
+  viewBox="0 0 100 100"
 >
-  <rect
-    fill="white"
-    height={8}
-    stroke="#333"
-    strokeWidth={0.2}
-    width={8}
-    x={1}
-    y={1}
-  />
-  <text
-    dominantBaseline="middle"
+  <g
+    onClick={[Function]}
     style={
       Object {
-        "fill": "#666",
+        "cursor": "default",
+        "fontSize": "7px",
       }
     }
-    textAnchor="middle"
-    x={4}
-    y={5}
   >
-    
-  </text>
-</g>
+    <rect
+      fill="white"
+      height={8}
+      stroke="#333"
+      strokeWidth={0.2}
+      width={8}
+      x={1}
+      y={1}
+    />
+    <text
+      dominantBaseline="middle"
+      style={
+        Object {
+          "fill": "#666",
+        }
+      }
+      textAnchor="middle"
+      x={4}
+      y={5}
+    >
+      
+    </text>
+  </g>
+</svg>
 `;

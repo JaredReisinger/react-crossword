@@ -75,6 +75,16 @@ it('handles typing', () => {
 });
 
 describe('keyboard navigation', () => {
+  // Simplify tests by using data that makes a 4x4 grid (so that each cell is
+  // 25x25, plus the 0.125 padding):
+  //
+  //       0 25 50 75
+  //    +------------
+  //  0 |  T  W  O  .
+  // 25 |  .  .  N  O
+  // 50 |  .  .  E  .
+  // 75 |  .  .  .  .
+
   const size4Data = {
     across: {
       1: {
@@ -149,9 +159,11 @@ describe('keyboard navigation', () => {
 
     userEvent.click(getByLabelText('clue-2-down'));
 
-    fireEvent.keyDown(input, { key: 'Home' });
+    // fireEvent.keyDown(input, { key: 'Home' });
     fireEvent.keyDown(input, { key: 'X' });
+
     let { x, y } = posForText(getByText('X'));
+
     expect(x).toBe('50.125');
     expect(y).toBe('0.125');
 

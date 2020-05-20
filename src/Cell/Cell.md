@@ -1,5 +1,5 @@
 ```jsx
-import { Cell } from '@jaredreisinger/react-crossword';
+import { Cell, CrosswordRenderContext } from '@jaredreisinger/react-crossword';
 
 // as calculated in Crossword...
 const cellSize = 10;
@@ -27,36 +27,20 @@ function handleClick() {
   alert('GOT CLICK!');
 }
 
-<svg viewBox="0 0 100 30" width="50%">
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 0, col: 0, guess: 'Y', number: '1' }}
-  />
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 0, col: 1, guess: 'E' }}
-  />
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 0, col: 2, guess: 'S' }}
-  />
+<CrosswordRenderContext.Provider value={renderContext}>
+  <svg viewBox="0 0 100 30" width="50%">
+    <Cell cellData={{ row: 0, col: 0, guess: 'Y', number: '1' }} />
+    <Cell cellData={{ row: 0, col: 1, guess: 'E' }} />
+    <Cell cellData={{ row: 0, col: 2, guess: 'S' }} />
 
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 1, col: 4, guess: 'N', number: '2' }}
-    focus={true}
-    highlight={true}
-  />
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 2, col: 4, guess: 'O' }}
-    highlight={true}
-  />
+    <Cell
+      cellData={{ row: 1, col: 4, guess: 'N', number: '2' }}
+      focus={true}
+      highlight={true}
+    />
+    <Cell cellData={{ row: 2, col: 4, guess: 'O' }} highlight={true} />
 
-  <Cell
-    renderContext={renderContext}
-    cellData={{ row: 0, col: 6, guess: 'X' }}
-    onClick={handleClick}
-  />
-</svg>;
+    <Cell cellData={{ row: 0, col: 6, guess: 'X' }} onClick={handleClick} />
+  </svg>
+</CrosswordRenderContext.Provider>;
 ```

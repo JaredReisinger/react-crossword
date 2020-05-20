@@ -2,10 +2,10 @@
 
 exports[`matches snapshot 1`] = `
 <div
-  className="sc-AxjAm iBVxbh crossword"
+  className="sc-AxirZ fcBjBa crossword"
 >
   <div
-    className="sc-AxirZ crjThU grid"
+    className="sc-AxiKw bxnrfk grid"
   >
     <div
       style={
@@ -41,16 +41,16 @@ exports[`matches snapshot 1`] = `
             "border": 0,
             "caretColor": "transparent",
             "cursor": "default",
-            "fontSize": "418.94999999999993px",
-            "height": "calc(100% - 4px)",
-            "left": "calc(0% + 2px)",
+            "fontSize": "Infinitypx",
+            "height": "calc(Infinity% - 4px)",
+            "left": "calc(NaN% + 2px)",
             "margin": 0,
             "padding": 0,
             "position": "absolute",
             "textAlign": "center",
             "textAnchor": "middle",
-            "top": "calc(0% + 2px)",
-            "width": "calc(100% - 4px)",
+            "top": "calc(NaN% + 2px)",
+            "width": "calc(Infinity% - 4px)",
           }
         }
         type="text"
@@ -59,26 +59,7 @@ exports[`matches snapshot 1`] = `
     </div>
   </div>
   <div
-    className="sc-AxiKw hiAtfv clues"
-  >
-    <div
-      className="direction"
-    >
-      <h3
-        className="header"
-      >
-        ACROSS
-      </h3>
-    </div>
-    <div
-      className="direction"
-    >
-      <h3
-        className="header"
-      >
-        DOWN
-      </h3>
-    </div>
-  </div>
+    className="sc-AxhCb dIDpVz clues"
+  />
 </div>
 `;

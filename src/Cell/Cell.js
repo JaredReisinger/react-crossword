@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
+
+import { CrosswordRenderContext } from '../Crossword/context';
 
 // expected props: row, col, answer, crossword, cellSize
 
@@ -10,91 +12,79 @@ import PropTypes from 'prop-types';
  * a location determined by the `row`, `col`, and `cellSize` properties from
  * `cellData` and `renderContext`.
  */
-class Cell extends React.Component {
-  constructor(props) {
-    super(props);
+export default function Cell({ cellData, onClick, focus, highlight }) {
+  const {
+    // gridBackground,
+    cellBackground,
+    cellBorder,
+    textColor,
+    numberColor,
+    focusBackground,
+    highlightBackground,
+    cellSize,
+    cellPadding,
+    cellInner,
+    cellHalf,
+    fontSize,
+  } = useContext(CrosswordRenderContext);
 
-    this.handleClick = this.handleClick.bind(this);
-  }
+  const handleClick = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (onClick) {
+        onClick(cellData);
+      }
+    },
+    [cellData, onClick]
+  );
 
-  handleClick(event) {
-    event.preventDefault();
-    // console.log('CELL CLICK', this.props.row, this.props.col);
-    const { onClick, cellData } = this.props;
-    if (onClick) {
-      onClick(cellData);
-    }
-  }
+  const { row, col, guess, number } = cellData;
 
-  render() {
-    const { cellData, renderContext, focus, highlight } = this.props;
-    const { row, col, guess, number } = cellData;
+  const x = col * cellSize;
+  const y = row * cellSize;
 
-    if (!renderContext) {
-      return null;
-    }
-
-    const {
-      // gridBackground,
-      cellBackground,
-      cellBorder,
-      textColor,
-      numberColor,
-      focusBackground,
-      highlightBackground,
-      cellSize,
-      cellPadding,
-      cellInner,
-      cellHalf,
-      fontSize,
-    } = renderContext;
-
-    const x = col * cellSize;
-    const y = row * cellSize;
-
-    return (
-      <g
-        onClick={this.handleClick}
-        style={{ cursor: 'default', fontSize: `${fontSize}px` }}
-      >
-        <rect
-          x={x + cellPadding}
-          y={y + cellPadding}
-          width={cellInner}
-          height={cellInner}
-          fill={
-            focus
-              ? focusBackground
-              : highlight
-              ? highlightBackground
-              : cellBackground
-          }
-          stroke={cellBorder}
-          strokeWidth={cellSize / 50}
-        />
-        {number && (
-          <text
-            x={x + cellPadding * 4}
-            y={y + cellPadding * 4}
-            textAnchor="start"
-            dominantBaseline="hanging"
-            style={{ fontSize: '50%', fill: numberColor }}
-          >
-            {number}
-          </text>
-        )}
+  return (
+    <g
+      onClick={handleClick}
+      style={{ cursor: 'default', fontSize: `${fontSize}px` }}
+    >
+      <rect
+        x={x + cellPadding}
+        y={y + cellPadding}
+        width={cellInner}
+        height={cellInner}
+        fill={
+          focus
+            ? focusBackground
+            : highlight
+            ? highlightBackground
+            : cellBackground
+        }
+        stroke={cellBorder}
+        strokeWidth={cellSize / 50}
+      />
+      {number && (
         <text
-          x={x + cellHalf}
-          y={y + cellHalf + 1} // +1 for visual alignment?
-          textAnchor="middle"
-          dominantBaseline="middle"
-          style={{ fill: textColor }}
+          x={x + cellPadding * 4}
+          y={y + cellPadding * 4}
+          textAnchor="start"
+          dominantBaseline="hanging"
+          style={{ fontSize: '50%', fill: numberColor }}
         >
-          {guess}
+          {number}
         </text>
-      </g>
-    );
-  }
+      )}
+      <text
+        x={x + cellHalf}
+        y={y + cellHalf + 1} // +1 for visual alignment?
+        textAnchor="middle"
+        dominantBaseline="middle"
+        style={{ fill: textColor }}
+      >
+        {guess}
+      </text>
+    </g>
+  );
 }
 
 Cell.propTypes = {
@@ -104,22 +94,6 @@ Cell.propTypes = {
     col: PropTypes.number.isRequired,
     guess: PropTypes.string.isRequired,
     number: PropTypes.string,
-  }).isRequired,
-
-  /** rendering context passed from Crossword */
-  // eslint-disable-next-line react/forbid-prop-types
-  renderContext: PropTypes.shape({
-    cellBackground: PropTypes.string.isRequired,
-    cellBorder: PropTypes.string.isRequired,
-    textColor: PropTypes.string.isRequired,
-    numberColor: PropTypes.string.isRequired,
-    focusBackground: PropTypes.string.isRequired,
-    highlightBackground: PropTypes.string.isRequired,
-    cellSize: PropTypes.number.isRequired,
-    cellPadding: PropTypes.number.isRequired,
-    cellInner: PropTypes.number.isRequired,
-    cellHalf: PropTypes.number.isRequired,
-    fontSize: PropTypes.number.isRequired,
   }).isRequired,
 
   /** whether this cell has focus */
@@ -138,4 +112,4 @@ Cell.defaultProps = {
   onClick: null,
 };
 
-export default Cell;
+// export default Cell;

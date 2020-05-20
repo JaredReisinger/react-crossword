@@ -11,6 +11,14 @@ const directionInfo = {
 
 export const bothDirections = Object.keys(directionInfo);
 
+export function isAcross(direction) {
+  return direction === 'across';
+}
+
+export function otherDirection(direction) {
+  return isAcross(direction) ? 'down' : 'across';
+}
+
 export function calculateExtents(data, direction) {
   const dir = directionInfo[direction];
   let primaryMax = 0;
@@ -122,6 +130,30 @@ export function byNumber(a, b) {
   return aNum - bNum;
 }
 
+export function clearGuesses(storageKey) {
+  if (!window.localStorage) {
+    return;
+  }
+
+  window.localStorage.removeItem(storageKey);
+}
+
+export function saveGuesses(gridData, storageKey) {
+  const { localStorage } = window;
+  if (!localStorage) {
+    return;
+  }
+
+  const guesses = serializeGuesses(gridData);
+
+  const saveData = {
+    date: Date.now(),
+    guesses,
+  };
+
+  localStorage.setItem(storageKey, JSON.stringify(saveData));
+}
+
 export function serializeGuesses(gridData) {
   const guesses = gridData.reduce((memo, row, r) => {
     return row.reduce((memoInner, cellData, c) => {
@@ -136,24 +168,44 @@ export function serializeGuesses(gridData) {
   return guesses;
 }
 
+export function loadGuesses(gridData, storageKey) {
+  const { localStorage } = window;
+  if (!localStorage) {
+    return;
+  }
+
+  const saveRaw = localStorage.getItem(storageKey);
+  if (!saveRaw) {
+    return;
+  }
+
+  const saveData = JSON.parse(saveRaw);
+
+  // TODO: check date for expiration?
+  deserializeGuesses(gridData, saveData.guesses);
+}
+
 export function deserializeGuesses(gridData, guesses) {
   Object.entries(guesses).forEach(([key, val]) => {
     const [r, c] = key.split('_');
-    gridData[r][c].guess = val;
+    // ignore any out-of-bounds guesses!
+    if (r <= gridData.length - 1 && c <= gridData[0].length - 1) {
+      gridData[r][c].guess = val;
+    }
   });
 }
 
 export function findCorrectAnswers(data, gridData) {
   const correctAnswers = [];
 
-  bothDirections.forEach(direction => {
-    const isAcross = direction === 'across';
+  bothDirections.forEach((direction) => {
+    const across = isAcross(direction);
     Object.entries(data[direction]).forEach(([num, info]) => {
       const { row, col } = info;
       let correct = true;
       for (let i = 0; i < info.answer.length; i++) {
-        const r = isAcross ? row : row + i;
-        const c = isAcross ? col + i : col;
+        const r = across ? row : row + i;
+        const c = across ? col + i : col;
         if (gridData[r][c].guess !== info.answer[i]) {
           correct = false;
           break;

@@ -28,9 +28,9 @@ parserOptions:
 #       extensions: [.js, .mjs]
 
 rules:
-  arrow-parens:
-    - error
-    - as-needed
+  # arrow-parens:
+  #   - error
+  #   - as-needed
   # no-continue:
   no-nested-ternary: off
   no-param-reassign:

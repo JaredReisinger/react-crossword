@@ -1,21 +1,42 @@
-// import React from 'react';
-// import ReactDom from 'react-dom';
-// import { render, cleanup } from '@testing-library/react';
-// import renderer from 'react-test-renderer';
-
 import '@testing-library/jest-dom/extend-expect';
 
 import {
+  isAcross,
+  otherDirection,
   byNumber,
   calculateExtents,
   createEmptyGrid,
+  createGridData,
   fillClues,
   serializeGuesses,
   deserializeGuesses,
   findCorrectAnswers,
+  saveGuesses,
+  loadGuesses,
+  clearGuesses,
 } from '../util';
 
 // afterEach(cleanup);
+
+describe('isAcross()', () => {
+  it('returns true for "across"', () => {
+    expect(isAcross('across')).toBeTruthy();
+  });
+
+  it('returns false for "down"', () => {
+    expect(isAcross('down')).toBeFalsy();
+  });
+});
+
+describe('otherDirection()', () => {
+  it('returns "down" for "across"', () => {
+    expect(otherDirection('across')).toBe('down');
+  });
+
+  it('returns "across" for "down"', () => {
+    expect(otherDirection('down')).toBe('across');
+  });
+});
 
 const one = { number: '1' };
 const two = { number: '2' };
@@ -87,6 +108,103 @@ describe('createEmptyGrid()', () => {
     const result = createEmptyGrid(2);
     expect(result[0][1]).toMatchObject({ row: 0, col: 1 });
     expect(result[1][0]).toMatchObject({ row: 1, col: 0 });
+  });
+});
+
+describe('createGridData()', () => {
+  it('creates grid data', () => {
+    const { size, gridData, clues } = createGridData(simpleData);
+
+    const cellDefaults = {
+      used: false,
+      number: null,
+      answer: '',
+      across: null,
+      down: null,
+      locked: false,
+      guess: '',
+    };
+
+    const expectedData = [
+      [
+        {
+          ...cellDefaults,
+          row: 0,
+          col: 0,
+          used: true,
+          number: '1',
+          answer: 'T',
+          across: '1',
+        },
+        {
+          ...cellDefaults,
+          row: 0,
+          col: 1,
+          used: true,
+          answer: 'W',
+          across: '1',
+        },
+        {
+          ...cellDefaults,
+          row: 0,
+          col: 2,
+          used: true,
+          number: '2',
+          answer: 'O',
+          across: '1',
+          down: '2',
+        },
+      ],
+      [
+        {
+          ...cellDefaults,
+          row: 1,
+          col: 0,
+        },
+        {
+          ...cellDefaults,
+          row: 1,
+          col: 1,
+        },
+        {
+          ...cellDefaults,
+          row: 1,
+          col: 2,
+          used: true,
+          answer: 'N',
+          down: '2',
+        },
+      ],
+      [
+        {
+          ...cellDefaults,
+          row: 2,
+          col: 0,
+        },
+        {
+          ...cellDefaults,
+          row: 2,
+          col: 1,
+        },
+        {
+          ...cellDefaults,
+          row: 2,
+          col: 2,
+          used: true,
+          answer: 'E',
+          down: '2',
+        },
+      ],
+    ];
+
+    const expectedClues = {
+      across: [{ number: '1', clue: simpleData.across[1].clue }],
+      down: [{ number: '2', clue: simpleData.down[2].clue }],
+    };
+
+    expect(size).toBe(3);
+    expect(gridData).toEqual(expectedData);
+    expect(clues).toEqual(expectedClues);
   });
 });
 
@@ -162,6 +280,14 @@ describe('deserializeGuesses()', () => {
       [{ guess: '' }, { guess: 'C' }, { guess: '' }],
     ]);
   });
+
+  it('ignores out-of-range guesses', () => {
+    const gridData = [[{ guess: '' }]];
+    const guesses = { '0_0': 'A', '1_2': 'B', '2_1': 'C' };
+    deserializeGuesses(gridData, guesses);
+
+    expect(gridData).toEqual([[{ guess: 'A' }]]);
+  });
 });
 
 describe('findCorrectAnswers()', () => {
@@ -175,5 +301,97 @@ describe('findCorrectAnswers()', () => {
     const result = findCorrectAnswers(simpleData, gridData);
 
     expect(result).toEqual([['down', '2', 'ONE']]);
+  });
+});
+
+describe('localStorage', () => {
+  const storageKey = 'DUMMY';
+  const gridData = [[{ guess: 'X' }]];
+
+  let mockStorage;
+  const setItem = jest.fn();
+  const getItem = jest
+    .fn()
+    .mockReturnValue(JSON.stringify({ guesses: { '0_0': 'X' } }));
+  const removeItem = jest.fn();
+
+  beforeEach(() => {
+    setItem.mockClear();
+    getItem.mockClear();
+    removeItem.mockClear();
+
+    mockStorage = jest.spyOn(window, 'localStorage', 'get');
+  });
+
+  afterEach(() => {
+    mockStorage.mockRestore();
+  });
+
+  function withStorage() {
+    mockStorage.mockReturnValue({ setItem, getItem, removeItem });
+  }
+
+  function withoutStorage() {
+    mockStorage.mockReturnValue(undefined);
+  }
+
+  describe('saveGuesses()', () => {
+    it("doesn't fail when localStorage is unavailable", () => {
+      withoutStorage();
+      saveGuesses(gridData, storageKey);
+      expect(setItem).toHaveBeenCalledTimes(0);
+    });
+
+    it('calls setItem when localStorage exists', () => {
+      withStorage();
+      saveGuesses(gridData, storageKey);
+      expect(setItem).toHaveBeenCalledTimes(1);
+      expect(setItem).toHaveBeenCalledWith(
+        storageKey,
+        expect.stringContaining('guesses')
+      );
+    });
+  });
+
+  describe('loadGuesses()', () => {
+    it("doesn't fail when localStorage is unavailable", () => {
+      withoutStorage();
+      loadGuesses(gridData, storageKey);
+      expect(getItem).toHaveBeenCalledTimes(0);
+    });
+
+    it('calls getItem when localStorage exists', () => {
+      withStorage();
+      const localData = createEmptyGrid(1);
+      loadGuesses(localData, storageKey);
+      expect(getItem).toHaveBeenCalledTimes(1);
+      expect(getItem).toHaveBeenCalledWith(storageKey);
+      expect(localData).toMatchObject(gridData);
+    });
+
+    it("doesn't alter gridData when nothing is found", () => {
+      withStorage();
+      getItem.mockReturnValue(null);
+      const localData = createEmptyGrid(1);
+      loadGuesses(localData, storageKey);
+      expect(getItem).toHaveBeenCalledTimes(1);
+      expect(getItem).toHaveBeenCalledWith(storageKey);
+      expect(localData).not.toMatchObject(gridData);
+    });
+  });
+
+  describe('clearGuesses()', () => {
+    it("doesn't fail when localStorage is unavailable", () => {
+      withoutStorage();
+      clearGuesses(storageKey);
+      expect(removeItem).toHaveBeenCalledTimes(0);
+    });
+
+    it('calls removeItem when localStorage exists', () => {
+      withStorage();
+      clearGuesses(storageKey);
+      expect(removeItem).toHaveBeenCalledTimes(1);
+      expect(removeItem).toHaveBeenCalledWith(storageKey);
+    });
   });
 });

@@ -5,9 +5,25 @@ import renderer from 'react-test-renderer';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import { CrosswordRenderContext } from '../../Crossword/context';
 import Cell from '../Cell';
 
 afterEach(cleanup);
+
+const renderContext = {
+  gridBackground: 'black',
+  cellBackground: 'white',
+  cellBorder: '#333',
+  textColor: '#666',
+  numberColor: 'red',
+  focusBackground: '#f88',
+  highlightBackground: '#fdd',
+  cellSize: 10,
+  cellPadding: 1,
+  cellInner: 8,
+  cellHalf: 4,
+  fontSize: 7,
+};
 
 const defaultProps = {
   cellData: {
@@ -16,98 +32,85 @@ const defaultProps = {
     guess: '',
     // number: '1',
   },
-  renderContext: {
-    gridBackground: 'black',
-    cellBackground: 'white',
-    cellBorder: '#333',
-    textColor: '#666',
-    numberColor: 'red',
-    focusBackground: '#f88',
-    highlightBackground: '#fdd',
-    cellSize: 10,
-    cellPadding: 1,
-    cellInner: 8,
-    cellHalf: 4,
-    fontSize: 7,
-  },
   focus: false,
   highlight: false,
 };
 
+function CellHelper(props) {
+  return (
+    <CrosswordRenderContext.Provider value={renderContext}>
+      <svg viewBox="0 0 100 100">
+        <Cell {...props} />
+      </svg>
+    </CrosswordRenderContext.Provider>
+  );
+}
+
+function cellFromContainer(container) {
+  return container.firstChild.firstChild.firstChild;
+}
+
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDom.render(<Cell {...defaultProps} />, div);
+  ReactDom.render(<CellHelper {...defaultProps} />, div);
   ReactDom.unmountComponentAtNode(div);
 });
 
 it('renders Cell component correctly', () => {
-  const { container } = render(<Cell {...defaultProps} />);
+  const { container } = render(<CellHelper {...defaultProps} />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(
-    defaultProps.renderContext.cellBackground
-  );
-  expect(rect.getAttribute('stroke')).toBe(
-    defaultProps.renderContext.cellBorder
-  );
+  expect(rect.getAttribute('fill')).toBe(renderContext.cellBackground);
+  expect(rect.getAttribute('stroke')).toBe(renderContext.cellBorder);
 });
 
 it('matches snapshot', () => {
-  const tree = renderer.create(<Cell {...defaultProps} />).toJSON();
+  const tree = renderer.create(<CellHelper {...defaultProps} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 it('handles click events', () => {
   let clicked = false;
   const { container } = render(
-    <Cell
+    <CellHelper
       {...defaultProps}
-      onClick={data => {
+      onClick={(data) => {
         expect(data).toBe(defaultProps.cellData);
         clicked = true;
       }}
     />
   );
-  fireEvent.click(container.firstChild, {});
+  fireEvent.click(cellFromContainer(container), {});
   expect(clicked).toBeTruthy();
 });
 
 it('handles click events with no handler', () => {
-  const { container } = render(<Cell {...defaultProps} />);
-  fireEvent.click(container.firstChild, {});
-});
-
-it('renders nothing if no renderContext', () => {
-  const { container } = render(<Cell {...defaultProps} renderContext={null} />);
-  expect(container.firstChild).toBeNull();
+  const { container } = render(<CellHelper {...defaultProps} />);
+  fireEvent.click(cellFromContainer(container), {});
 });
 
 it('renders focus background when focused', () => {
-  const { container } = render(<Cell {...defaultProps} focus />);
+  const { container } = render(<CellHelper {...defaultProps} focus />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(
-    defaultProps.renderContext.focusBackground
-  );
+  expect(rect.getAttribute('fill')).toBe(renderContext.focusBackground);
 });
 
 it('renders highlight background when highlighted', () => {
-  const { container } = render(<Cell {...defaultProps} highlight />);
+  const { container } = render(<CellHelper {...defaultProps} highlight />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(
-    defaultProps.renderContext.highlightBackground
-  );
+  expect(rect.getAttribute('fill')).toBe(renderContext.highlightBackground);
 });
 
 it('renders focus background when focused and highlighted', () => {
-  const { container } = render(<Cell {...defaultProps} focus highlight />);
-  const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(
-    defaultProps.renderContext.focusBackground
+  const { container } = render(
+    <CellHelper {...defaultProps} focus highlight />
   );
+  const rect = container.querySelector('rect');
+  expect(rect.getAttribute('fill')).toBe(renderContext.focusBackground);
 });
 
 it('renders number when present', () => {
   const { getByText } = render(
-    <Cell
+    <CellHelper
       {...defaultProps}
       cellData={{ ...defaultProps.cellData, number: 'NUMBER' }}
     />
