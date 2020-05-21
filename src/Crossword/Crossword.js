@@ -446,7 +446,7 @@ const Crossword = React.forwardRef(
       setBulkChange(null);
 
       // trigger any "loaded correct" guesses...
-      if (loadedCorrect && onLoadedCorrect) {
+      if (loadedCorrect && loadedCorrect.length > 0 && onLoadedCorrect) {
         onLoadedCorrect(loadedCorrect);
       }
     }, [data, onLoadedCorrect, useStorage]);
