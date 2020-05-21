@@ -69,9 +69,9 @@ The `Crossword` component calculates the needed grid size from the data itself, 
 
 ## Styling
 
-One other major difference (and advantage) to this crossword component is that it is very "stylable"... as many of the styling properties as possible are exposed so that you can create any look you want for the crossword. The `Crossword` component offers the following properties to control colors and layout:
+One other major difference (and advantage) to this crossword component is that it is very "stylable"... as many of the styling properties as possible are exposed so that you can create any look you want for the crossword. The `Crossword` component makes use of [styled-components' `ThemeProvider`](https://styled-components.com/docs/advanced#theming) and offers the following properties to control colors and layout:
 
-| property              | default               | description                                                                                                                                                                 |
+| theme property        | default               | description                                                                                                                                                                 |
 | --------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `columnBreakpoint`    | `'768px'`             | browser-width at which the clues go from showing beneath the grid to showing beside the grid.                                                                               |
 | `gridBackground`      | `'rgb(0,0,0)'`        | overall background color (fill) for the crossword grid. Can be `'transparent'` to show through a page background image.                                                     |
@@ -82,8 +82,9 @@ One other major difference (and advantage) to this crossword component is that i
 | `focusBackground`     | `'rgb(255,255,0)'`    | background color for the cell with focus, the one that the player is typing into                                                                                            |
 | `highlightBackground` | `'rgb(255,255,204)'`  | background color for the cells in the answer the player is working on, helps indicate in which direction focus will be moving; also used as a background on the active clue |
 
-Also, several class names are applied to elements in the crossword, in case you
-want to apply styles that way:
+Note that these values can be provided either via `ThemeProvider`, or directly as a `theme` property on the `Crossword` component itself. (And further, if you're not using styled-components, but want to make use of `ThemeProvider`, this library re-exports `ThemeProvider` so you can pull it from here.)
+
+Also, several class names are applied to elements in the crossword, in case you want to apply styles that way:
 
 | element                                                 | class name  |
 | ------------------------------------------------------- | ----------- |
@@ -94,8 +95,7 @@ want to apply styles that way:
 | direction header ('across' or 'down')                   | `header`    |
 | an individual clue                                      | `clue`      |
 
-(No class names are currently applied within the grid, as the SVG layout is very
-layout-sensitive.)
+(No class names are currently applied within the grid, as the SVG layout is _**very**_ layout-sensitive.)
 
 ## Player progress events
 
