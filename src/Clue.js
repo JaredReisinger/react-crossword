@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
-import { CrosswordContext, CrosswordRenderContext } from '../Crossword/context';
+import { CrosswordContext, CrosswordRenderContext } from './context';
 
 const ClueWrapper = styled.div.attrs((props) => ({
   className: 'clue',

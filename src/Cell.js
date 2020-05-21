@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import { CrosswordRenderContext } from '../Crossword/context';
+import { CrosswordRenderContext } from './context';
 
 // expected props: row, col, answer, crossword, cellSize
 

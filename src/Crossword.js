@@ -10,8 +10,8 @@ import PropTypes from 'prop-types';
 import produce from 'immer';
 import styled from 'styled-components';
 
-import Cell from '../Cell/Cell';
-import DirectionClues from '../Clues/DirectionClues';
+import Cell from './Cell';
+import DirectionClues from './DirectionClues';
 
 import {
   bothDirections,

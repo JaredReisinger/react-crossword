@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import { CrosswordRenderContext } from '../../Crossword/context';
+import { CrosswordRenderContext } from '../context';
 import Cell from '../Cell';
 
 afterEach(cleanup);

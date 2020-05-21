@@ -34,7 +34,7 @@ module.exports = {
 
   // somehow the <th> cells for tables didn't get the expected styleguide
   // theming,so we force the same font information into the body
-  styles: theme => ({
+  styles: (theme) => ({
     StyleGuide: {
       '@global body': { fontFamily: theme.fontFamily.base },
     },
@@ -46,14 +46,16 @@ module.exports = {
       name: 'Default component',
       description:
         'By and large you should only ever care about the default export from this library, the `Crossword` component itself.',
-      components: 'src/Crossword/Crossword.js',
+      components: 'src/Crossword.js',
       // usageMode: 'expand',
       exampleMode: 'expand',
     },
     {
-      name: 'All components',
+      name: 'All other components',
+      description:
+        'You should not typically need to use these components; they are documented here for completeness.',
       components: componentsGlob,
-      // ignore: 'src/Crossword/Crossword.{js,jsx}',
+      ignore: 'src/Crossword.{js,jsx}',
     },
     {
       name: 'Installable package (npm)',

@@ -1,8 +1,8 @@
-import Cell from './Cell/Cell';
-import Clue from './Clues/Clue';
-import DirectionClues from './Clues/DirectionClues';
-import Crossword from './Crossword/Crossword';
-import { CrosswordContext, CrosswordRenderContext } from './Crossword/context';
+import Cell from './Cell';
+import Clue from './Clue';
+import DirectionClues from './DirectionClues';
+import Crossword from './Crossword';
+import { CrosswordContext, CrosswordRenderContext } from './context';
 
 export {
   Cell,
