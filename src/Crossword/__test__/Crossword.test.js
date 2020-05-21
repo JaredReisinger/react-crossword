@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { act, render, cleanup, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderer from 'react-test-renderer';
 
@@ -557,6 +557,93 @@ it('does not fire onCorrect when a wrong answer is entered', () => {
     expect(direction).toBe('down');
     expect(number).toBe('2');
     expect(answer).toBe('ONE');
+  });
+});
+
+it('sets focus when requested', () => {
+  const ref = React.createRef();
+  const { getByLabelText, container } = render(
+    <Crossword {...defaultProps} data={simpleData} ref={ref} />
+  );
+
+  const doc = container.ownerDocument;
+
+  // no focus yet?
+  const input = getByLabelText('crossword-input');
+  expect(doc.activeElement).not.toBe(input);
+
+  expect(ref.current).toBeTruthy();
+  act(() => {
+    ref.current.focus();
+  });
+
+  expect(doc.activeElement).toBe(input);
+});
+
+it('resets data when requested', () => {
+  const ref = React.createRef();
+  const { getByLabelText, queryByText } = render(
+    <Crossword {...defaultProps} data={simpleData} ref={ref} />
+  );
+
+  userEvent.click(getByLabelText('clue-1-across'));
+
+  const input = getByLabelText('crossword-input');
+
+  fireEvent.keyDown(input, { key: 'X' });
+  let textEl = queryByText('X');
+  expect(textEl).toBeTruthy();
+
+  expect(ref.current).toBeTruthy();
+  act(() => {
+    ref.current.reset();
+  });
+
+  textEl = queryByText('X');
+  expect(textEl).toBeFalsy();
+});
+
+it('fills answers when requested', () => {
+  const ref = React.createRef();
+  const { queryByText } = render(
+    <Crossword {...defaultProps} data={simpleData} ref={ref} />
+  );
+
+  let textEl = queryByText('T');
+  expect(textEl).toBeFalsy();
+
+  expect(ref.current).toBeTruthy();
+  act(() => {
+    ref.current.fillAllAnswers();
+  });
+
+  textEl = queryByText('T');
+  expect(textEl).toBeTruthy();
+});
+
+it('calls onLoadedCorrect after filling answers', () => {
+  const onLoadedCorrect = new Promise((resolve, reject) => {
+    const ref = React.createRef();
+    render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onLoadedCorrect={resolve}
+        ref={ref}
+      />
+    );
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current.fillAllAnswers();
+    });
+  });
+
+  return onLoadedCorrect.then((answers) => {
+    expect(answers).toEqual([
+      ['across', '1', 'TWO'],
+      ['down', '2', 'ONE'],
+    ]);
   });
 });
 
