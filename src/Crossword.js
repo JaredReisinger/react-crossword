@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -8,7 +9,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import produce from 'immer';
-import styled from 'styled-components';
+import styled, { ThemeContext, ThemeProvider } from 'styled-components';
 
 import Cell from './Cell';
 import DirectionClues from './DirectionClues';
@@ -24,10 +25,21 @@ import {
   findCorrectAnswers,
 } from './util';
 
-import { CrosswordContext, CrosswordRenderContext } from './context';
+import { CrosswordContext, CrosswordSizeContext } from './context';
 
 // TODO: make this a component property!
 const defaultStorageKey = 'guesses';
+
+const defaultTheme = {
+  columnBreakpoint: '768px',
+  gridBackground: 'rgb(0,0,0)',
+  cellBackground: 'rgb(255,255,255)',
+  cellBorder: 'rgb(0,0,0)',
+  textColor: 'rgb(0,0,0)',
+  numberColor: 'rgba(0,0,0, 0.25)',
+  focusBackground: 'rgb(255,255,0)',
+  highlightBackground: 'rgb(255,255,204)',
+};
 
 // eslint-disable-next-line
 const OuterWrapper = styled.div.attrs((props) => ({
@@ -41,7 +53,7 @@ const OuterWrapper = styled.div.attrs((props) => ({
   display: flex;
   flex-direction: row;
 
-  @media (max-width: ${(props) => props.columnBreakpoint}) {
+  @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
     flex-direction: column;
   }
 `;
@@ -62,7 +74,7 @@ const CluesWrapper = styled.div.attrs((props) => ({
   padding: 0 1em;
   flex: 1 2 25%;
 
-  @media (max-width: ${(props) => props.columnBreakpoint}) {
+  @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
     margin-top: 2em;
   }
 
@@ -87,23 +99,7 @@ const CluesWrapper = styled.div.attrs((props) => ({
  * renders an answer grid and clues, and manages data and user interaction.
  */
 const Crossword = React.forwardRef(
-  (
-    {
-      data,
-      onCorrect,
-      onLoadedCorrect,
-      useStorage,
-      columnBreakpoint,
-      gridBackground,
-      cellBackground,
-      cellBorder,
-      textColor,
-      numberColor,
-      focusBackground,
-      highlightBackground,
-    },
-    ref
-  ) => {
+  ({ data, onCorrect, onLoadedCorrect, useStorage, theme }, ref) => {
     const [size, setSize] = useState(null);
     const [gridData, setGridData] = useState(null);
     const [clues, setClues] = useState(null);
@@ -116,6 +112,8 @@ const Crossword = React.forwardRef(
     const [checkQueue, setCheckQueue] = useState([]);
 
     const inputRef = useRef();
+
+    const contextTheme = useContext(ThemeContext);
 
     const getCellData = useCallback(
       (row, col) => {
@@ -611,20 +609,12 @@ const Crossword = React.forwardRef(
       onClueSelected: handleClueSelected,
     };
 
-    const renderContext = {
-      gridBackground,
-      cellBackground,
-      cellBorder,
-      textColor,
-      numberColor,
-      focusBackground,
-      highlightBackground,
-      cellSize,
-      cellPadding,
-      cellInner,
-      cellHalf,
-      fontSize,
-    };
+    // The final theme is the merger of three values: the "theme" property
+    // passed to the component (which takes precedence), any values from
+    // ThemeContext, and finally the "defaultTheme" values fill in for any
+    // needed ones that are missing.  (We create this in standard last-one-wins
+    // order in Javascript, of course.)
+    const finalTheme = { ...defaultTheme, ...contextTheme, ...theme };
 
     // REVIEW: do we want to recalc this all the time, or cache in state?
     const cells = [];
@@ -654,74 +644,78 @@ const Crossword = React.forwardRef(
 
     return (
       <CrosswordContext.Provider value={context}>
-        <CrosswordRenderContext.Provider value={renderContext}>
-          <OuterWrapper columnBreakpoint={columnBreakpoint}>
-            <GridWrapper>
-              {/*
+        <CrosswordSizeContext.Provider
+          value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize }}
+        >
+          <ThemeProvider theme={finalTheme}>
+            <OuterWrapper>
+              <GridWrapper>
+                {/*
                 This div is hard-coded because we *need* a zero-padded,
                 relative-positioned element for aligning the <input> with the
                 cells in the <svg>.
               */}
-              <div style={{ margin: 0, padding: 0, position: 'relative' }}>
-                <svg viewBox="0 0 100 100">
-                  <rect
-                    x={0}
-                    y={0}
-                    width={100}
-                    height={100}
-                    fill={gridBackground}
+                <div style={{ margin: 0, padding: 0, position: 'relative' }}>
+                  <svg viewBox="0 0 100 100">
+                    <rect
+                      x={0}
+                      y={0}
+                      width={100}
+                      height={100}
+                      fill={finalTheme.gridBackground}
+                    />
+                    {cells}
+                  </svg>
+                  <input
+                    ref={inputRef}
+                    aria-label="crossword-input"
+                    type="text"
+                    onClick={handleInputClick}
+                    onKeyDown={handleInputKeyDown}
+                    onChange={handleInputChange}
+                    value=""
+                    // onInput={this.handleInput}
+                    autoComplete="off"
+                    spellCheck="false"
+                    autoCorrect="off"
+                    style={{
+                      position: 'absolute',
+                      // In order to ensure the top/left positioning makes sense,
+                      // there is an absolutely-positioned <div> with no
+                      // margin/padding that we *don't* expose to consumers.  This
+                      // keeps the math much more reliable.  (But we're still
+                      // seeing a slight vertical deviation towards the bottom of
+                      // the grid!  The "* 0.995" seems to help.)
+                      top: `calc(${focusedRow * cellSize * 0.995}% + 2px)`,
+                      left: `calc(${focusedCol * cellSize}% + 2px)`,
+                      width: `calc(${cellSize}% - 4px)`,
+                      height: `calc(${cellSize}% - 4px)`,
+                      fontSize: `${fontSize * 6}px`, // waaay too small...?
+                      textAlign: 'center',
+                      textAnchor: 'middle',
+                      backgroundColor: 'transparent',
+                      caretColor: 'transparent',
+                      margin: 0,
+                      padding: 0,
+                      border: 0,
+                      cursor: 'default',
+                    }}
                   />
-                  {cells}
-                </svg>
-                <input
-                  ref={inputRef}
-                  aria-label="crossword-input"
-                  type="text"
-                  onClick={handleInputClick}
-                  onKeyDown={handleInputKeyDown}
-                  onChange={handleInputChange}
-                  value=""
-                  // onInput={this.handleInput}
-                  autoComplete="off"
-                  spellCheck="false"
-                  autoCorrect="off"
-                  style={{
-                    position: 'absolute',
-                    // In order to ensure the top/left positioning makes sense,
-                    // there is an absolutely-positioned <div> with no
-                    // margin/padding that we *don't* expose to consumers.  This
-                    // keeps the math much more reliable.  (But we're still
-                    // seeing a slight vertical deviation towards the bottom of
-                    // the grid!  The "* 0.995" seems to help.)
-                    top: `calc(${focusedRow * cellSize * 0.995}% + 2px)`,
-                    left: `calc(${focusedCol * cellSize}% + 2px)`,
-                    width: `calc(${cellSize}% - 4px)`,
-                    height: `calc(${cellSize}% - 4px)`,
-                    fontSize: `${fontSize * 6}px`, // waaay too small...?
-                    textAlign: 'center',
-                    textAnchor: 'middle',
-                    backgroundColor: 'transparent',
-                    caretColor: 'transparent',
-                    margin: 0,
-                    padding: 0,
-                    border: 0,
-                    cursor: 'default',
-                  }}
-                />
-              </div>
-            </GridWrapper>
-            <CluesWrapper>
-              {clues &&
-                bothDirections.map((direction) => (
-                  <DirectionClues
-                    key={direction}
-                    direction={direction}
-                    clues={clues[direction]}
-                  />
-                ))}
-            </CluesWrapper>
-          </OuterWrapper>
-        </CrosswordRenderContext.Provider>
+                </div>
+              </GridWrapper>
+              <CluesWrapper>
+                {clues &&
+                  bothDirections.map((direction) => (
+                    <DirectionClues
+                      key={direction}
+                      direction={direction}
+                      clues={clues[direction]}
+                    />
+                  ))}
+              </CluesWrapper>
+            </OuterWrapper>
+          </ThemeProvider>
+        </CrosswordSizeContext.Provider>
       </CrosswordContext.Provider>
     );
   }
@@ -743,25 +737,28 @@ Crossword.propTypes = {
     down: PropTypes.objectOf(clueShape),
   }).isRequired,
 
-  /** browser-width at which the clues go from showing beneath the grid to showing beside the grid */
-  columnBreakpoint: PropTypes.string,
+  /** presentation values for the crossword; these override any values coming from a parent ThemeProvider context. */
+  theme: PropTypes.shape({
+    /** browser-width at which the clues go from showing beneath the grid to showing beside the grid */
+    columnBreakpoint: PropTypes.string,
 
-  /** overall background color (fill) for the crossword grid; can be `'transparent'` to show through a page background image */
-  gridBackground: PropTypes.string,
-  /**  background for an answer cell */
-  cellBackground: PropTypes.string,
-  /** border for an answer cell */
-  cellBorder: PropTypes.string,
-  /** color for answer text (entered by the player) */
-  textColor: PropTypes.string,
-  /** color for the across/down numbers in the grid */
-  numberColor: PropTypes.string,
-  /** background color for the cell with focus, the one that the player is typing into */
-  focusBackground: PropTypes.string,
-  /** background color for the cells in the answer the player is working on,
-   * helps indicate in which direction focus will be moving; also used as a
-   * background on the active clue  */
-  highlightBackground: PropTypes.string,
+    /** overall background color (fill) for the crossword grid; can be `'transparent'` to show through a page background image */
+    gridBackground: PropTypes.string,
+    /**  background for an answer cell */
+    cellBackground: PropTypes.string,
+    /** border for an answer cell */
+    cellBorder: PropTypes.string,
+    /** color for answer text (entered by the player) */
+    textColor: PropTypes.string,
+    /** color for the across/down numbers in the grid */
+    numberColor: PropTypes.string,
+    /** background color for the cell with focus, the one that the player is typing into */
+    focusBackground: PropTypes.string,
+    /** background color for the cells in the answer the player is working on,
+     * helps indicate in which direction focus will be moving; also used as a
+     * background on the active clue  */
+    highlightBackground: PropTypes.string,
+  }),
 
   /** whether to use browser storage to persist the player's work-in-progress */
   useStorage: PropTypes.bool,
@@ -773,14 +770,7 @@ Crossword.propTypes = {
 };
 
 Crossword.defaultProps = {
-  columnBreakpoint: '768px',
-  gridBackground: 'rgb(0,0,0)',
-  cellBackground: 'rgb(255,255,255)',
-  cellBorder: 'rgb(0,0,0)',
-  textColor: 'rgb(0,0,0)',
-  numberColor: 'rgba(0,0,0, 0.25)',
-  focusBackground: 'rgb(255,255,0)',
-  highlightBackground: 'rgb(255,255,204)',
+  theme: null,
   useStorage: true,
   // useStorage: false,
   onCorrect: null,

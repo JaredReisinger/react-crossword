@@ -4,11 +4,12 @@ Provides the list of clues for one direction (either "across" or "down").
 import {
   DirectionClues,
   CrosswordContext,
-  CrosswordRenderContext,
+  CrosswordSizeContext,
+  ThemeProvider,
 } from '@jaredreisinger/react-crossword';
 
-<CrosswordRenderContext.Provider
-  value={{
+<ThemeProvider
+  theme={{
     highlightBackground: 'rgb(255,255,204)',
   }}
 >
@@ -27,5 +28,5 @@ import {
       ]}
     />
   </CrosswordContext.Provider>
-</CrosswordRenderContext.Provider>;
+</ThemeProvider>;
 ```

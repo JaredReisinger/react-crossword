@@ -1,14 +1,14 @@
-Renders an individual clue, with it's number. Makes use of CrosswordContext to know whether to render as "highlighted" or not, and uses the CrosswordRenderContext (TBD "theme"?) to provide the highlighting color.
+Renders an individual clue, with it's number. Makes use of CrosswordContext to know whether to render as "highlighted" or not, and uses the CrosswordSizeContext (TBD "theme"?) to provide the highlighting color.
 
 ```jsx
 import {
   Clue,
   CrosswordContext,
-  CrosswordRenderContext,
+  ThemeProvider,
 } from '@jaredreisinger/react-crossword';
 
-<CrosswordRenderContext.Provider
-  value={{
+<ThemeProvider
+  theme={{
     highlightBackground: 'rgb(255,255,204)',
   }}
 >
@@ -27,5 +27,5 @@ import {
       This is a highlighted clue.
     </Clue>
   </CrosswordContext.Provider>
-</CrosswordRenderContext.Provider>;
+</ThemeProvider>;
 ```

@@ -9,14 +9,7 @@ export const CrosswordContext = React.createContext({
   // correct answers?
 });
 
-export const CrosswordRenderContext = React.createContext({
-  gridBackground: '',
-  cellBackground: '',
-  cellBorder: '',
-  textColor: '',
-  numberColor: '',
-  focusBackground: '',
-  highlightBackground: '',
+export const CrosswordSizeContext = React.createContext({
   cellSize: 0,
   cellPadding: 0,
   cellInner: 0,

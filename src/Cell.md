@@ -1,5 +1,5 @@
 ```jsx
-import { Cell, CrosswordRenderContext } from '@jaredreisinger/react-crossword';
+import { Cell, CrosswordSizeContext } from '@jaredreisinger/react-crossword';
 
 // as calculated in Crossword...
 const cellSize = 10;
@@ -8,14 +8,7 @@ const cellInner = cellSize - cellPadding * 2;
 const cellHalf = cellSize / 2;
 const fontSize = cellInner * 0.7;
 
-const renderContext = {
-  gridBackground: 'black',
-  cellBackground: 'white',
-  cellBorder: 'black',
-  textColor: 'black',
-  numberColor: 'rgba(0,0,0, 0.4)',
-  focusBackground: 'rgba(255,0,0, 0.5)',
-  highlightBackground: 'rgba(255,0,0, 0.125)',
+const sizeContext = {
   cellSize,
   cellPadding,
   cellInner,
@@ -27,7 +20,7 @@ function handleClick() {
   alert('GOT CLICK!');
 }
 
-<CrosswordRenderContext.Provider value={renderContext}>
+<CrosswordSizeContext.Provider value={sizeContext}>
   <svg viewBox="0 0 100 30" width="50%">
     <Cell cellData={{ row: 0, col: 0, guess: 'Y', number: '1' }} />
     <Cell cellData={{ row: 0, col: 1, guess: 'E' }} />
@@ -42,5 +35,5 @@ function handleClick() {
 
     <Cell cellData={{ row: 0, col: 6, guess: 'X' }} onClick={handleClick} />
   </svg>
-</CrosswordRenderContext.Provider>;
+</CrosswordSizeContext.Provider>;
 ```

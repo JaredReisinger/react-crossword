@@ -1,9 +1,9 @@
 import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-import { CrosswordContext, CrosswordRenderContext } from './context';
+import { CrosswordContext } from './context';
 
 const ClueWrapper = styled.div.attrs((props) => ({
   className: 'clue',
@@ -22,7 +22,7 @@ export default function Clue({
   // onClick,
   ...props
 }) {
-  const { highlightBackground } = useContext(CrosswordRenderContext);
+  const { highlightBackground } = useContext(ThemeContext);
   const {
     focused,
     selectedDirection,
