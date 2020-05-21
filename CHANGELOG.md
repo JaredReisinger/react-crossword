@@ -1,3 +1,28 @@
+# [2.0.0](https://github.com/JaredReisinger/react-crossword/compare/v1.0.5...v2.0.0) (2020-05-21)
+
+
+### Bug Fixes
+
+* avoid calling onLoadedCorrect if there are no correct answers ([a3e89f5](https://github.com/JaredReisinger/react-crossword/commit/a3e89f501c772f3c1b0439a6201d426e6d44dc2a))
+* upgrade react-scripts from 3.4.0 to 3.4.1 ([10fb7cf](https://github.com/JaredReisinger/react-crossword/commit/10fb7cfca0c0f9b17666f9e01a3e982746f66e57))
+
+
+### Code Refactoring
+
+* **hooks:** re-implement using React hooks ([e123d25](https://github.com/JaredReisinger/react-crossword/commit/e123d25bc72e35f82c3c1bdbd15ef84e469bef3f))
+
+
+### improvement
+
+* **theming:** switch to use ThemeProvider for styling ([75cb12c](https://github.com/JaredReisinger/react-crossword/commit/75cb12cc97096a1210359effa5c4438be796669e))
+
+
+### BREAKING CHANGES
+
+* **theming:** Styling properties moved into `theme` property (or consumed from ThemeProvider).
+* **hooks:** Switched to React hooks, and thus using React.forwardRef() on Crossword to expose
+imperative commands (reset(), focus(), fillAllAnswers()).
+
 ## [1.0.5](https://github.com/JaredReisinger/react-crossword/compare/v1.0.4...v1.0.5) (2020-03-17)
 
 
