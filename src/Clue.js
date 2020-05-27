@@ -6,7 +6,7 @@ import styled, { ThemeContext } from 'styled-components';
 import { CrosswordContext } from './context';
 
 const ClueWrapper = styled.div.attrs((props) => ({
-  className: 'clue',
+  className: `clue${props.correct ? ' correct' : ''}`,
 }))`
   cursor: default;
   background-color: ${(props) =>
@@ -16,10 +16,8 @@ const ClueWrapper = styled.div.attrs((props) => ({
 export default function Clue({
   direction,
   number,
-  // highlight, // passed through to styled-component wrapper
-  // highlightBackground, // passed through to styled-component wrapper
   children,
-  // onClick,
+  correct,
   ...props
 }) {
   const { highlightBackground } = useContext(ThemeContext);
@@ -46,6 +44,7 @@ export default function Clue({
       highlight={
         focused && direction === selectedDirection && number === selectedNumber
       }
+      correct={correct}
       {...props}
       onClick={handleClick}
       aria-label={`clue-${number}-${direction}`}
@@ -62,17 +61,11 @@ Clue.propTypes = {
   number: PropTypes.string.isRequired,
   /** clue text */
   children: PropTypes.node,
-  // /** whether the clue should be highlighted */
-  // highlight: PropTypes.bool,
-  // /** color to use when highlightng */
-  // highlightBackground: PropTypes.string,
-  // /** handler to call when the clue is clicked */
-  // onClick: PropTypes.func,
+  /** whether the answer/guess is correct */
+  correct: PropTypes.bool,
 };
 
 Clue.defaultProps = {
   children: undefined,
-  // highlight: false,
-  // onClick: undefined,
-  // highlightBackground: 'rgb(255,255,204)',
+  correct: undefined,
 };

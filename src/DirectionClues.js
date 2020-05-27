@@ -9,8 +9,13 @@ export default function DirectionClues({ direction, clues }) {
     <div className="direction">
       {/* use something other than h3? */}
       <h3 className="header">{direction.toUpperCase()}</h3>
-      {clues.map(({ number, clue }) => (
-        <Clue key={number} direction={direction} number={number}>
+      {clues.map(({ number, clue, correct }) => (
+        <Clue
+          key={number}
+          direction={direction}
+          number={number}
+          correct={correct}
+        >
           {clue}
         </Clue>
       ))}
@@ -28,6 +33,8 @@ DirectionClues.propTypes = {
       number: PropTypes.string.isRequired,
       /** clue text */
       clue: PropTypes.node.isRequired,
+      /** whether the answer/guess is correct */
+      correct: PropTypes.bool,
     })
   ).isRequired,
 };

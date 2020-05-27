@@ -38,6 +38,21 @@ const Command = styled.button`
 const CrosswordWrapper = styled.div`
   margin-top: 2em;
   max-width: 30em;
+
+  /* and some fun making use of the defined class names */
+
+  .clue.correct {
+    ::before {
+      content: '\u2713'; /* a.k.a. checkmark: ✓ */
+      display: inline-block;
+      text-decoration: none;
+      color: rgb(100, 200, 100);
+      margin-right: 0.25em;
+    }
+
+    text-decoration: line-through;
+    color: rgb(130, 130, 130);
+  }
 `;
 
 const Messages = styled.pre`
@@ -98,6 +113,14 @@ function App() {
     [addMessage]
   );
 
+  // onCellChange is called with the row, column, and character.
+  const onCellChange = useCallback(
+    (row, col, char) => {
+      addMessage(`onCellChange: "${row}", "${col}", "${char}"`);
+    },
+    [addMessage]
+  );
+
   return (
     <Page>
       <Header>@jaredreisinger/react-crossword example app</Header>
@@ -120,6 +143,7 @@ function App() {
           ref={crossword}
           onCorrect={onCorrect}
           onLoadedCorrect={onLoadedCorrect}
+          onCellChange={onCellChange}
         />
       </CrosswordWrapper>
 

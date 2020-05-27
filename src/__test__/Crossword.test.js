@@ -52,6 +52,15 @@ it('renders Crossword component correctly', () => {
   expect(getByText('DOWN')).toHaveTextContent('DOWN');
 });
 
+it('renders Crossword component correctly when using storage', () => {
+  const { container, getByText } = render(
+    <Crossword {...defaultProps} useStorage />
+  );
+  expect(container.firstChild).toHaveClass('crossword');
+  expect(getByText('ACROSS')).toHaveTextContent('ACROSS');
+  expect(getByText('DOWN')).toHaveTextContent('DOWN');
+});
+
 it('matches snapshot', () => {
   const tree = renderer.create(<Crossword {...defaultProps} />).toJSON();
   expect(tree).toMatchSnapshot();

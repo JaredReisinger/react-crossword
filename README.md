@@ -43,24 +43,24 @@ export default function MyPage() {
 To make crosswords as easy to create as possible, with the least amount of extraneous and boilerplate typing, the clue/answer format is structured as a set of nested objects:
 
 ```javascript
-const data = {
+{
   across: {
     1: {
       clue: 'one plus one',
       answer: 'TWO',
-      x: 0,
-      y: 0,
+      row: 0,
+      col: 0,
     },
   },
   down: {
     2: {
       clue: 'three minus two',
       answer: 'ONE',
-      x: 2,
-      y: 0,
+      row: 0,
+      col: 2,
     },
   },
-};
+}
 ```
 
 At the top level, the `across` and `down` properties group together the clues/answers for their respective directions. Each of those objects is a map, keyed by the answer number rather than an array. (This is done so that the creator has control over the numbering/labelling of the clues/answers.) Each item contains a `clue` and `answer` property, as well as `row` and `col` for the starting position.
@@ -94,6 +94,7 @@ Also, several class names are applied to elements in the crossword, in case you 
 | header and clues for one direction                      | `direction` |
 | direction header ('across' or 'down')                   | `header`    |
 | an individual clue                                      | `clue`      |
+| an individual clue with a correct answer                | `correct`   |
 
 (No class names are currently applied within the grid, as the SVG layout is _**very**_ layout-sensitive.)
 
@@ -107,6 +108,7 @@ help your application "understand" the player's progress:
 | `useStorage`      | whether to use browser storage to persist the player's work-in-progress (`true` by default)                                                                                                                                                                |
 | `onCorrect`       | callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself |
 | `onLoadedCorrect` | callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
+| `onCellChange`    | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
 
 ## Background
 

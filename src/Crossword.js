@@ -99,7 +99,10 @@ const CluesWrapper = styled.div.attrs((props) => ({
  * renders an answer grid and clues, and manages data and user interaction.
  */
 const Crossword = React.forwardRef(
-  ({ data, onCorrect, onLoadedCorrect, useStorage, theme }, ref) => {
+  (
+    { data, onCorrect, onLoadedCorrect, onCellChange, useStorage, theme },
+    ref
+  ) => {
     const [size, setSize] = useState(null);
     const [gridData, setGridData] = useState(null);
     const [clues, setClues] = useState(null);
@@ -153,8 +156,12 @@ const Crossword = React.forwardRef(
             draft.push({ row, col });
           })
         );
+
+        if (onCellChange) {
+          onCellChange(row, col, char);
+        }
       },
-      [getCellData]
+      [getCellData, onCellChange]
     );
 
     const notifyCorrect = useCallback(
@@ -180,12 +187,8 @@ const Crossword = React.forwardRef(
       (row, col) => {
         const cell = getCellData(row, col);
 
-        // If the given cell isn't correct, we can bail now.
-        if (cell.guess !== cell.answer) {
-          return;
-        }
-
-        // check all the cells for both across and down answers that use this cell
+        // check all the cells for both across and down answers that use this
+        // cell
         bothDirections.forEach((direction) => {
           const across = isAcross(direction);
           const number = cell[direction];
@@ -194,22 +197,37 @@ const Crossword = React.forwardRef(
           }
 
           const info = data[direction][number];
-          let correct = true;
 
-          // We *could* compare cell.guess against cell.answer, but info.answer is
-          // a simple string and gets us the length as well (and we only have to
-          // calulate row/col math once).
-          for (let i = 0; i < info.answer.length; i++) {
-            const checkCell = getCellData(
-              info.row + (across ? 0 : i),
-              info.col + (across ? i : 0)
-            );
+          // We start by looking at the current cell... if it's not correct, we
+          // don't need to check anything else!
+          let correct = cell.guess === cell.answer;
 
-            if (checkCell.guess !== info.answer[i]) {
-              correct = false;
-              break;
+          if (correct) {
+            // We *could* compare cell.guess against cell.answer for all the
+            // cells, but info.answer is a simple string and gets us the length
+            // as well (and we only have to calulate row/col math once).
+            for (let i = 0; i < info.answer.length; i++) {
+              const checkCell = getCellData(
+                info.row + (across ? 0 : i),
+                info.col + (across ? i : 0)
+              );
+
+              if (checkCell.guess !== info.answer[i]) {
+                correct = false;
+                break;
+              }
             }
           }
+
+          // update the clue state
+          setClues(
+            produce((draft) => {
+              const clueInfo = draft[direction].find(
+                (i) => i.number === number
+              );
+              clueInfo.correct = correct;
+            })
+          );
 
           if (correct) {
             notifyCorrect(direction, number, info.answer);
@@ -426,6 +444,11 @@ const Crossword = React.forwardRef(
       if (useStorage) {
         loadGuesses(gridData, defaultStorageKey);
         loadedCorrect = findCorrectAnswers(data, gridData);
+
+        loadedCorrect.forEach(([direction, num]) => {
+          const clueInfo = clues[direction].find((i) => i.number === num);
+          clueInfo.correct = true;
+        });
       }
 
       setSize(size);
@@ -551,6 +574,16 @@ const Crossword = React.forwardRef(
             })
           );
 
+          setClues(
+            produce((draft) => {
+              bothDirections.forEach((direction) => {
+                draft[direction].forEach((clueInfo) => {
+                  delete clueInfo.correct;
+                });
+              });
+            })
+          );
+
           if (useStorage) {
             clearGuesses(defaultStorageKey);
           }
@@ -570,6 +603,16 @@ const Crossword = React.forwardRef(
                   if (cellData.used) {
                     cellData.guess = cellData.answer;
                   }
+                });
+              });
+            })
+          );
+
+          setClues(
+            produce((draft) => {
+              bothDirections.forEach((direction) => {
+                draft[direction].forEach((clueInfo) => {
+                  clueInfo.correct = true;
                 });
               });
             })
@@ -731,9 +774,11 @@ const clueShape = PropTypes.shape({
 });
 
 Crossword.propTypes = {
-  /** clue/answer data */
+  /** clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for details. */
   data: PropTypes.shape({
+    /** "across" clues and answers */
     across: PropTypes.objectOf(clueShape),
+    /** "down" clues and answers */
     down: PropTypes.objectOf(clueShape),
   }).isRequired,
 
@@ -767,6 +812,9 @@ Crossword.propTypes = {
   onCorrect: PropTypes.func,
   /** callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve */
   onLoadedCorrect: PropTypes.func,
+
+  /** callback function called when a cell changes (e.g. when the user types a letter); called with `(row, col, char)` arguments, where the `row` and `column` are the 0-based position of the cell, and `char` is the character typed (already massaged into upper-case) */
+  onCellChange: PropTypes.func,
 };
 
 Crossword.defaultProps = {
@@ -775,6 +823,7 @@ Crossword.defaultProps = {
   // useStorage: false,
   onCorrect: null,
   onLoadedCorrect: null,
+  onCellChange: null,
 };
 
 export default Crossword;
