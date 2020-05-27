@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/JaredReisinger/react-crossword/compare/v2.0.0...v2.1.0) (2020-05-27)
+
+
+### Features
+
+* add onCellChange callback and 'correct' classname on clues ([6fd2539](https://github.com/JaredReisinger/react-crossword/commit/6fd2539cf8a2cc885530ebf9669e8b14d8f53f68)), closes [#20](https://github.com/JaredReisinger/react-crossword/issues/20) [#21](https://github.com/JaredReisinger/react-crossword/issues/21) [#21](https://github.com/JaredReisinger/react-crossword/issues/21)
+
 # [2.0.0](https://github.com/JaredReisinger/react-crossword/compare/v1.0.5...v2.0.0) (2020-05-21)
 
 
