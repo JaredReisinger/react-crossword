@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/JaredReisinger/react-crossword/compare/v2.1.0...v2.2.0) (2020-06-02)
+
+
+### Features
+
+* add 'onCrosswordCorrect' callback ([f0e9d1f](https://github.com/JaredReisinger/react-crossword/commit/f0e9d1f2b93392637d8e1a061cb04f6e4535b587)), closes [#20](https://github.com/JaredReisinger/react-crossword/issues/20) [#20](https://github.com/JaredReisinger/react-crossword/issues/20)
+
 # [2.1.0](https://github.com/JaredReisinger/react-crossword/compare/v2.0.0...v2.1.0) (2020-05-27)
 
 
