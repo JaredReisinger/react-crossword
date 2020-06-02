@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/JaredReisinger/react-crossword/compare/v2.2.0...v2.2.1) (2020-06-02)
+
+
+### Bug Fixes
+
+* fix 'correct' class on correct crossword ([794f3b1](https://github.com/JaredReisinger/react-crossword/commit/794f3b1d75c1f3d2e75f30491edc87da9b9a3fc8))
+
 # [2.2.0](https://github.com/JaredReisinger/react-crossword/compare/v2.1.0...v2.2.0) (2020-06-02)
 
 
