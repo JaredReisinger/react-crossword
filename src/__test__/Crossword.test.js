@@ -503,141 +503,218 @@ describe('keyboard navigation', () => {
   });
 });
 
-it('fires onCorrect when an answer is entered', () => {
-  // The onCorrect happens on a delay, so we need a Promise to even wait for the
-  // call!
-
-  // Jest complains with "ReferenceError: regeneratorRuntime is not defined"
-  // when the test is defined with 'async'... despite @babel/preset-env being
-  // included already.  For now, we just use old-school Promise.then() syntax,
-  // and make sure to return the promise.
-  const onCorrect = new Promise((resolve, reject) => {
+describe('onCorrect callback', () => {
+  it('fires onCorrect when an answer is entered', () => {
+    const onCorrect = jest.fn();
     const { getByLabelText } = render(
-      <Crossword
-        {...defaultProps}
-        data={simpleData}
-        onCorrect={(...args) => resolve(args)}
-      />
+      <Crossword {...defaultProps} data={simpleData} onCorrect={onCorrect} />
     );
 
     userEvent.click(getByLabelText('clue-1-across'));
     // we don't need to await this, as the onCorrect handler is taking care of
     // that for us...
     userEvent.type(getByLabelText('crossword-input'), 'TWO');
+
+    expect(onCorrect).toBeCalledTimes(1);
+    expect(onCorrect).toBeCalledWith('across', '1', 'TWO');
   });
 
-  return onCorrect.then(([direction, number, answer]) => {
-    expect(direction).toBe('across');
-    expect(number).toBe('1');
-    expect(answer).toBe('TWO');
-  });
-});
-
-it('does not fire onCorrect when a wrong answer is entered', () => {
-  // The onCorrect happens on a delay, so we need a Promise to even wait for the
-  // call!  (and a timeout since it won't really happen...)
-
-  // Jest complains with "ReferenceError: regeneratorRuntime is not defined"
-  // when the test is defined with 'async'... despite @babel/preset-env being
-  // included already.  For now, we just use old-school Promise.then() syntax,
-  // and make sure to return the promise.
-  const onCorrect = new Promise((resolve, reject) => {
+  it('does not fire onCorrect when a wrong answer is entered', () => {
+    const onCorrect = jest.fn();
     const { getByLabelText } = render(
-      <Crossword
-        {...defaultProps}
-        data={simpleData}
-        onCorrect={(...args) => resolve(args)}
-      />
+      <Crossword {...defaultProps} data={simpleData} onCorrect={onCorrect} />
     );
 
     const input = getByLabelText('crossword-input');
 
     userEvent.click(getByLabelText('clue-1-across'));
     // We enter an invalid answer, then a valid one (so we get the onCorrect
-    // that gets us out of this test).  Our *not* getting the onCorrect for the
-    // first answer is the actual test.
-    userEvent.type(getByLabelText('crossword-input'), 'XXX').then(() => {
-      fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
-      userEvent.type(getByLabelText('crossword-input'), 'ONE');
+    // that gets us out of this test).  Our *not* getting the onCorrect for
+    // the first answer is the actual test.
+    userEvent.type(getByLabelText('crossword-input'), 'XXX');
+
+    expect(onCorrect).toBeCalledTimes(0);
+
+    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
+    userEvent.type(getByLabelText('crossword-input'), 'ONE');
+
+    expect(onCorrect).toBeCalledTimes(1);
+    expect(onCorrect).toBeCalledWith('down', '2', 'ONE');
+  });
+});
+
+describe('onCellChange callback', () => {
+  it('fires onCellChange when a cell is changed', () => {
+    const onCellChange = jest.fn();
+    const { getByLabelText } = render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCellChange={onCellChange}
+      />
+    );
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'T');
+
+    expect(onCellChange).toBeCalledTimes(1);
+    expect(onCellChange).toBeCalledWith(0, 0, 'T');
+  });
+
+  it('does not fire onCellChange when a cell gets the same value', () => {
+    const onCellChange = jest.fn();
+    const { getByLabelText } = render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCellChange={onCellChange}
+      />
+    );
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'T');
+
+    expect(onCellChange).toBeCalledTimes(1);
+    onCellChange.mockClear();
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'T');
+    expect(onCellChange).toBeCalledTimes(0);
+  });
+});
+
+describe('onCrosswordCorrect callback', () => {
+  it('fires onCrosswordCorrect(falsy) when the crossword loads', () => {
+    const onCrosswordCorrect = jest.fn();
+    render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCrosswordCorrect={onCrosswordCorrect}
+      />
+    );
+
+    expect(onCrosswordCorrect).toBeCalledWith(false);
+    expect(onCrosswordCorrect).not.toBeCalledWith(true);
+  });
+
+  it('fires onCrosswordCorrect(true) when the crossword becomes entirely correct', () => {
+    const onCrosswordCorrect = jest.fn();
+    const { getByLabelText } = render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCrosswordCorrect={onCrosswordCorrect}
+      />
+    );
+
+    onCrosswordCorrect.mockClear();
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'TWO');
+    userEvent.click(getByLabelText('clue-2-down'));
+    userEvent.type(getByLabelText('crossword-input'), 'ON');
+    expect(onCrosswordCorrect).toBeCalledTimes(0);
+    userEvent.type(getByLabelText('crossword-input'), 'E');
+
+    expect(onCrosswordCorrect).toBeCalledTimes(1);
+    expect(onCrosswordCorrect).toBeCalledWith(true);
+  });
+
+  it('fires onCrosswordCorrect(false) when the crossword becomes *not* entirely correct again', () => {
+    const onCrosswordCorrect = jest.fn();
+    const { getByLabelText } = render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCrosswordCorrect={onCrosswordCorrect}
+      />
+    );
+
+    onCrosswordCorrect.mockClear();
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'TWO');
+    userEvent.click(getByLabelText('clue-2-down'));
+    userEvent.type(getByLabelText('crossword-input'), 'ONE');
+    expect(onCrosswordCorrect).toBeCalledTimes(1);
+    onCrosswordCorrect.mockClear();
+
+    userEvent.type(getByLabelText('crossword-input'), 'X');
+
+    expect(onCrosswordCorrect).toBeCalledTimes(1);
+    expect(onCrosswordCorrect).toBeCalledWith(false);
+  });
+});
+
+describe('imperative commands', () => {
+  it('sets focus when requested', () => {
+    const ref = React.createRef();
+    const { getByLabelText, container } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
+
+    const doc = container.ownerDocument;
+
+    // no focus yet?
+    const input = getByLabelText('crossword-input');
+    expect(doc.activeElement).not.toBe(input);
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current.focus();
     });
+
+    expect(doc.activeElement).toBe(input);
   });
 
-  return onCorrect.then(([direction, number, answer]) => {
-    expect(direction).toBe('down');
-    expect(number).toBe('2');
-    expect(answer).toBe('ONE');
-  });
-});
+  it('resets data when requested', () => {
+    const ref = React.createRef();
+    const { getByLabelText, queryByText } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
 
-it('sets focus when requested', () => {
-  const ref = React.createRef();
-  const { getByLabelText, container } = render(
-    <Crossword {...defaultProps} data={simpleData} ref={ref} />
-  );
+    userEvent.click(getByLabelText('clue-1-across'));
 
-  const doc = container.ownerDocument;
+    const input = getByLabelText('crossword-input');
 
-  // no focus yet?
-  const input = getByLabelText('crossword-input');
-  expect(doc.activeElement).not.toBe(input);
+    fireEvent.keyDown(input, { key: 'X' });
+    let textEl = queryByText('X');
+    expect(textEl).toBeTruthy();
 
-  expect(ref.current).toBeTruthy();
-  act(() => {
-    ref.current.focus();
-  });
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current.reset();
+    });
 
-  expect(doc.activeElement).toBe(input);
-});
-
-it('resets data when requested', () => {
-  const ref = React.createRef();
-  const { getByLabelText, queryByText } = render(
-    <Crossword {...defaultProps} data={simpleData} ref={ref} />
-  );
-
-  userEvent.click(getByLabelText('clue-1-across'));
-
-  const input = getByLabelText('crossword-input');
-
-  fireEvent.keyDown(input, { key: 'X' });
-  let textEl = queryByText('X');
-  expect(textEl).toBeTruthy();
-
-  expect(ref.current).toBeTruthy();
-  act(() => {
-    ref.current.reset();
+    textEl = queryByText('X');
+    expect(textEl).toBeFalsy();
   });
 
-  textEl = queryByText('X');
-  expect(textEl).toBeFalsy();
-});
+  it('fills answers when requested', () => {
+    const ref = React.createRef();
+    const { queryByText } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
 
-it('fills answers when requested', () => {
-  const ref = React.createRef();
-  const { queryByText } = render(
-    <Crossword {...defaultProps} data={simpleData} ref={ref} />
-  );
+    let textEl = queryByText('T');
+    expect(textEl).toBeFalsy();
 
-  let textEl = queryByText('T');
-  expect(textEl).toBeFalsy();
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current.fillAllAnswers();
+    });
 
-  expect(ref.current).toBeTruthy();
-  act(() => {
-    ref.current.fillAllAnswers();
+    textEl = queryByText('T');
+    expect(textEl).toBeTruthy();
   });
 
-  textEl = queryByText('T');
-  expect(textEl).toBeTruthy();
-});
-
-it('calls onLoadedCorrect after filling answers', () => {
-  const onLoadedCorrect = new Promise((resolve, reject) => {
+  it('calls onLoadedCorrect after filling answers', () => {
+    const onLoadedCorrect = jest.fn();
     const ref = React.createRef();
     render(
       <Crossword
         {...defaultProps}
         data={simpleData}
-        onLoadedCorrect={resolve}
+        onLoadedCorrect={onLoadedCorrect}
         ref={ref}
       />
     );
@@ -646,13 +723,33 @@ it('calls onLoadedCorrect after filling answers', () => {
     act(() => {
       ref.current.fillAllAnswers();
     });
-  });
 
-  return onLoadedCorrect.then((answers) => {
-    expect(answers).toEqual([
+    expect(onLoadedCorrect).toBeCalledWith([
       ['across', '1', 'TWO'],
       ['down', '2', 'ONE'],
     ]);
+  });
+
+  it('calls onCrosswordCorrect after filling answers', () => {
+    const onCrosswordCorrect = jest.fn();
+    const ref = React.createRef();
+    render(
+      <Crossword
+        {...defaultProps}
+        data={simpleData}
+        onCrosswordCorrect={onCrosswordCorrect}
+        ref={ref}
+      />
+    );
+
+    onCrosswordCorrect.mockClear();
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current.fillAllAnswers();
+    });
+
+    expect(onCrosswordCorrect).toBeCalledTimes(1);
+    expect(onCrosswordCorrect).toBeCalledWith(true);
   });
 });
 

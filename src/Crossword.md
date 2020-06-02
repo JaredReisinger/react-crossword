@@ -1,3 +1,12 @@
+_**NOTE:** Due to a short-coming in react-docgen, the methods exposed via `useImperativeHandle()` are not currently getting documented. Here's the missing documentation that should be in "Props & Methods" above:_
+
+| Method name            | Parameters | Description                                                                                         |
+| ---------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| `focus()`              | _(none)_   | Sets focus to the crossword component.                                                              |
+| `reset()`              | _(none)_   | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
+| `fillAllAnswers()`     | _(none)_   | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
+| `isCrosswordCorrect()` | _(none)_   | Returns whether the crossword is entirely correct or not.                                           |
+
 ```jsx
 import Crossword from '@jaredreisinger/react-crossword';
 
@@ -156,15 +165,16 @@ const data = {
 
 Also, several class names are applied to elements in the crossword, in case you want to apply styles that way:
 
-| element                                                 | class name  |
-| ------------------------------------------------------- | ----------- |
-| entire crossword component; encompassing grid and clues | `crossword` |
-| answer grid                                             | `grid`      |
-| all of the clues                                        | `clues`     |
-| header and clues for one direction                      | `direction` |
-| direction header ('across' or 'down')                   | `header`    |
-| an individual clue                                      | `clue`      |
-| an individual clue with a correct answer                | `correct`   |
+| element                                                              | class name  |
+| -------------------------------------------------------------------- | ----------- |
+| entire crossword component; encompassing grid and clues              | `crossword` |
+| entire crossword is correct (on same element as `crossword`)         | `correct`   |
+| answer grid                                                          | `grid`      |
+| all of the clues                                                     | `clues`     |
+| header and clues for one direction                                   | `direction` |
+| direction header ('across' or 'down')                                | `header`    |
+| an individual clue                                                   | `clue`      |
+| an individual clue with a correct answer (on same element as `clue`) | `correct`   |
 
 (No class names are currently applied within the grid, as the SVG layout is _**very**_ layout-sensitive.)
 
@@ -172,12 +182,23 @@ Also, several class names are applied to elements in the crossword, in case you 
 
 In addition to providing properties for styling, there are some properties to help your application "understand" the player's progress:
 
-| property          | description                                                                                                                                                                                                                                                |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `useStorage`      | whether to use browser storage to persist the player's work-in-progress (`true` by default)                                                                                                                                                                |
-| `onCorrect`       | callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself |
-| `onLoadedCorrect` | callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
-| `onCellChange`    | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
+| property             | description                                                                                                                                                                                                                                                |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onCorrect`          | callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself |
+| `onLoadedCorrect`    | callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
+| `onCrosswordCorrect` | callback function that's called when the overall crossword is completely correct (or not)                                                                                                                                                                  |
+| `onCellChange`       | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
+
+### Imperative methods
+
+The following imperative methods can be called on a "ref" handle to the component:
+
+| method name            | parameters | description                                                                                         |
+| ---------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| `focus()`              | _(none)_   | Sets focus to the crossword component.                                                              |
+| `reset()`              | _(none)_   | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
+| `fillAllAnswers()`     | _(none)_   | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
+| `isCrosswordCorrect()` | _(none)_   | Returns whether the crossword is entirely correct or not.                                           |
 
 ### Another example
 

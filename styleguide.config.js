@@ -32,11 +32,52 @@ module.exports = {
     sidebarWidth: '20em',
   },
 
-  // somehow the <th> cells for tables didn't get the expected styleguide
-  // theming,so we force the same font information into the body
   styles: (theme) => ({
+    // somehow the <th> cells for tables didn't get the expected styleguide
+    // theming,so we force the same font information into the body
     StyleGuide: {
       '@global body': { fontFamily: theme.fontFamily.base },
+    },
+    // Similarly, table cells looks like they're styled to vertical-align: top,
+    // but it doesn't actually happen unless we force the issue!
+    Table: {
+      cellHeading: {
+        textAlign: 'left',
+        paddingBottom: theme.space[1],
+        paddingRight: theme.space[2],
+        fontWeight: 'bold',
+      },
+      cell: {
+        verticalAlign: 'top',
+        borderTop: [[1, theme.color.border, 'solid']],
+        paddingTop: theme.space[1],
+        paddingBottom: theme.space[1],
+        paddingRight: theme.space[2],
+
+        '&:last-child': {
+          verticalAlign: 'top',
+          borderTop: [[1, theme.color.border, 'solid']],
+          paddingTop: theme.space[1],
+          paddingBottom: theme.space[1],
+          paddingRight: 0,
+        },
+
+        '& p:last-child': {
+          marginBottom: 0,
+        },
+      },
+    },
+
+    // Why does styleguidist make these smaller by default?
+    Name: {
+      name: {
+        fontSize: theme.fontSize.text, // not base?
+      },
+    },
+    Type: {
+      type: {
+        fontSize: theme.fontSize.text, // not base?
+      },
     },
   }),
 

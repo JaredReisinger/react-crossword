@@ -100,7 +100,15 @@ const CluesWrapper = styled.div.attrs((props) => ({
  */
 const Crossword = React.forwardRef(
   (
-    { data, onCorrect, onLoadedCorrect, onCellChange, useStorage, theme },
+    {
+      data,
+      onCorrect,
+      onLoadedCorrect,
+      onCrosswordCorrect,
+      onCellChange,
+      useStorage,
+      theme,
+    },
     ref
   ) => {
     const [size, setSize] = useState(null);
@@ -113,6 +121,7 @@ const Crossword = React.forwardRef(
     const [currentNumber, setCurrentNumber] = useState('1');
     const [bulkChange, setBulkChange] = useState(null);
     const [checkQueue, setCheckQueue] = useState([]);
+    const [crosswordCorrect, setCrosswordCorrect] = useState(false);
 
     const inputRef = useRef();
 
@@ -237,6 +246,7 @@ const Crossword = React.forwardRef(
       [getCellData]
     );
 
+    // Any time the checkQueue changes, call checkCorrectness!
     useEffect(() => {
       if (checkQueue.length === 0) {
         return;
@@ -245,6 +255,24 @@ const Crossword = React.forwardRef(
       checkQueue.forEach(({ row, col }) => checkCorrectness(row, col));
       setCheckQueue([]);
     }, [checkQueue, checkCorrectness]);
+
+    // Any time the clues change, determine if they are all correct or not.
+    useEffect(() => {
+      setCrosswordCorrect(
+        clues &&
+          bothDirections.every((direction) =>
+            clues[direction].every((clueInfo) => clueInfo.correct)
+          )
+      );
+    }, [clues]);
+
+    // Let the consumer know everything's correct (or not) if they've asked to
+    // be informed.
+    useEffect(() => {
+      if (onCrosswordCorrect) {
+        onCrosswordCorrect(crosswordCorrect);
+      }
+    }, [crosswordCorrect, onCrosswordCorrect]);
 
     // focus and movement
     const focus = useCallback(() => {
@@ -551,6 +579,9 @@ const Crossword = React.forwardRef(
     useImperativeHandle(
       ref,
       () => ({
+        /**
+         * Sets focus to the crossword component.
+         */
         focus: () => {
           focus();
         },
@@ -558,8 +589,6 @@ const Crossword = React.forwardRef(
         /**
          * Resets the entire crossword; clearing all answers in the grid and
          * also any persisted data.
-         *
-         * @public
          */
         reset: () => {
           setGridData(
@@ -592,8 +621,6 @@ const Crossword = React.forwardRef(
         /**
          * Fills all the answers in the grid and calls the `onLoadedCorrect`
          * callback with _**every**_ answer.
-         *
-         * @public
          */
         fillAllAnswers: () => {
           setGridData(
@@ -630,8 +657,17 @@ const Crossword = React.forwardRef(
             onLoadedCorrect(loadedCorrect);
           }
         },
+
+        /**
+         * Returns whether the crossword is entirely correct or not.
+         *
+         * @since 2.2.0
+         */
+        isCrosswordCorrect: () => {
+          return crosswordCorrect;
+        },
       }),
-      [data, onLoadedCorrect, useStorage, focus]
+      [data, onLoadedCorrect, useStorage, focus, crosswordCorrect]
     );
 
     // constants for rendering...
@@ -812,8 +848,17 @@ Crossword.propTypes = {
   onCorrect: PropTypes.func,
   /** callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve */
   onLoadedCorrect: PropTypes.func,
+  /** callback function that's called when the overall crossword is completely correct (or not) */
+  onCrosswordCorrect: PropTypes.func,
 
-  /** callback function called when a cell changes (e.g. when the user types a letter); called with `(row, col, char)` arguments, where the `row` and `column` are the 0-based position of the cell, and `char` is the character typed (already massaged into upper-case) */
+  /**
+   *  callback function called when a cell changes (e.g. when the user types a
+   *  letter); called with `(row, col, char)` arguments, where the `row` and
+   *  `column` are the 0-based position of the cell, and `char` is the character
+   *  typed (already massaged into upper-case)
+   *
+   *  @since 2.1.0
+   */
   onCellChange: PropTypes.func,
 };
 
@@ -823,6 +868,7 @@ Crossword.defaultProps = {
   // useStorage: false,
   onCorrect: null,
   onLoadedCorrect: null,
+  onCrosswordCorrect: null,
   onCellChange: null,
 };
 
