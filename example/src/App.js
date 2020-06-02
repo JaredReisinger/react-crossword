@@ -40,6 +40,17 @@ const CrosswordWrapper = styled.div`
   max-width: 30em;
 
   /* and some fun making use of the defined class names */
+  .crossword.correct {
+    rect {
+      stroke: rgb(100, 200, 100) !important;
+    }
+    svg > rect {
+      fill: rgb(100, 200, 100) !important;
+    }
+    text {
+      fill: rgb(100, 200, 100) !important;
+    }
+  }
 
   .clue.correct {
     ::before {
@@ -113,6 +124,14 @@ function App() {
     [addMessage]
   );
 
+  // onCrosswordCorrect is called with a truthy/falsy value.
+  const onCrosswordCorrect = useCallback(
+    (isCorrect) => {
+      addMessage(`onCrosswordCorrect: ${JSON.stringify(isCorrect)}`);
+    },
+    [addMessage]
+  );
+
   // onCellChange is called with the row, column, and character.
   const onCellChange = useCallback(
     (row, col, char) => {
@@ -143,6 +162,7 @@ function App() {
           ref={crossword}
           onCorrect={onCorrect}
           onLoadedCorrect={onLoadedCorrect}
+          onCrosswordCorrect={onCrosswordCorrect}
           onCellChange={onCellChange}
         />
       </CrosswordWrapper>

@@ -43,7 +43,7 @@ const defaultTheme = {
 
 // eslint-disable-next-line
 const OuterWrapper = styled.div.attrs((props) => ({
-  className: 'crossword',
+  className: `crossword${props.correct ? ' correct' : ''}`,
 }))`
   margin: 0;
   padding: 0;
@@ -727,7 +727,7 @@ const Crossword = React.forwardRef(
           value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize }}
         >
           <ThemeProvider theme={finalTheme}>
-            <OuterWrapper>
+            <OuterWrapper correct={crosswordCorrect}>
               <GridWrapper>
                 {/*
                 This div is hard-coded because we *need* a zero-padded,
