@@ -38,7 +38,9 @@
     "build": "node build-tool/build.js",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
-    "doc:deploy": "npm run doc:build && gh-pages --dist styleguide"
+    "doc:deploy": "npm run doc:build && gh-pages --dist styleguide",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "files": [
     "/dist"
@@ -119,7 +121,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
     "rollup-plugin-size-snapshot": "^0.11.0",
-    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-terser": "^6.0.0",
     "semantic-release": "^17.0.7",
     "styled-components": "^5.1.0",
     "stylelint": "^13.5.0",
@@ -139,5 +141,9 @@
     "react-dom": "16.x",
     "react": "16.x",
     "styled-components": "5.x"
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.334.0"
   }
 }
