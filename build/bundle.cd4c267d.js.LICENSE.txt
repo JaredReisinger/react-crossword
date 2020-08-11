@@ -20,12 +20,12 @@ object-assign
  */
 
 /*!
- * regjsgen 0.5.1
- * Copyright 2014-2019 Benjamin Tan <https://bnjmnt4n.now.sh/>
- * Available under MIT license <https://github.com/bnjmnt4n/regjsgen/blob/master/LICENSE>
+ * regjsgen 0.5.2
+ * Copyright 2014-2020 Benjamin Tan <https://ofcr.se/>
+ * Available under the MIT license <https://github.com/bnjmnt4n/regjsgen/blob/master/LICENSE-MIT.txt>
  */
 
-/*! https://mths.be/regenerate v1.3.3 by @mathias | MIT license */
+/*! https://mths.be/regenerate v1.4.1 by @mathias | MIT license */
 
 /**
  * A better abstraction over CSS.
@@ -33,6 +33,15 @@ object-assign
  * @copyright Oleg Isonen (Slobodskoi) / Isonen 2014-present
  * @website https://github.com/cssinjs/jss
  * @license MIT
+ */
+
+/**
+ * Prism: Lightweight, robust, elegant syntax highlighting
+ *
+ * @license MIT <https://opensource.org/licenses/MIT>
+ * @author Lea Verou <https://lea.verou.me>
+ * @namespace
+ * @public
  */
 
 /** @license React v0.19.1
