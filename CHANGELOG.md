@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/JaredReisinger/react-crossword/compare/v2.2.2...v2.2.3) (2020-08-11)
+
+
+### Bug Fixes
+
+* package.json, package-lock.json & .snyk to reduce vulnerabilities ([a6d2a37](https://github.com/JaredReisinger/react-crossword/commit/a6d2a37296a6e9f60761c32823f7c3aa638b52f6))
+
 ## [2.2.2](https://github.com/JaredReisinger/react-crossword/compare/v2.2.1...v2.2.2) (2020-08-11)
 
 
