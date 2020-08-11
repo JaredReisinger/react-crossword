@@ -80,7 +80,7 @@ it('handles typing', () => {
     <Crossword {...defaultProps} data={simpleData} />
   );
   const input = getByLabelText('crossword-input');
-  userEvent.type(input, 'T');
+  userEvent.type(input, 'T', { skipClick: true });
 });
 
 describe('keyboard navigation', () => {
@@ -513,7 +513,9 @@ describe('onCorrect callback', () => {
     userEvent.click(getByLabelText('clue-1-across'));
     // we don't need to await this, as the onCorrect handler is taking care of
     // that for us...
-    userEvent.type(getByLabelText('crossword-input'), 'TWO');
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+      skipClick: true,
+    });
 
     expect(onCorrect).toBeCalledTimes(1);
     expect(onCorrect).toBeCalledWith('across', '1', 'TWO');
@@ -531,12 +533,16 @@ describe('onCorrect callback', () => {
     // We enter an invalid answer, then a valid one (so we get the onCorrect
     // that gets us out of this test).  Our *not* getting the onCorrect for
     // the first answer is the actual test.
-    userEvent.type(getByLabelText('crossword-input'), 'XXX');
+    userEvent.type(getByLabelText('crossword-input'), 'XXX', {
+      skipClick: true,
+    });
 
     expect(onCorrect).toBeCalledTimes(0);
 
     fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
-    userEvent.type(getByLabelText('crossword-input'), 'ONE');
+    userEvent.type(getByLabelText('crossword-input'), 'ONE', {
+      skipClick: true,
+    });
 
     expect(onCorrect).toBeCalledTimes(1);
     expect(onCorrect).toBeCalledWith('down', '2', 'ONE');
@@ -555,7 +561,7 @@ describe('onCellChange callback', () => {
     );
 
     userEvent.click(getByLabelText('clue-1-across'));
-    userEvent.type(getByLabelText('crossword-input'), 'T');
+    userEvent.type(getByLabelText('crossword-input'), 'T', { skipClick: true });
 
     expect(onCellChange).toBeCalledTimes(1);
     expect(onCellChange).toBeCalledWith(0, 0, 'T');
@@ -572,13 +578,13 @@ describe('onCellChange callback', () => {
     );
 
     userEvent.click(getByLabelText('clue-1-across'));
-    userEvent.type(getByLabelText('crossword-input'), 'T');
+    userEvent.type(getByLabelText('crossword-input'), 'T', { skipClick: true });
 
     expect(onCellChange).toBeCalledTimes(1);
     onCellChange.mockClear();
 
     userEvent.click(getByLabelText('clue-1-across'));
-    userEvent.type(getByLabelText('crossword-input'), 'T');
+    userEvent.type(getByLabelText('crossword-input'), 'T', { skipClick: true });
     expect(onCellChange).toBeCalledTimes(0);
   });
 });
@@ -610,11 +616,15 @@ describe('onCrosswordCorrect callback', () => {
 
     onCrosswordCorrect.mockClear();
     userEvent.click(getByLabelText('clue-1-across'));
-    userEvent.type(getByLabelText('crossword-input'), 'TWO');
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+      skipClick: true,
+    });
     userEvent.click(getByLabelText('clue-2-down'));
-    userEvent.type(getByLabelText('crossword-input'), 'ON');
+    userEvent.type(getByLabelText('crossword-input'), 'ON', {
+      skipClick: true,
+    });
     expect(onCrosswordCorrect).toBeCalledTimes(0);
-    userEvent.type(getByLabelText('crossword-input'), 'E');
+    userEvent.type(getByLabelText('crossword-input'), 'E', { skipClick: true });
 
     expect(onCrosswordCorrect).toBeCalledTimes(1);
     expect(onCrosswordCorrect).toBeCalledWith(true);
@@ -632,13 +642,17 @@ describe('onCrosswordCorrect callback', () => {
 
     onCrosswordCorrect.mockClear();
     userEvent.click(getByLabelText('clue-1-across'));
-    userEvent.type(getByLabelText('crossword-input'), 'TWO');
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+      skipClick: true,
+    });
     userEvent.click(getByLabelText('clue-2-down'));
-    userEvent.type(getByLabelText('crossword-input'), 'ONE');
+    userEvent.type(getByLabelText('crossword-input'), 'ONE', {
+      skipClick: true,
+    });
     expect(onCrosswordCorrect).toBeCalledTimes(1);
     onCrosswordCorrect.mockClear();
 
-    userEvent.type(getByLabelText('crossword-input'), 'X');
+    userEvent.type(getByLabelText('crossword-input'), 'X', { skipClick: true });
 
     expect(onCrosswordCorrect).toBeCalledTimes(1);
     expect(onCrosswordCorrect).toBeCalledWith(false);
