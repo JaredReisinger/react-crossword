@@ -38,7 +38,9 @@
     "build": "node build-tool/build.js",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
-    "doc:deploy": "npm run doc:build && gh-pages --dist styleguide"
+    "doc:deploy": "npm run doc:build && gh-pages --dist styleguide",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "files": [
     "/dist",
@@ -67,7 +69,8 @@
   },
   "dependencies": {
     "immer": "^7.0.7",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "snyk": "^1.373.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -142,5 +145,6 @@
     "prop-types": "15.x",
     "react-dom": "16.x",
     "react": "16.x"
-  }
+  },
+  "snyk": true
 }
