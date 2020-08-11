@@ -1,3 +1,11 @@
+## [2.2.2](https://github.com/JaredReisinger/react-crossword/compare/v2.2.1...v2.2.2) (2020-08-11)
+
+
+### Bug Fixes
+
+* **dependencies:** move run-time dependencies into regular dependencies ([53f684a](https://github.com/JaredReisinger/react-crossword/commit/53f684ab0ba4e1e799c24965f0932f99bba44758)), closes [#31](https://github.com/JaredReisinger/react-crossword/issues/31)
+* **dependencies:** update all dependencies ([9cdbe1e](https://github.com/JaredReisinger/react-crossword/commit/9cdbe1efb1c60d79383a2cac06d487c1224c731e))
+
 ## [2.2.1](https://github.com/JaredReisinger/react-crossword/compare/v2.2.0...v2.2.1) (2020-06-02)
 
 
