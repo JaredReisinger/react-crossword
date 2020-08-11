@@ -41,7 +41,9 @@
     "doc:deploy": "npm run doc:build && gh-pages --dist styleguide"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "!**/__test__",
+    "!**/*.test.js"
   ],
   "publishConfig": {
     "access": "public"
