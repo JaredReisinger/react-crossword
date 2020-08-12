@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/JaredReisinger/react-crossword/compare/v2.2.3...v2.2.4) (2020-08-12)
+
+
+### Bug Fixes
+
+* **dependencies:** upgrade snyk (and kick off new build/release) ([fb86ecd](https://github.com/JaredReisinger/react-crossword/commit/fb86ecd78333e96a07e98935608cee45101dc20f)), closes [#33](https://github.com/JaredReisinger/react-crossword/issues/33)
+
 ## [2.2.3](https://github.com/JaredReisinger/react-crossword/compare/v2.2.2...v2.2.3) (2020-08-11)
 
 
