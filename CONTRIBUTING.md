@@ -2,7 +2,7 @@
 
 :+1::tada: First off, thank you for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines and expectations for contributing to react-crossword. Note that these are _guidelines_, not set-in-stone rules. Use you best judgment, and also feel free to propose changes to this document itself in a code request, or by opening an issue.
+The following is a set of guidelines and expectations for contributing to react-crossword. Note that these are _guidelines_, not set-in-stone rules. Use your best judgment, and also feel free to propose changes to this document itself in a code request, or by opening an issue.
 
 #### Table of contents
 
