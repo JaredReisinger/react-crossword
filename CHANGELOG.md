@@ -1,3 +1,11 @@
+## [2.2.5](https://github.com/JaredReisinger/react-crossword/compare/v2.2.4...v2.2.5) (2020-08-14)
+
+
+### Bug Fixes
+
+* upgrade eslint-plugin-react from 7.20.5 to 7.20.6 ([b7fdb92](https://github.com/JaredReisinger/react-crossword/commit/b7fdb923341fd2635da8d6aa93a1026750d44cd7))
+* upgrade jest from 26.3.0 to 26.4.0 ([18b1e94](https://github.com/JaredReisinger/react-crossword/commit/18b1e949110ed7b5d7909adcd783363ab3940413))
+
 ## [2.2.4](https://github.com/JaredReisinger/react-crossword/compare/v2.2.3...v2.2.4) (2020-08-12)
 
 
