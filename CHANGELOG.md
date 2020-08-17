@@ -1,3 +1,13 @@
+## [2.2.6](https://github.com/JaredReisinger/react-crossword/compare/v2.2.5...v2.2.6) (2020-08-17)
+
+
+### Bug Fixes
+
+* package.json & package-lock.json to reduce vulnerabilities ([be52987](https://github.com/JaredReisinger/react-crossword/commit/be529870ad8cbc25b5a9965f88aeac3f345aff22))
+* upgrade eslint from 7.6.0 to 7.7.0 ([17ff219](https://github.com/JaredReisinger/react-crossword/commit/17ff219143462acc08da66b353716a8826da90bf))
+* upgrade rollup from 2.23.1 to 2.24.0 ([aa2f1a9](https://github.com/JaredReisinger/react-crossword/commit/aa2f1a99ca6d36d12bc8a242ef50045c7273ce42))
+* upgrade snyk from 1.373.1 to 1.374.0 ([da6744e](https://github.com/JaredReisinger/react-crossword/commit/da6744ec14675b7504c27f1648e1833b537a9f37))
+
 ## [2.2.5](https://github.com/JaredReisinger/react-crossword/compare/v2.2.4...v2.2.5) (2020-08-14)
 
 
