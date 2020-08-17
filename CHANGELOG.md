@@ -1,3 +1,10 @@
+## [2.2.7](https://github.com/JaredReisinger/react-crossword/compare/v2.2.6...v2.2.7) (2020-08-17)
+
+
+### Bug Fixes
+
+* example/package.json & example/package-lock.json to reduce vulnerabilities ([eb2d4db](https://github.com/JaredReisinger/react-crossword/commit/eb2d4db8d5c82155c5921fd7d012f46031dc4ea9))
+
 ## [2.2.6](https://github.com/JaredReisinger/react-crossword/compare/v2.2.5...v2.2.6) (2020-08-17)
 
 
