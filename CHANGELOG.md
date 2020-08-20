@@ -1,3 +1,12 @@
+## [2.2.8](https://github.com/JaredReisinger/react-crossword/compare/v2.2.7...v2.2.8) (2020-08-20)
+
+
+### Bug Fixes
+
+* upgrade eslint-plugin-react-hooks from 4.0.8 to 4.1.0 ([b616b87](https://github.com/JaredReisinger/react-crossword/commit/b616b8740f6f98f14e9574c9757ba7212fc25119))
+* upgrade rollup from 2.24.0 to 2.26.3 ([bda2920](https://github.com/JaredReisinger/react-crossword/commit/bda2920ca70160d8ed3c93ec9de9a7140670d4bd))
+* upgrade snyk from 1.374.0 to 1.377.1 ([f0a6cfc](https://github.com/JaredReisinger/react-crossword/commit/f0a6cfc6564c82d03b6a456e594cc42bdc2a142b))
+
 ## [2.2.7](https://github.com/JaredReisinger/react-crossword/compare/v2.2.6...v2.2.7) (2020-08-17)
 
 
