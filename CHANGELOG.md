@@ -1,3 +1,16 @@
+## [2.2.9](https://github.com/JaredReisinger/react-crossword/compare/v2.2.8...v2.2.9) (2020-08-24)
+
+
+### Bug Fixes
+
+* upgrade @babel/core from 7.11.1 to 7.11.4 ([b13c307](https://github.com/JaredReisinger/react-crossword/commit/b13c3075c3a17b1a776febcb4eaa280375b44f39))
+* upgrade commitizen from 4.1.2 to 4.1.5 ([4e7ef03](https://github.com/JaredReisinger/react-crossword/commit/4e7ef032878fa1ccf2b03f3448fb4c25173fdd34))
+* upgrade jest from 26.4.0 to 26.4.1 ([b885f21](https://github.com/JaredReisinger/react-crossword/commit/b885f21be4994baf63741b0b7957f0484d638ab2))
+* upgrade pretty-quick from 2.0.1 to 2.0.2 ([2e82f27](https://github.com/JaredReisinger/react-crossword/commit/2e82f2709913729cf324f52c9a38e1367412e2dc))
+* upgrade rollup from 2.26.3 to 2.26.4 ([62a8020](https://github.com/JaredReisinger/react-crossword/commit/62a8020eb2badd7a00ed4d3fcc4dd0df7807cbee))
+* upgrade snyk from 1.377.1 to 1.380.0 ([52ab171](https://github.com/JaredReisinger/react-crossword/commit/52ab171a46d14b895180510b966fc71f5f845eb1))
+* upgrade snyk from 1.380.0 to 1.381.1 ([a60f850](https://github.com/JaredReisinger/react-crossword/commit/a60f8509baa94a246e28901d028f7e501cb87a88))
+
 ## [2.2.8](https://github.com/JaredReisinger/react-crossword/compare/v2.2.7...v2.2.8) (2020-08-20)
 
 
