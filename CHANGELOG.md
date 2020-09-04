@@ -1,3 +1,15 @@
+## [2.2.11](https://github.com/JaredReisinger/react-crossword/compare/v2.2.10...v2.2.11) (2020-09-04)
+
+
+### Bug Fixes
+
+* upgrade @testing-library/user-event from 12.1.2 to 12.1.3 ([d41cb11](https://github.com/JaredReisinger/react-crossword/commit/d41cb115ff437f051263f8ea6cfe27ff6dfa1e7a))
+* upgrade commitizen from 4.1.5 to 4.2.1 ([cff2a2f](https://github.com/JaredReisinger/react-crossword/commit/cff2a2fc28509f5562f1824573df7ae2adae26a8))
+* upgrade immer from 7.0.7 to 7.0.8 ([43715a9](https://github.com/JaredReisinger/react-crossword/commit/43715a93dcfabc2b2ad98e305bb54edc91a7e61e))
+* upgrade lint-staged from 10.2.11 to 10.2.13 ([fe9f2da](https://github.com/JaredReisinger/react-crossword/commit/fe9f2da749612d09e9871d0c1c0d26327fd918e9))
+* upgrade prettier from 2.0.5 to 2.1.0 ([221da66](https://github.com/JaredReisinger/react-crossword/commit/221da66461d5712b50c7c3f08aec802b36f5676f))
+* upgrade snyk from 1.381.1 to 1.384.0 ([0350352](https://github.com/JaredReisinger/react-crossword/commit/03503524db03562a76180181e4abfef85fe3003e))
+
 ## [2.2.10](https://github.com/JaredReisinger/react-crossword/compare/v2.2.9...v2.2.10) (2020-09-04)
 
 
