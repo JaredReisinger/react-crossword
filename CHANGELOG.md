@@ -1,3 +1,14 @@
+## [2.2.10](https://github.com/JaredReisinger/react-crossword/compare/v2.2.9...v2.2.10) (2020-09-04)
+
+
+### Bug Fixes
+
+* upgrade @testing-library/jest-dom from 5.11.3 to 5.11.4 ([995f1da](https://github.com/JaredReisinger/react-crossword/commit/995f1da56d4068ee683aa644ce846ce72e2d14d3))
+* upgrade @testing-library/react from 10.4.8 to 10.4.9 ([836d825](https://github.com/JaredReisinger/react-crossword/commit/836d825175735908dad6e9f2359402d8d1f6e2dc))
+* upgrade @testing-library/user-event from 12.1.1 to 12.1.2 ([bf0d283](https://github.com/JaredReisinger/react-crossword/commit/bf0d283edc2a692c21932ad00fb799a26fa5e3a7))
+* upgrade jest from 26.4.1 to 26.4.2 ([9159da8](https://github.com/JaredReisinger/react-crossword/commit/9159da88a9266a85b8c03c41003ff392b69ab017))
+* upgrade rollup from 2.26.4 to 2.26.5 ([e2ecf6b](https://github.com/JaredReisinger/react-crossword/commit/e2ecf6bec79200b37e41f7079909e626aaf4792c))
+
 ## [2.2.9](https://github.com/JaredReisinger/react-crossword/compare/v2.2.8...v2.2.9) (2020-08-24)
 
 
