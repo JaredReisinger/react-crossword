@@ -1,7 +1,7 @@
 {
   "name": "@jaredreisinger/react-crossword",
   "homepage": "http://JaredReisinger.github.io/react-crossword",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "description": "A flexible, responsive, and easy-to-use crossword component for React apps",
   "author": {
     "name": "JaredReisinger",
@@ -68,7 +68,7 @@
     ]
   },
   "dependencies": {
-    "immer": "^7.0.7",
+    "immer": "^7.0.8",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
@@ -86,14 +86,14 @@
     "@semantic-release/git": "^9.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.1.2",
+    "@testing-library/user-event": "^12.1.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-minify-dead-code-elimination": "^0.5.1",
     "babel-plugin-styled-components": "^1.11.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "codecov": "^3.7.2",
-    "commitizen": "^4.1.5",
+    "commitizen": "^4.2.1",
     "concurrently": "^5.3.0",
     "cross-spawn": "^7.0.3",
     "eslint": "^7.7.0",
@@ -110,7 +110,7 @@
     "husky": "^4.2.5",
     "inflected": "^2.0.4",
     "jest": "^26.4.2",
-    "lint-staged": "^10.2.11",
+    "lint-staged": "^10.2.13",
     "prettier": "^2.1.0",
     "pretty-quick": "^2.0.2",
     "prop-types": "^15.7.2",
@@ -128,7 +128,7 @@
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^7.0.0",
     "semantic-release": "^17.1.1",
-    "snyk": "^1.381.1",
+    "snyk": "^1.384.0",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-recommended": "^3.0.0",
