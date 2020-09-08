@@ -117,7 +117,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-styleguidist": "^11.0.8",
+    "react-styleguidist": "^11.0.10",
     "react-test-renderer": "^16.13.1",
     "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.2",
