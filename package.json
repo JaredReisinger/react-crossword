@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "immer": "^7.0.8",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
