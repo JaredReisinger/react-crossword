@@ -1,3 +1,15 @@
+## [2.2.12](https://github.com/JaredReisinger/react-crossword/compare/v2.2.11...v2.2.12) (2020-09-08)
+
+
+### Bug Fixes
+
+* upgrade eslint from 7.7.0 to 7.8.1 ([3f347ad](https://github.com/JaredReisinger/react-crossword/commit/3f347add429e33c3165a17f174c3fcb920d2c7e5))
+* upgrade react-styleguidist from 11.0.8 to 11.0.10 ([ff2cbac](https://github.com/JaredReisinger/react-crossword/commit/ff2cbac565b45c2278d449f395dd25db44b7ebff))
+* upgrade rollup from 2.26.5 to 2.26.10 ([3d4068f](https://github.com/JaredReisinger/react-crossword/commit/3d4068fe27b9bf394edfc84c94edd303e1c97a03))
+* upgrade rollup-plugin-terser from 7.0.0 to 7.0.2 ([1338c86](https://github.com/JaredReisinger/react-crossword/commit/1338c86b9959aa3fc9a8e362f832d42c82f0599d))
+* upgrade snyk from 1.384.0 to 1.389.0 ([6f35027](https://github.com/JaredReisinger/react-crossword/commit/6f3502792db4452caffa061475161ccbef33fe3a))
+* upgrade styled-components from 5.1.1 to 5.2.0 ([9470709](https://github.com/JaredReisinger/react-crossword/commit/9470709f4845fbe14626a1fd6ed218c8429657d9))
+
 ## [2.2.11](https://github.com/JaredReisinger/react-crossword/compare/v2.2.10...v2.2.11) (2020-09-04)
 
 
