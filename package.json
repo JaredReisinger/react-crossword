@@ -127,7 +127,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-size-snapshot": "^0.12.0",
-    "rollup-plugin-terser": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^17.1.1",
     "snyk": "^1.389.0",
     "stylelint": "^13.6.1",
