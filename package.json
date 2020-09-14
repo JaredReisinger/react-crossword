@@ -139,7 +139,7 @@
     "stylelint-processor-styled-components": "^1.10.0",
     "webpack-blocks": "^2.1.0",
     "which": "^2.0.2",
-    "yargs-parser": "^19.0.1"
+    "yargs-parser": "^20.0.0"
   },
   "peerDependencies": {
     "@babel/runtime": "7.x",
