@@ -1,3 +1,24 @@
+# [2.3.0](https://github.com/JaredReisinger/react-crossword/compare/v2.2.12...v2.3.0) (2020-09-29)
+
+
+### Bug Fixes
+
+* upgrade @testing-library/user-event from 12.1.3 to 12.1.5 ([3e88e81](https://github.com/JaredReisinger/react-crossword/commit/3e88e81ce87153c68cb25c43a0d9c1cb07d74bc8))
+* upgrade eslint-plugin-react-hooks from 4.1.0 to 4.1.2 ([1dea653](https://github.com/JaredReisinger/react-crossword/commit/1dea65355eee013c764a99c108fd1e310ec58fdf))
+* upgrade lint-staged from 10.2.13 to 10.4.0 ([8600467](https://github.com/JaredReisinger/react-crossword/commit/86004671e5ab18c520b2af90a859e769b0455ed6))
+* upgrade multiple dependencies with Snyk ([4c19f26](https://github.com/JaredReisinger/react-crossword/commit/4c19f2651e9a0b64e521b7654769d57b8191087f))
+* upgrade prettier from 2.1.0 to 2.1.2 ([334f30f](https://github.com/JaredReisinger/react-crossword/commit/334f30f496140ef68987eb599e67877ba4a1f881))
+* upgrade react-styleguidist from 11.0.10 to 11.1.0 ([effaaf5](https://github.com/JaredReisinger/react-crossword/commit/effaaf5edc0238f00b95a0d2d081f6334da31ee8))
+* upgrade rollup from 2.26.10 to 2.27.1 ([e7ce16e](https://github.com/JaredReisinger/react-crossword/commit/e7ce16e2194e996dcbca289b740c107a7905fdc8))
+* upgrade snyk from 1.389.0 to 1.393.0 ([cce01e8](https://github.com/JaredReisinger/react-crossword/commit/cce01e82627dfc769d199f55ec9a4f26b18793da))
+* upgrade snyk from 1.393.0 to 1.398.1 ([1d674b7](https://github.com/JaredReisinger/react-crossword/commit/1d674b799a7f950b5404e77a32bb4a8733f8d6f5))
+* upgrade stylelint from 13.6.1 to 13.7.1 ([bbf0298](https://github.com/JaredReisinger/react-crossword/commit/bbf0298ef76fdff934485555fbceba2edbb2e903))
+
+
+### Features
+
+* upgrade yargs-parser from 19.0.1 to 20.0.0 ([1155112](https://github.com/JaredReisinger/react-crossword/commit/11551129642983446b8b5fe7196507f0c5bf29c5))
+
 ## [2.2.12](https://github.com/JaredReisinger/react-crossword/compare/v2.2.11...v2.2.12) (2020-09-08)
 
 
