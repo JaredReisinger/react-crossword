@@ -1,3 +1,15 @@
+## [2.3.1](https://github.com/JaredReisinger/react-crossword/compare/v2.3.0...v2.3.1) (2020-10-05)
+
+
+### Bug Fixes
+
+* upgrade @testing-library/user-event from 12.1.5 to 12.1.7 ([f929bf4](https://github.com/JaredReisinger/react-crossword/commit/f929bf4e83e127ce6a40e04f0368c75ddd0827f1))
+* upgrade eslint from 7.8.1 to 7.10.0 ([380b452](https://github.com/JaredReisinger/react-crossword/commit/380b45252ecd9ad4b0611ace01bf2df1ce21bf25))
+* upgrade eslint-plugin-react from 7.20.6 to 7.21.3 ([ec95fd5](https://github.com/JaredReisinger/react-crossword/commit/ec95fd59ee09e80cbc0fdeb8911cbbaef2533695))
+* upgrade rollup from 2.27.1 to 2.28.2 ([f88b4e7](https://github.com/JaredReisinger/react-crossword/commit/f88b4e78b9189e5f3a38f4222456215474655261))
+* upgrade snyk from 1.398.1 to 1.406.0 ([c49e8a1](https://github.com/JaredReisinger/react-crossword/commit/c49e8a1b10c640b4969006257ed3b3fe846e63b3))
+* upgrade yargs-parser from 20.0.0 to 20.2.1 ([178c081](https://github.com/JaredReisinger/react-crossword/commit/178c08190abd2fe3b61846daa538bdc94e8da688))
+
 # [2.3.0](https://github.com/JaredReisinger/react-crossword/compare/v2.2.12...v2.3.0) (2020-09-29)
 
 
