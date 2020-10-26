@@ -7,7 +7,7 @@
     "immer": "file:../node_modules/immer",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.4",
     "styled-components": "file:../node_modules/styled-components"
   },
   "scripts": {
