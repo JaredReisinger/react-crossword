@@ -69,7 +69,7 @@
     ]
   },
   "dependencies": {
-    "immer": "^7.0.8",
+    "immer": "^8.0.1",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
