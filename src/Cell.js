@@ -37,7 +37,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     [cellData, onClick]
   );
 
-  const { row, col, guess, number } = cellData;
+  const { row, col, guess, number, answer } = cellData;
 
   const x = col * cellSize;
   const y = row * cellSize;
@@ -46,6 +46,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     <g
       onClick={handleClick}
       style={{ cursor: 'default', fontSize: `${fontSize}px` }}
+      className="clue-cell"
     >
       <rect
         x={x + cellPadding}
@@ -79,6 +80,9 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
         textAnchor="middle"
         dominantBaseline="middle"
         style={{ fill: textColor }}
+        className={
+          answer === guess ? 'guess-text-correct' : 'guess-text-incorrect'
+        }
       >
         {guess}
       </text>
@@ -93,6 +97,7 @@ Cell.propTypes = {
     col: PropTypes.number.isRequired,
     guess: PropTypes.string.isRequired,
     number: PropTypes.string,
+    answer: PropTypes.string,
   }).isRequired,
 
   /** whether this cell has focus */
