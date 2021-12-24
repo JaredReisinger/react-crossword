@@ -3,6 +3,7 @@ parser: '@babel/eslint-parser'
 extends:
   - airbnb
   - plugin:react/recommended
+  - plugin:react/jsx-runtime
   - prettier
 
 env:

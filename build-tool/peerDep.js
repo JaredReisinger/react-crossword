@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-extraneous-dependencies */
 const spawn = require('cross-spawn');
 
 const { pkg } = require('./utils');
@@ -5,7 +7,7 @@ const { pkg } = require('./utils');
 const peerDependencies = pkg.peerDependencies || {};
 const peerDeps = Object.keys(peerDependencies);
 const packageNeedForDevelopment = peerDeps.map(
-  name => `${name}@${peerDependencies[name]}`
+  (name) => `${name}@${peerDependencies[name]}`
 );
 if (packageNeedForDevelopment.length < 1) {
   console.info('No Peer dependencies found');

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 
@@ -14,9 +14,8 @@ import { CrosswordSizeContext } from './context';
  * `cellData` and `renderContext`.
  */
 export default function Cell({ cellData, onClick, focus, highlight }) {
-  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } = useContext(
-    CrosswordSizeContext
-  );
+  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } =
+    useContext(CrosswordSizeContext);
   const {
     // gridBackground,
     cellBackground,

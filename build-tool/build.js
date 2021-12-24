@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
+/* eslint-disable import/no-extraneous-dependencies */
 
 // #!/usr/bin/env node
 
@@ -12,8 +13,8 @@ const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
 const { fromRoot, extensions } = require('./utils');
 
-const here = p => path.join(__dirname, p);
-const hereRelative = p => here(p).replace(process.cwd(), '.');
+const here = (p) => path.join(__dirname, p);
+const hereRelative = (p) => here(p).replace(process.cwd(), '.');
 const parsedArgs = yargsParser(process.argv.slice(2));
 
 const resolveBin = (

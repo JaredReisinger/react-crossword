@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import styled, { ThemeContext } from 'styled-components';
@@ -21,12 +21,8 @@ export default function Clue({
   ...props
 }) {
   const { highlightBackground } = useContext(ThemeContext);
-  const {
-    focused,
-    selectedDirection,
-    selectedNumber,
-    onClueSelected,
-  } = useContext(CrosswordContext);
+  const { focused, selectedDirection, selectedNumber, onClueSelected } =
+    useContext(CrosswordContext);
 
   const handleClick = useCallback(
     (event) => {
