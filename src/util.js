@@ -155,15 +155,17 @@ export function saveGuesses(gridData, storageKey) {
 }
 
 export function serializeGuesses(gridData) {
-  const guesses = gridData.reduce((memo, row, r) => {
-    return row.reduce((memoInner, cellData, c) => {
-      const { guess } = cellData;
-      if (guess !== '') {
-        memoInner[`${r}_${c}`] = cellData.guess;
-      }
-      return memoInner;
-    }, memo);
-  }, {});
+  const guesses = gridData.reduce(
+    (memo, row, r) =>
+      row.reduce((memoInner, cellData, c) => {
+        const { guess } = cellData;
+        if (guess !== '') {
+          memoInner[`${r}_${c}`] = cellData.guess;
+        }
+        return memoInner;
+      }, memo),
+    {}
+  );
 
   return guesses;
 }

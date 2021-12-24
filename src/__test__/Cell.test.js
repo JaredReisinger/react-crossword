@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from 'react';
 import ReactDom from 'react-dom';
 import { ThemeProvider } from 'styled-components';

@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -663,14 +664,21 @@ const Crossword = React.forwardRef(
          *
          * @since 2.2.0
          */
-        isCrosswordCorrect: () => {
-          return crosswordCorrect;
-        },
+        isCrosswordCorrect: () => crosswordCorrect,
       }),
       [data, onLoadedCorrect, useStorage, focus, crosswordCorrect]
     );
 
     // constants for rendering...
+    const crosswordContext = useMemo(
+      () => ({
+        focused,
+        selectedDirection: currentDirection,
+        selectedNumber: currentNumber,
+        onClueSelected: handleClueSelected,
+      }),
+      [focused, currentDirection, currentNumber, handleClueSelected]
+    );
 
     // We have several properties that we bundle together as context for the
     // cells, rather than have them as independent properties.  (Or should they
@@ -681,12 +689,10 @@ const Crossword = React.forwardRef(
     const cellHalf = cellSize / 2;
     const fontSize = cellInner * 0.7;
 
-    const context = {
-      focused,
-      selectedDirection: currentDirection,
-      selectedNumber: currentNumber,
-      onClueSelected: handleClueSelected,
-    };
+    const sizeContext = useMemo(
+      () => ({ cellSize, cellPadding, cellInner, cellHalf, fontSize }),
+      [cellSize, cellPadding, cellInner, cellHalf, fontSize]
+    );
 
     // The final theme is the merger of three values: the "theme" property
     // passed to the component (which takes precedence), any values from
@@ -722,10 +728,8 @@ const Crossword = React.forwardRef(
     }
 
     return (
-      <CrosswordContext.Provider value={context}>
-        <CrosswordSizeContext.Provider
-          value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize }}
-        >
+      <CrosswordContext.Provider value={crosswordContext}>
+        <CrosswordSizeContext.Provider value={sizeContext}>
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect}>
               <GridWrapper>

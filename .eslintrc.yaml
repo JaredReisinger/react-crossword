@@ -1,12 +1,9 @@
-parser: babel-eslint
+parser: '@babel/eslint-parser'
 
 extends:
-  [
-    airbnb,
-    plugin:react/recommended,
-    plugin:prettier/recommended,
-    prettier/react,
-  ]
+  - airbnb
+  - plugin:react/recommended
+  - prettier
 
 env:
   browser: true
@@ -14,7 +11,7 @@ env:
   jest: true
   es6: true
 
-plugins: [react, jsx-a11y, react-hooks, prettier]
+plugins: [react, jsx-a11y, react-hooks]
 
 parserOptions:
   ecmaVersion: 6
@@ -47,6 +44,10 @@ rules:
     - error
     - argsIgnorePattern: ^[a-z]|props$
   no-use-before-define: off
+  react/function-component-definition:
+    - error
+    - namedComponents: function-declaration
+      unnamedComponents: function-expression
   react/jsx-filename-extension:
     - error
     - extensions: [.js, .jsx]
