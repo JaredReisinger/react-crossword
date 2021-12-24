@@ -5,22 +5,45 @@
 
 // #!/usr/bin/env node
 
+// REVIEW (jared): I don't love that this is build magic replicated here from a
+// boilerplate tool.  It needs updating, but is effectively one-off magic.
+
 const fs = require('fs');
 const path = require('path');
 const which = require('which');
-const yargsParser = require('yargs-parser');
+// const yargsParser = require('yargs-parser');
 const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
-const { fromRoot, extensions } = require('./utils');
+const { getPackageInfo } = require('./utils');
 
 const here = (p) => path.join(__dirname, p);
-const hereRelative = (p) => here(p).replace(process.cwd(), '.');
-const parsedArgs = yargsParser(process.argv.slice(2));
+// const hereRelative = (p) => here(p).replace(process.cwd(), '.');
+// const parsedArgs = yargsParser(process.argv.slice(2));
 
-const resolveBin = (
+main().catch(() => process.exit(1));
+
+async function main() {
+  const { fromRoot, extensions } = await getPackageInfo();
+
+  rimraf.sync(fromRoot('dist'));
+
+  const scripts = getConcurrentlyArgs({
+    // we don't need rollup-for UMD, as we aren't loaded by a browser
+    // ...getRollupCommands(),
+    ...getBabelCommands(extensions),
+  });
+
+  const result = spawn.sync(resolveBin('concurrently'), scripts, {
+    stdio: 'inherit',
+  });
+
+  process.exit(result.status);
+}
+
+function resolveBin(
   modName,
   { executable = modName, cwd = process.cwd() } = {}
-) => {
+) {
   let pathFromWhich;
   try {
     pathFromWhich = fs.realpathSync(which.sync(executable));
@@ -43,7 +66,7 @@ const resolveBin = (
     }
     throw error;
   }
-};
+}
 
 function getConcurrentlyArgs(scripts, { killOthers = true } = {}) {
   const colors = [
@@ -80,32 +103,32 @@ function getConcurrentlyArgs(scripts, { killOthers = true } = {}) {
   ].filter(Boolean);
 }
 
-const rollupFormats = ['umd', 'umd.min'];
-const config = `--config ${hereRelative('./rollup.config.js')}`;
-const sizeSnapshot = parsedArgs['size-snapshot'];
-const buildInput = parsedArgs['build-input'];
-
-const rollupCommand = [resolveBin('rollup'), config];
-
-function getRollupCommands() {
-  return rollupFormats.reduce((cmds, format) => {
-    const [formatName, minify = false] = format.split('.');
-    const nodeEnv = minify ? 'production' : 'development';
-    const sourceMap = formatName === 'umd' ? '--sourcemap' : '';
-    const buildMinify = Boolean(minify);
-    const env = [
-      `BUILD_FORMAT=${formatName}`,
-      `NODE_ENV=${nodeEnv}`,
-      buildMinify ? `BUILD_MINIFY=${buildMinify}` : null,
-      sizeSnapshot ? `BUILD_SIZE_SNAPSHOT=${sizeSnapshot}` : null,
-      buildInput ? `BUILD_INPUT='${buildInput}'` : null,
-    ]
-      .filter(Boolean)
-      .join(' ');
-    cmds[format] = [env, ...rollupCommand, sourceMap].filter(Boolean).join(' ');
-    return cmds;
-  }, {});
-}
+// const rollupFormats = ['umd', 'umd.min'];
+// const config = `--config ${hereRelative('./rollup.config.js')}`;
+// const sizeSnapshot = parsedArgs['size-snapshot'];
+// const buildInput = parsedArgs['build-input'];
+//
+// const rollupCommand = [resolveBin('rollup'), config];
+//
+// function getRollupCommands() {
+//   return rollupFormats.reduce((cmds, format) => {
+//     const [formatName, minify = false] = format.split('.');
+//     const nodeEnv = minify ? 'production' : 'development';
+//     const sourceMap = formatName === 'umd' ? '--sourcemap' : '';
+//     const buildMinify = Boolean(minify);
+//     const env = [
+//       `BUILD_FORMAT=${formatName}`,
+//       `NODE_ENV=${nodeEnv}`,
+//       buildMinify ? `BUILD_MINIFY=${buildMinify}` : null,
+//       sizeSnapshot ? `BUILD_SIZE_SNAPSHOT=${sizeSnapshot}` : null,
+//       buildInput ? `BUILD_INPUT='${buildInput}'` : null,
+//     ]
+//       .filter(Boolean)
+//       .join(' ');
+//     cmds[format] = [env, ...rollupCommand, sourceMap].filter(Boolean).join(' ');
+//     return cmds;
+//   }, {});
+// }
 
 const babelFormats = [
   // {
@@ -123,7 +146,7 @@ const babelFormats = [
   // },
 ];
 
-function getBabelCommands() {
+function getBabelCommands(extensions) {
   return babelFormats.reduce((cmds, { name, babelrc }) => {
     cmds[name] = [
       resolveBin('@babel/cli', {
@@ -139,15 +162,3 @@ function getBabelCommands() {
     return cmds;
   }, {});
 }
-
-rimraf.sync(fromRoot('dist'));
-const scripts = getConcurrentlyArgs({
-  // we don't need rollup-for UMD, as we aren't loaded by a browser
-  // ...getRollupCommands(),
-  ...getBabelCommands(),
-});
-const result = spawn.sync(resolveBin('concurrently'), scripts, {
-  stdio: 'inherit',
-});
-
-process.exit(result.status);

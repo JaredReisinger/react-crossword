@@ -1,19 +1,29 @@
 const fs = require('fs');
 const path = require('path');
-const readPkgUp = require('read-pkg-up');
 const { DEFAULT_EXTENSIONS } = require('@babel/core');
 
-const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
-  cwd: fs.realpathSync(process.cwd()),
-});
+async function getPackageInfo() {
+  const { readPackageUpSync } = await import('read-pkg-up');
 
-const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx'];
+  const { packageJson: pkg, path: pkgPath } = readPackageUpSync({
+    cwd: fs.realpathSync(process.cwd()),
+  });
 
-const appDirectory = path.dirname(pkgPath);
-const fromRoot = (...p) => path.join(appDirectory, ...p);
+  const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx'];
+
+  const appDirectory = path.dirname(pkgPath);
+  const fromRoot = (...p) => path.join(appDirectory, ...p);
+
+  return {
+    pkg,
+    fromRoot,
+    extensions,
+  };
+}
 
 module.exports = {
-  pkg,
-  fromRoot,
-  extensions,
+  // pkg,
+  // fromRoot,
+  // extensions,
+  getPackageInfo,
 };

@@ -36,6 +36,7 @@
     "codecov": "codecov",
     "release": "npm run build && semantic-release",
     "build": "node build-tool/build.js",
+    "clean": "rimraf dist",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
     "doc:deploy": "npm run doc:build && gh-pages --dist styleguide",
