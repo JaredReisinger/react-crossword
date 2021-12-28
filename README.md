@@ -110,7 +110,7 @@ help your application "understand" the player's progress:
 | `onLoadedCorrect`    | callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
 | `onCrosswordCorrect` | callback function that's called when the overall crossword is completely correct (or not)                                                                                                                                                                  |
 | `onCellChange`       | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
-
+| `defaultKey`          | string for local storage key  grid name |
 ### Imperative methods
 
 The following imperative methods can be called on a "ref" handle to the component:
