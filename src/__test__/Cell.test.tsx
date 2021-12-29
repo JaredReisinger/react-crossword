@@ -12,7 +12,7 @@ import renderer from 'react-test-renderer';
 import '@testing-library/jest-dom/extend-expect';
 
 import { CrosswordSizeContext } from '../context';
-import Cell from '../Cell';
+import Cell, { CellProps } from '../Cell';
 
 afterEach(cleanup);
 
@@ -45,7 +45,7 @@ const defaultProps = {
   highlight: false,
 };
 
-function CellHelper(props) {
+function CellHelper(props: CellProps) {
   return (
     <ThemeProvider theme={themeContext}>
       <CrosswordSizeContext.Provider value={sizeContext}>
@@ -57,8 +57,8 @@ function CellHelper(props) {
   );
 }
 
-function cellFromContainer(container) {
-  return container.firstChild.firstChild.firstChild;
+function cellFromContainer(container: HTMLElement) {
+  return container!.firstChild!.firstChild!.firstChild!;
 }
 
 it('renders without crashing', () => {
@@ -70,8 +70,8 @@ it('renders without crashing', () => {
 it('renders Cell component correctly', () => {
   const { container } = render(<CellHelper {...defaultProps} />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(themeContext.cellBackground);
-  expect(rect.getAttribute('stroke')).toBe(themeContext.cellBorder);
+  expect(rect?.getAttribute('fill')).toBe(themeContext.cellBackground);
+  expect(rect?.getAttribute('stroke')).toBe(themeContext.cellBorder);
 });
 
 it('matches snapshot', () => {
@@ -102,13 +102,13 @@ it('handles click events with no handler', () => {
 it('renders focus background when focused', () => {
   const { container } = render(<CellHelper {...defaultProps} focus />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(themeContext.focusBackground);
+  expect(rect?.getAttribute('fill')).toBe(themeContext.focusBackground);
 });
 
 it('renders highlight background when highlighted', () => {
   const { container } = render(<CellHelper {...defaultProps} highlight />);
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(themeContext.highlightBackground);
+  expect(rect?.getAttribute('fill')).toBe(themeContext.highlightBackground);
 });
 
 it('renders focus background when focused and highlighted', () => {
@@ -116,7 +116,7 @@ it('renders focus background when focused and highlighted', () => {
     <CellHelper {...defaultProps} focus highlight />
   );
   const rect = container.querySelector('rect');
-  expect(rect.getAttribute('fill')).toBe(themeContext.focusBackground);
+  expect(rect?.getAttribute('fill')).toBe(themeContext.focusBackground);
 });
 
 it('renders number when present', () => {

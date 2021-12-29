@@ -4,6 +4,7 @@
 
 import '@testing-library/jest-dom/extend-expect';
 
+import { CluesData } from '../types';
 import {
   isAcross,
   otherDirection,
@@ -18,6 +19,7 @@ import {
   saveGuesses,
   loadGuesses,
   clearGuesses,
+  GuessData,
 } from '../util';
 
 // afterEach(cleanup);
@@ -97,9 +99,10 @@ describe('calculateExtents()', () => {
     const result = calculateExtents(
       {
         across: {
-          1: { row: 0, col: 3, answer: 'XX' },
-          2: { row: 3, col: 0, answer: 'YY' },
+          1: { row: 0, col: 3, answer: 'XX', clue: '' },
+          2: { row: 3, col: 0, answer: 'YY', clue: '' },
         },
+        down: {},
       },
       'across'
     );
@@ -215,7 +218,7 @@ describe('createGridData()', () => {
 describe('fillClues()', () => {
   it('fillClues can fill across', () => {
     const gridData = createEmptyGrid(3);
-    const clues = { across: [] };
+    const clues: CluesData = { across: [], down: [] };
 
     fillClues(gridData, clues, simpleData, 'across');
 
@@ -236,7 +239,7 @@ describe('fillClues()', () => {
 
   it('fillClues can fill down', () => {
     const gridData = createEmptyGrid(3);
-    const clues = { down: [] };
+    const clues: CluesData = { across: [], down: [] };
 
     fillClues(gridData, clues, simpleData, 'down');
 
@@ -310,9 +313,9 @@ describe('findCorrectAnswers()', () => {
 
 describe('localStorage', () => {
   const storageKey = 'DUMMY';
-  const gridData = [[{ guess: 'X' }]];
+  const gridData: GuessData = [[{ guess: 'X' }]];
 
-  let mockStorage;
+  let mockStorage: jest.SpyInstance<Storage | undefined, []>;
   const setItem = jest.fn();
   const getItem = jest
     .fn()
@@ -332,7 +335,18 @@ describe('localStorage', () => {
   });
 
   function withStorage() {
-    mockStorage.mockReturnValue({ setItem, getItem, removeItem });
+    // unused props...
+    const length = 0;
+    const clear = () => {};
+    const key = (index: number) => null;
+    mockStorage.mockReturnValue({
+      setItem,
+      getItem,
+      removeItem,
+      length,
+      clear,
+      key,
+    });
   }
 
   function withoutStorage() {

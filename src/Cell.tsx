@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 
 import { CrosswordSizeContext } from './context';
-
-// expected props: row, col, answer, crossword, cellSize
+import type { CellData, EnhancedProps } from './types';
 
 /**
  * An individual-letter answer cell within the crossword grid.
@@ -13,7 +12,12 @@ import { CrosswordSizeContext } from './context';
  * a location determined by the `row`, `col`, and `cellSize` properties from
  * `cellData` and `renderContext`.
  */
-export default function Cell({ cellData, onClick, focus, highlight }) {
+export default function Cell({
+  cellData,
+  onClick,
+  focus,
+  highlight,
+}: CellProps) {
   const { cellSize, cellPadding, cellInner, cellHalf, fontSize } =
     useContext(CrosswordSizeContext);
   const {
@@ -114,5 +118,13 @@ Cell.defaultProps = {
   highlight: false,
   onClick: null,
 };
+
+export type CellProps = EnhancedProps<
+  typeof Cell.propTypes,
+  {
+    cellData: CellData;
+    onClick?: (cellData: CellData) => void;
+  }
+>;
 
 // export default Cell;
