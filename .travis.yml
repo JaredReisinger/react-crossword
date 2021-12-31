@@ -1,50 +1,50 @@
-language: node_js
+# language: node_js
 
-node_js:
-  - lts/*
-  - node
+# node_js:
+#   - lts/*
+#   - node
 
-branches:
-  only:
-    - master
-    - /^greenkeeper/.*$/
+# branches:
+#   only:
+#     - master
+#     - /^greenkeeper/.*$/
 
-# this is the default script that runs across *all* versions
-#script: npm run test
-script:
-  - npm run lint
-  - npm run stylelint
-  - npm run test
+# # this is the default script that runs across *all* versions
+# #script: npm run test
+# script:
+#   - npm run lint
+#   - npm run stylelint
+#   - npm run test
 
-jobs:
-  include:
-    - stage: test
-      node_js: lts/*
-      script: npm run test:coverage
-      after_success: npm run codecov
+# jobs:
+#   include:
+#     - stage: test
+#       node_js: lts/*
+#       script: npm run test:coverage
+#       after_success: npm run codecov
 
-    - stage: release
-      node_js: lts/*
-      if: branch = master
-      # overwrite default script?
-      script: skip
-      deploy:
-        - provider: script
-          skip_cleanup: true
-          script: npm run release
+#     - stage: release
+#       node_js: lts/*
+#       if: branch = master
+#       # overwrite default script?
+#       script: skip
+#       deploy:
+#         - provider: script
+#           skip_cleanup: true
+#           script: npm run release
 
-        - provider: script
-          skip_cleanup: true
-          script: npm run doc:build
+#         - provider: script
+#           skip_cleanup: true
+#           script: npm run doc:build
 
-        - provider: pages
-          skip_cleanup: true
-          github_token: $GH_TOKEN
-          keep_history: true
-          on:
-            branch: master
-          local_dir: styleguide
+#         - provider: pages
+#           skip_cleanup: true
+#           github_token: $GH_TOKEN
+#           keep_history: true
+#           on:
+#             branch: master
+#           local_dir: styleguide
 
-notifications:
-  slack:
-    secure: K2oM2UtuGDYnIEX7umRfNGRf2yw9rSpv36SwZevpRerShBFa9hhbbsT5Om1WQiSSe5YMCzfz81byz4anfmsLFzIQZB1L0K3ZBygxT6mteQZqIEMKJ5cD4YaPRhZWhGmzVW4Ao2V6x1SwwmBzjQemzdFBHdLFFMp3GLlhOgu2Qfm6bH9oUajjAoMdNSpFYu+LruV1HZuF+3TIXIrSoiFhgxdv3j7htReWk28HnRAbhS4A7kPtH2nlUjWaJORoj/HlE73FPL7+mjiRchxW7U60Pp6iuH6ddyzDzFNeUiwrEWbP3ySgzBpW11uej57HApENI75EcMUacHU0XGcLttTlnjzVqik1sHaNLfnh1URlEtrPdbPKCasbEd4CVunZGuEeIHtNBkjMwGWVjaZ9UEw0QNuurf/O0PtC8EFTBlQFwFWDBJ+dBYUWv7Jt8cfUrcPl/S66LBYhd56pDS5JNClttt8A+eLxIhFH1n87po+z66K6KqBhfPPQXCMlmeO3DyoMEPaoozei0SeHzmZvxw24kUGksmUNxEA7Zy51ttyMTnR5RW+RgWVwZdVGjxaiworl8i9wQvqGjscYDJjELLglp/es/C5MLCJpkNHSqLY3OuOXb7G3nmQ0EY3CMbxo1sHvmLKsD1iyir/kIRkgyy4WiuDLjwlBQr4q3y9Gtbfkz44=
+# notifications:
+#   slack:
+#     secure: K2oM2UtuGDYnIEX7umRfNGRf2yw9rSpv36SwZevpRerShBFa9hhbbsT5Om1WQiSSe5YMCzfz81byz4anfmsLFzIQZB1L0K3ZBygxT6mteQZqIEMKJ5cD4YaPRhZWhGmzVW4Ao2V6x1SwwmBzjQemzdFBHdLFFMp3GLlhOgu2Qfm6bH9oUajjAoMdNSpFYu+LruV1HZuF+3TIXIrSoiFhgxdv3j7htReWk28HnRAbhS4A7kPtH2nlUjWaJORoj/HlE73FPL7+mjiRchxW7U60Pp6iuH6ddyzDzFNeUiwrEWbP3ySgzBpW11uej57HApENI75EcMUacHU0XGcLttTlnjzVqik1sHaNLfnh1URlEtrPdbPKCasbEd4CVunZGuEeIHtNBkjMwGWVjaZ9UEw0QNuurf/O0PtC8EFTBlQFwFWDBJ+dBYUWv7Jt8cfUrcPl/S66LBYhd56pDS5JNClttt8A+eLxIhFH1n87po+z66K6KqBhfPPQXCMlmeO3DyoMEPaoozei0SeHzmZvxw24kUGksmUNxEA7Zy51ttyMTnR5RW+RgWVwZdVGjxaiworl8i9wQvqGjscYDJjELLglp/es/C5MLCJpkNHSqLY3OuOXb7G3nmQ0EY3CMbxo1sHvmLKsD1iyir/kIRkgyy4WiuDLjwlBQr4q3y9Gtbfkz44=

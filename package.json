@@ -35,7 +35,7 @@
     "release": "npm run dist && semantic-release",
     "build": "tsc",
     "dist": "npm run clean && npm run build",
-    "clean": "rimraf build coverage dist",
+    "clean": "rimraf build coverage dist styleguide",
     "#doc:dev": "styleguidist server",
     "#doc:build": "styleguidist build",
     "#doc:deploy": "npm run doc:build && gh-pages --dist styleguide",
