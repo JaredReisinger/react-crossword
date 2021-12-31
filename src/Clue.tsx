@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeContext } from 'styled-components';
 
@@ -73,6 +73,6 @@ Clue.propTypes = {
 };
 
 Clue.defaultProps = {
-  children: undefined,
+  // children: undefined,
   correct: undefined,
 };

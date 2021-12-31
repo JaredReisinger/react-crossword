@@ -75,7 +75,7 @@ const OuterWrapper = styled.div.attrs<OuterWrapperProps>((props) => ({
   }
 `;
 
-const GridWrapper = styled.div.attrs((props) => ({
+const GridWrapper = styled.div.attrs((/* props */) => ({
   className: 'grid',
 }))`
   /* position: relative; */
@@ -85,7 +85,7 @@ const GridWrapper = styled.div.attrs((props) => ({
   flex: 2 1 50%;
 `;
 
-const CluesWrapper = styled.div.attrs((props) => ({
+const CluesWrapper = styled.div.attrs((/* props */) => ({
   className: 'clues',
 }))`
   padding: 0 1em;
@@ -219,10 +219,11 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
   ) => {
     const [size, setSize] = useState<number>(0);
     const [gridData, setGridData] = useState<GridData>([]);
-    const [clues, setClues] = useState<CluesData>({
-      across: [],
-      down: [],
-    });
+    const [clues, setClues] = useState<CluesData | undefined>();
+    // {
+    // across: [],
+    // down: [],
+    // }
     const [focused, setFocused] = useState(false);
     const [focusedRow, setFocusedRow] = useState(0);
     const [focusedCol, setFocusedCol] = useState(0);
@@ -231,7 +232,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
     const [currentNumber, setCurrentNumber] = useState('1');
     const [bulkChange, setBulkChange] = useState<string | null>(null);
     const [checkQueue, setCheckQueue] = useState<Location[]>([]);
-    const [crosswordCorrect, setCrosswordCorrect] = useState(false);
+    // const [crosswordCorrect, setCrosswordCorrect] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -341,10 +342,14 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
           // update the clue state
           setClues(
             produce((draft) => {
-              const clueInfo = draft[direction].find(
-                (i) => i.number === number
-              )!;
-              clueInfo.correct = correct;
+              if (draft) {
+                const clueInfo = draft[direction].find(
+                  (i) => i.number === number
+                );
+                if (clueInfo) {
+                  clueInfo.correct = correct;
+                }
+              }
             })
           );
 
@@ -367,19 +372,22 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
     }, [checkQueue, checkCorrectness]);
 
     // Any time the clues change, determine if they are all correct or not.
-    useEffect(() => {
-      setCrosswordCorrect(
+    const crosswordCorrect = useMemo(() => {
+      const correct = !!(
         clues &&
-          bothDirections.every((direction) =>
-            clues[direction].every((clueInfo) => clueInfo.correct)
-          )
+        bothDirections.every((direction) =>
+          clues[direction].every((clueInfo) => clueInfo.correct)
+        )
       );
+      // console.log('setting crossword correct', { clues, correct });
+      return correct;
     }, [clues]);
 
     // Let the consumer know everything's correct (or not) if they've asked to
     // be informed.
     useEffect(() => {
       if (onCrosswordCorrect) {
+        // console.log('calling onCrosswordCorrect', crosswordCorrect);
         onCrosswordCorrect(crosswordCorrect);
       }
     }, [crosswordCorrect, onCrosswordCorrect]);
@@ -579,23 +587,28 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
 
     // When the data changes, recalculate the gridData, size, etc.
     useEffect(() => {
-      // eslint-disable-next-line no-shadow
-      const { size, gridData, clues } = createGridData(data);
+      const {
+        size: newSize,
+        gridData: newGridData,
+        clues: newClues,
+      } = createGridData(data);
 
       let loadedCorrect: AnswerTuple[] | undefined;
       if (useStorage) {
-        loadGuesses(gridData, defaultStorageKey);
-        loadedCorrect = findCorrectAnswers(data, gridData);
+        loadGuesses(newGridData, defaultStorageKey);
+        loadedCorrect = findCorrectAnswers(data, newGridData);
 
         loadedCorrect.forEach(([direction, num]) => {
-          const clueInfo = clues[direction].find((i) => i.number === num)!;
-          clueInfo.correct = true;
+          const clueInfo = newClues[direction].find((i) => i.number === num);
+          if (clueInfo) {
+            clueInfo.correct = true;
+          }
         });
       }
 
-      setSize(size);
-      setGridData(gridData);
-      setClues(clues);
+      setSize(newSize);
+      setGridData(newGridData);
+      setClues(newClues);
 
       // Should we start with 1-across highlighted/focused?
 
@@ -658,7 +671,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
     const handleInputClick = useCallback<
       React.MouseEventHandler<HTMLInputElement>
     >(
-      (event) => {
+      (/* event */) => {
         // *don't* event.preventDefault(), because we want the input to actually
         // take focus
 
@@ -722,7 +735,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
           setClues(
             produce((draft) => {
               bothDirections.forEach((direction) => {
-                draft[direction].forEach((clueInfo) => {
+                draft?.[direction]?.forEach((clueInfo) => {
                   delete clueInfo.correct;
                 });
               });
@@ -754,7 +767,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
           setClues(
             produce((draft) => {
               bothDirections.forEach((direction) => {
-                draft[direction].forEach((clueInfo) => {
+                draft?.[direction].forEach((clueInfo) => {
                   clueInfo.correct = true;
                 });
               });
@@ -926,10 +939,10 @@ Crossword.defaultProps = {
   theme: null,
   useStorage: true,
   // useStorage: false,
-  // onCorrect: null,
-  // onLoadedCorrect: null,
-  // onCrosswordCorrect: null,
-  // onCellChange: null,
+  onCorrect: undefined,
+  onLoadedCorrect: undefined,
+  onCrosswordCorrect: undefined,
+  onCellChange: undefined,
 };
 
 export default Crossword;

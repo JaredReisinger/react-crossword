@@ -1,7 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-
+import { jest } from '@jest/globals';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { act, render, cleanup, fireEvent } from '@testing-library/react';

@@ -1,65 +1,96 @@
-parser: '@babel/eslint-parser'
+parser: '@typescript-eslint/parser'
 
 extends:
   - airbnb
   - plugin:react/recommended
   - plugin:react/jsx-runtime
+  - plugin:@typescript-eslint/recommended
   - prettier
 
 env:
   browser: true
-  node: true
-  jest: true
-  es6: true
+  # node: true
+  # jest: true
+  es2020: true
 
-plugins: [react, jsx-a11y, react-hooks]
+plugins:
+  - '@typescript-eslint'
+  - react
+  - jsx-a11y
+  - react-hooks
+  - import
 
 parserOptions:
-  ecmaVersion: 6
+  # ecmaVersion: 2020
   sourceType: module
   ecmaFeatures:
     jsx: true
 
-# settings:
-#   import/resolver:
-#     node:
-#       extensions: [.js, .mjs]
+settings:
+  import/resolver:
+    node:
+      extensions: [.js, .jsx, .ts, .tsx]
 
 rules:
-  # arrow-parens:
-  #   - error
-  #   - as-needed
-  # no-continue:
+  import/extensions:
+    - error
+    - always
+    - js: never
+      jsx: never
+      ts: never
+      tsx: never
   no-nested-ternary: off
   no-param-reassign:
     - error
-    - ignorePropertyModificationsFor:
-        - gridData
-        - cellData
-      ignorePropertyModificationsForRegex:
+    # - ignorePropertyModificationsFor:
+    #     - gridData
+    #     - cellData
+    - ignorePropertyModificationsForRegex:
         - ^memo
   no-plusplus:
     - error
     - allowForLoopAfterthoughts: true
-  no-unused-vars:
+  no-use-before-define:
     - error
-    - argsIgnorePattern: ^[a-z]|props$
-  no-use-before-define: off
-  react/function-component-definition:
-    - error
-    - namedComponents: function-declaration
-      unnamedComponents: function-expression
+    - nofunc
   react/jsx-filename-extension:
     - error
-    - extensions: [.js, .jsx]
+    - extensions: [.jsx, .tsx]
   react/jsx-props-no-spreading: off
-  react/sort-comp: off
-# overrides:
-#   - files: ['test/**', '**/*.spec.mjs']
-#     rules:
-#       # chai has function-less ".exists" and ".true" properties that trigger the
-#       # no-unused-expressions rule
-#       no-unused-expressions: off
-#   - files: ['docs/*-wcv*.js', 'docs/*-wcv*.json']
-#     rules:
-#       sort-keys: error
+  # until I figure out how to omit the React import, we need to ignore the lint
+  # issues with it!
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - varsIgnorePattern: React
+  # # arrow-parens:
+  # #   - error
+  # #   - as-needed
+  # # no-continue:
+  # no-param-reassign:
+  #   - error
+  #   - ignorePropertyModificationsFor:
+  #       - gridData
+  #       - cellData
+  #     ignorePropertyModificationsForRegex:
+  #       - ^memo
+  # no-unused-vars:
+  #   - error
+  #   - argsIgnorePattern: ^[a-z]|props$
+  # no-use-before-define: off
+  # react/function-component-definition:
+  #   - error
+  #   - namedComponents: function-declaration
+  #     unnamedComponents: function-expression
+  # react/jsx-filename-extension:
+  #   - error
+  #   - extensions: [.js, .jsx]
+  # react/sort-comp: off
+overrides:
+  - files: ['*.test.*']
+    rules:
+      import/no-extraneous-dependencies: off # allow imports from dev dependencies!
+      '@typescript-eslint/ban-ts-comment': off
+      '@typescript-eslint/no-unused-vars':
+        - error
+        - varsIgnorePattern: React|jest
+      '@typescript-eslint/no-non-null-assertion': off

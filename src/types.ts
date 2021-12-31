@@ -15,7 +15,8 @@ const clueProps = {
 
 export const clueShape = PropTypes.shape(clueProps);
 
-export type ClueType = EnhancedProps<typeof clueProps, {}>;
+// export type ClueType = EnhancedProps<typeof clueProps, {}>;
+export type ClueType = InferProps<typeof clueProps>;
 
 export interface Location {
   row: number;

@@ -1,9 +1,37 @@
-import { useCallback, useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 
 import { CrosswordSizeContext } from './context';
 import type { CellData, EnhancedProps } from './types';
+
+const cellPropTypes = {
+  /** the data specific to this cell */
+  cellData: PropTypes.shape({
+    row: PropTypes.number.isRequired,
+    col: PropTypes.number.isRequired,
+    guess: PropTypes.string.isRequired,
+    number: PropTypes.string,
+    answer: PropTypes.string,
+  }).isRequired,
+
+  /** whether this cell has focus */
+  focus: PropTypes.bool,
+
+  /** whether this cell is highlighted */
+  highlight: PropTypes.bool,
+
+  /** handler called when the cell is clicked */
+  onClick: PropTypes.func,
+};
+
+export type CellProps = EnhancedProps<
+  typeof cellPropTypes,
+  {
+    cellData: CellData;
+    onClick?: (cellData: CellData) => void;
+  }
+>;
 
 /**
  * An individual-letter answer cell within the crossword grid.
@@ -93,38 +121,12 @@ export default function Cell({
   );
 }
 
-Cell.propTypes = {
-  /** the data specific to this cell */
-  cellData: PropTypes.shape({
-    row: PropTypes.number.isRequired,
-    col: PropTypes.number.isRequired,
-    guess: PropTypes.string.isRequired,
-    number: PropTypes.string,
-    answer: PropTypes.string,
-  }).isRequired,
-
-  /** whether this cell has focus */
-  focus: PropTypes.bool,
-
-  /** whether this cell is highlighted */
-  highlight: PropTypes.bool,
-
-  /** handler called when the cell is clicked */
-  onClick: PropTypes.func,
-};
+Cell.propTypes = cellPropTypes;
 
 Cell.defaultProps = {
   focus: false,
   highlight: false,
   onClick: null,
 };
-
-export type CellProps = EnhancedProps<
-  typeof Cell.propTypes,
-  {
-    cellData: CellData;
-    onClick?: (cellData: CellData) => void;
-  }
->;
 
 // export default Cell;

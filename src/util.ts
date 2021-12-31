@@ -37,7 +37,7 @@ export function calculateExtents(data: CluesInput, direction: Direction) {
   let primaryMax = 0;
   let orthogonalMax = 0;
 
-  Object.entries(data[direction]).forEach(([i, info]) => {
+  Object.entries(data[direction]).forEach(([, info]) => {
     const primary = info[dir.primary] + info.answer.length - 1;
     if (primary > primaryMax) {
       primaryMax = primary;
@@ -57,14 +57,14 @@ export function calculateExtents(data: CluesInput, direction: Direction) {
 
 const emptyCellData = {
   used: false,
-  number: undefined, // null,
+  // number: undefined, // null,
   answer: '',
   guess: '',
   locked: false,
   // row: r,
   // col: c,
-  across: '', //null,
-  down: '', //null,
+  // across: '', //null,
+  // down: '', //null,
 };
 
 export function createEmptyGrid(size: number) {
