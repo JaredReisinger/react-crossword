@@ -45,4 +45,4 @@ jobs:
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run doc:deploy
+        run: npm run doc:deploy -- --user "github-actions-bot <support+actions@github.com>"
