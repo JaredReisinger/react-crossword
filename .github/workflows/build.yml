@@ -33,11 +33,16 @@ jobs:
 
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         uses: codecov/codecov-action@v2
-        with:
-          verbose: true
+        # with:
+        #   verbose: true
 
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release --dry-run
+
+      - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx doc:deploy
