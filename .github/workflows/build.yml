@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [master, main]
+    branches: [main]
   pull_request:
-    branches: [master, main]
+    branches: [main, dev]
 
 jobs:
   build:
@@ -30,3 +30,14 @@ jobs:
       - run: npm run test:coverage
 
       - run: npm run build
+
+      - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
+        uses: codecov/codecov-action@v2
+        with:
+          verbose: true
+
+      - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release --dry-run
