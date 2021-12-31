@@ -8,7 +8,10 @@
 [![license](https://img.shields.io/github/license/JaredReisinger/react-crossword.svg)](./LICENSE)
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![contributors](https://img.shields.io/badge/contributors-3-orange.svg)](#contributors)
+
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Install
 
@@ -134,4 +137,26 @@ This is an attempt to create a less-opinionated component that's much easier to 
 
 ## License
 
-[MIT](./LICENSE), © 2020 [Jared Reisinger](https://github.com/JaredReisinger)
+[MIT](./LICENSE), © 2019-2022 [Jared Reisinger](https://github.com/JaredReisinger)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/dreamer01"><img src="https://avatars.githubusercontent.com/u/16663935?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pushpendra Singh</b></sub></a><br /><a href="#ideas-dreamer01" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://www.maincross.net/"><img src="https://avatars.githubusercontent.com/u/8095144?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Amit Bansal</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Azehawki" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/embeddedt"><img src="https://avatars.githubusercontent.com/u/42941056?v=4?s=100" width="100px;" alt=""/><br /><sub><b>embeddedt</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/commits?author=embeddedt" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
