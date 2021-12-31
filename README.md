@@ -1,12 +1,10 @@
 # ![react-crossword: A flexible, responsive, and easy-to-use crossword component for React apps.](./docs/react-crossword.png)
 
 [![npm version](https://img.shields.io/npm/v/@jaredreisinger/react-crossword.svg)](https://www.npmjs.com/package/@jaredreisinger/react-crossword)
-[![build status](https://img.shields.io/travis/JaredReisinger/react-crossword/master.svg)](https://travis-ci.org/JaredReisinger/react-crossword)
+[![build status](https://img.shields.io/github/workflow/status/JaredReisinger/react-crossword/build/main)](https://github.com/JaredReisinger/react-crossword/actions/workflows/build.yml)
 [![code coverage](https://img.shields.io/codecov/c/gh/JaredReisinger/react-crossword.svg)](https://codecov.io/gh/JaredReisinger/react-crossword)<br />
 [![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/JaredReisinger/react-crossword.svg)](https://snyk.io/test/github/JaredReisinger/react-crossword?targetFile=package.json)
-[![dependencies](https://img.shields.io/david/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword)
-[![dev dependencies](https://img.shields.io/david/dev/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword?type=dev)
-[![peer dependencies](https://img.shields.io/david/peer/JaredReisinger/react-crossword.svg)](https://david-dm.org/JaredReisinger/react-crossword?type=peer)<br />
+[![dependencies](https://img.shields.io/librariesio/release/npm/@jaredreisinger/react-crossword)](https://libraries.io/npm/@jaredreisinger%2Freact-crossword)<br />
 [![license](https://img.shields.io/github/license/JaredReisinger/react-crossword.svg)](./LICENSE)
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
