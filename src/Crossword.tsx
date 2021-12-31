@@ -112,7 +112,10 @@ const CluesWrapper = styled.div.attrs((/* props */) => ({
 `;
 
 const CrosswordPropTypes = {
-  /** clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for details. */
+  /**
+   * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
+   * details.
+   */
   data: PropTypes.shape({
     /** "across" clues and answers */
     across: PropTypes.objectOf(clueShape.isRequired).isRequired,
@@ -146,20 +149,34 @@ const CrosswordPropTypes = {
   /** whether to use browser storage to persist the player's work-in-progress */
   useStorage: PropTypes.bool,
 
-  /** callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself */
+  /**
+   * callback function that fires when a player answers a clue correctly; called
+   * with `(direction, number, answer)` arguments, where `direction` is
+   * `'across'` or `'down'`, `number` is the clue number as text (like `'1'`),
+   * and `answer` is the answer itself
+   */
   onCorrect: PropTypes.func,
-  /** callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve */
+
+  /**
+   * callback function that's called when a crossword is loaded, to batch up
+   * correct answers loaded from storage; passed an array of the same values
+   * that `onCorrect` would recieve
+   */
   onLoadedCorrect: PropTypes.func,
-  /** callback function that's called when the overall crossword is completely correct (or not) */
+
+  /**
+   * callback function that's called when the overall crossword is completely
+   * correct (or not)
+   */
   onCrosswordCorrect: PropTypes.func,
 
   /**
-   *  callback function called when a cell changes (e.g. when the user types a
-   *  letter); called with `(row, col, char)` arguments, where the `row` and
-   *  `column` are the 0-based position of the cell, and `char` is the character
-   *  typed (already massaged into upper-case)
+   * callback function called when a cell changes (e.g. when the user types a
+   * letter); called with `(row, col, char)` arguments, where the `row` and
+   * `column` are the 0-based position of the cell, and `char` is the character
+   * typed (already massaged into upper-case)
    *
-   *  @since 2.1.0
+   * @since 2.1.0
    */
   onCellChange: PropTypes.func,
 };
@@ -167,10 +184,42 @@ const CrosswordPropTypes = {
 export type CrosswordProps = EnhancedProps<
   typeof CrosswordPropTypes,
   {
+    /**
+     * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
+     * details.
+     */
     data: CluesInput;
+
+    /**
+     * callback function that fires when a player answers a clue correctly; called
+     * with `(direction, number, answer)` arguments, where `direction` is
+     * `'across'` or `'down'`, `number` is the clue number as text (like `'1'`),
+     * and `answer` is the answer itself
+     */
     onCorrect?: (direction: Direction, number: string, answer: string) => void;
+
+    /**
+     * callback function that's called when a crossword is loaded, to batch up
+     * correct answers loaded from storage; passed an array of the same values
+     * that `onCorrect` would recieve
+     */
     onLoadedCorrect?: (loaded: AnswerTuple[]) => void;
+
+    /**
+     * callback function that's called when the overall crossword is completely
+     * correct (or not)
+     */
     onCrosswordCorrect?: (isCorrect: boolean) => void;
+
+    /**
+     * callback function called when a cell changes (e.g. when the user types a
+     * letter); called with `(row, col, char)` arguments, where the `row` and
+     * `column` are the 0-based position of the cell, and `char` is the
+     * character typed (already massaged into upper-case)
+     *
+     * @since 2.1.0
+     */
+    onCellChange?: (row: number, col: number, char: string) => void;
   }
 >;
 

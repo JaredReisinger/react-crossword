@@ -28,7 +28,9 @@ const cellPropTypes = {
 export type CellProps = EnhancedProps<
   typeof cellPropTypes,
   {
+    /** the data specific to this cell */
     cellData: CellData;
+    /** handler called when the cell is clicked */
     onClick?: (cellData: CellData) => void;
   }
 >;

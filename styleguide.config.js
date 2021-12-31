@@ -1,32 +1,35 @@
 const path = require('path');
-const {
-  createConfig,
-  babel,
-  css,
-  // sass,
-  match,
-  file,
-} = require('webpack-blocks');
+const docgen = require('react-docgen-typescript');
 
 const { name: title, version } = require('./package.json');
 
-const componentsGlob = 'src/**/[A-Z]*.{js,jsx}';
+const componentsGlob = 'src/**/[A-Z]*.{js,jsx,ts,tsx}';
 
 module.exports = {
   title,
   version,
 
   styleguideDir: 'styleguide',
-  // components: componentsGlob,
+  components: componentsGlob,
   moduleAliases: {
     [title]: path.resolve(__dirname, 'src'),
   },
 
-  webpackConfig: createConfig([
-    babel(),
-    css(),
-    match(['*.gif', '*.jpg', '*.jpeg', '*.png', '*.svg', '*.webp'], [file()]),
-  ]),
+  propsParser: docgen.withCustomConfig('./tsconfig.json', {
+    savePropValueAsString: true,
+  }).parse,
+
+  webpackConfig: {
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          loader: 'ts-loader',
+        },
+      ],
+    },
+  },
 
   theme: {
     sidebarWidth: '20em',
@@ -87,7 +90,7 @@ module.exports = {
       name: 'Default component',
       description:
         'By and large you should only ever care about the default export from this library, the `Crossword` component itself.',
-      components: 'src/Crossword.js',
+      components: 'src/Crossword.tsx',
       // usageMode: 'expand',
       exampleMode: 'expand',
     },
@@ -96,7 +99,7 @@ module.exports = {
       description:
         'You should not typically need to use these components; they are documented here for completeness.',
       components: componentsGlob,
-      ignore: 'src/Crossword.{js,jsx}',
+      ignore: 'src/Crossword.{ts,tsx}',
     },
     {
       name: 'Installable package (npm)',

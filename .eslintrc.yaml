@@ -32,6 +32,9 @@ settings:
     node:
       extensions: [.js, .jsx, .ts, .tsx]
 
+ignorePatterns:
+  - styleguide.config.js
+
 rules:
   import/extensions:
     - error
