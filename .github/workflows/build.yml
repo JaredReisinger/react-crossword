@@ -33,7 +33,8 @@ jobs:
 
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         uses: codecov/codecov-action@v2
-        verbose: true
+        settings:
+          verbose: true
 
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         env:
