@@ -45,4 +45,6 @@ jobs:
       - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run doc:deploy -- --user "github-actions-bot <support+actions@github.com>"
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npm run doc:deploy -- --user "github-actions-bot <support+actions@github.com>"
