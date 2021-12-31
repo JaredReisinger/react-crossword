@@ -1,3 +1,18 @@
+# [3.0.0](https://github.com/JaredReisinger/react-crossword/compare/v2.3.1...v3.0.0) (2021-12-31)
+
+
+### Features
+
+* add classes to Cell for checking per-letter correctness ([df4f2b9](https://github.com/JaredReisinger/react-crossword/commit/df4f2b9375cf79f4d266074e8b0688705177fa11))
+* **dependencies:** massive dependency update! ([5cf5083](https://github.com/JaredReisinger/react-crossword/commit/5cf5083d8d56d2ae9e479782982186db6fc5c0d0))
+* **typescript:** convert to typescript ([255c54a](https://github.com/JaredReisinger/react-crossword/commit/255c54a9c69c3eaf2e20b9a200a2f89e405a0b8d))
+
+
+### BREAKING CHANGES
+
+* **typescript:** Converted library to Typescript **and** to ESM module
+* **dependencies:** all dependencies updated, also updated node version minimum
+
 ## [2.3.1](https://github.com/JaredReisinger/react-crossword/compare/v2.3.0...v2.3.1) (2020-10-05)
 
 
