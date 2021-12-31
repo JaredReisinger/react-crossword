@@ -32,7 +32,7 @@
     "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
     "commit": "git-cz",
     "#codecov": "codecov",
-    "release": "npm run dist && semantic-release",
+    "#release": "npm run dist && semantic-release --dry-run",
     "build": "tsc",
     "dist": "npm run clean && npm run build",
     "clean": "rimraf build coverage dist styleguide",
