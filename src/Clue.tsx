@@ -28,6 +28,7 @@ export default function Clue({
 }: EnhancedProps<
   typeof Clue.propTypes,
   {
+    /** direction of the clue: "across" or "down"; passed back in onClick */
     direction: Direction;
   }
 >) {
