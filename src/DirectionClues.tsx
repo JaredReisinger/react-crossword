@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import Clue from './Clue';
-import type { Direction, EnhancedProps } from './types.js';
+import type { Direction, EnhancedProps } from './types';
 
 interface ClueInfo {
   number: string;

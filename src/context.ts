@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Direction } from './types';
+import type { Direction } from './types.js';
 
 export interface CrosswordContextType {
   focused: boolean;

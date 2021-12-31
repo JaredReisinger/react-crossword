@@ -1,5 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
-import Crossword from '@jaredreisinger/react-crossword';
+import Crossword, {
+  CrosswordImperative,
+  AnswerTuple,
+} from '@jaredreisinger/react-crossword';
 import styled from 'styled-components';
 
 const data = {
@@ -76,26 +79,26 @@ const Messages = styled.pre`
 // features, we actually implement a fair amount...
 
 function App() {
-  const crossword = useRef();
+  const crossword = useRef<CrosswordImperative>(null);
 
   const focus = useCallback((event) => {
-    crossword.current.focus();
+    crossword.current?.focus();
   }, []);
 
   const fillAllAnswers = useCallback((event) => {
-    crossword.current.fillAllAnswers();
+    crossword.current?.fillAllAnswers();
   }, []);
 
   const reset = useCallback((event) => {
-    crossword.current.reset();
+    crossword.current?.reset();
   }, []);
 
   // We don't really *do* anything with callbacks from the Crossword component,
   // but we can at least show that they are happening.  You would want to do
   // something more interesting than simply collecting them as messages.
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
 
-  const addMessage = useCallback((message) => {
+  const addMessage = useCallback((message: string) => {
     setMessages((m) => m.concat(`${message}\n`));
   }, []);
 
@@ -111,7 +114,7 @@ function App() {
   // each element itself is an array with the same values as in onCorrect: the
   // direction, number, and the correct answer.
   const onLoadedCorrect = useCallback(
-    (answers) => {
+    (answers: AnswerTuple[]) => {
       addMessage(
         `onLoadedCorrect:\n${answers
           .map(
@@ -126,7 +129,7 @@ function App() {
 
   // onCrosswordCorrect is called with a truthy/falsy value.
   const onCrosswordCorrect = useCallback(
-    (isCorrect) => {
+    (isCorrect: boolean) => {
       addMessage(`onCrosswordCorrect: ${JSON.stringify(isCorrect)}`);
     },
     [addMessage]
@@ -134,7 +137,7 @@ function App() {
 
   // onCellChange is called with the row, column, and character.
   const onCellChange = useCallback(
-    (row, col, char) => {
+    (row: number, col: number, char: string) => {
       addMessage(`onCellChange: "${row}", "${col}", "${char}"`);
     },
     [addMessage]

@@ -22,9 +22,7 @@
   "engines": {
     "node": ">=14.17.0"
   },
-  "type": "module",
-  "main": "dist/NOT-SUPPORTED",
-  "module": "dist/",
+  "main": "dist/index.js",
   "sideEffects": false,
   "scripts": {
     "test": "jest",
@@ -37,7 +35,7 @@
     "release": "npm run build && semantic-release",
     "build": "tsc",
     "dist": "npm run clean && npm run build",
-    "clean": "rimraf build dist",
+    "clean": "rimraf build coverage dist",
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
     "doc:deploy": "npm run doc:build && gh-pages --dist styleguide",
@@ -47,6 +45,7 @@
   },
   "files": [
     "/dist",
+    "/src",
     "!**/__test__",
     "!**/*.test.js"
   ],

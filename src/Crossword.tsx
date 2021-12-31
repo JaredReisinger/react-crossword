@@ -164,7 +164,7 @@ const CrosswordPropTypes = {
   onCellChange: PropTypes.func,
 };
 
-type CrosswordProps = EnhancedProps<
+export type CrosswordProps = EnhancedProps<
   typeof CrosswordPropTypes,
   {
     data: CluesInput;

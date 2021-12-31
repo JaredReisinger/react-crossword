@@ -4,8 +4,11 @@
 
   "compilerOptions": {
     "outDir": "dist",
-    "target": "es2020",
-    "module": "es2020",
+    // I'd *like* to makes this a pure ESM library, but that doesn't really play
+    // nicely with React/tooling.  Fortunately, we can let Typescript manage
+    // transpiling this to CJS for us.
+    "target": "es2016",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -13,7 +16,6 @@
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "declaration": true,
-    "sourceMap": true,
-    "sourceRoot": "src"
+    "sourceMap": true
   }
 }
