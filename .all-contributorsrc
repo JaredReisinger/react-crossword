@@ -1,0 +1,44 @@
+{
+  "projectName": "react-crossword",
+  "projectOwner": "JaredReisinger",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "badgeTemplate": "[![contributors](https://img.shields.io/badge/contributors-<%= contributors.length %>-orange.svg)](#contributors)",
+  "commit": false,
+  "skipCi": true,
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "dreamer01",
+      "name": "Pushpendra Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16663935?v=4",
+      "profile": "https://github.com/dreamer01",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "zehawki",
+      "name": "Amit Bansal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8095144?v=4",
+      "profile": "https://www.maincross.net/",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "embeddedt",
+      "name": "embeddedt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42941056?v=4",
+      "profile": "https://github.com/embeddedt",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
+}
