@@ -5,6 +5,7 @@ exports[`matches snapshot 1`] = `
   viewBox="0 0 100 100"
 >
   <g
+    className="clue-cell"
     onClick={[Function]}
     style={
       Object {
@@ -23,6 +24,7 @@ exports[`matches snapshot 1`] = `
       y={1}
     />
     <text
+      className="guess-text-incorrect"
       dominantBaseline="middle"
       style={
         Object {

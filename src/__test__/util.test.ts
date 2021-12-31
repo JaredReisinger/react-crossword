@@ -1,5 +1,7 @@
+import { jest } from '@jest/globals';
 import '@testing-library/jest-dom/extend-expect';
 
+import { CluesData } from '../types';
 import {
   isAcross,
   otherDirection,
@@ -14,6 +16,7 @@ import {
   saveGuesses,
   loadGuesses,
   clearGuesses,
+  GuessData,
 } from '../util';
 
 // afterEach(cleanup);
@@ -93,9 +96,10 @@ describe('calculateExtents()', () => {
     const result = calculateExtents(
       {
         across: {
-          1: { row: 0, col: 3, answer: 'XX' },
-          2: { row: 3, col: 0, answer: 'YY' },
+          1: { row: 0, col: 3, answer: 'XX', clue: '' },
+          2: { row: 3, col: 0, answer: 'YY', clue: '' },
         },
+        down: {},
       },
       'across'
     );
@@ -117,10 +121,10 @@ describe('createGridData()', () => {
 
     const cellDefaults = {
       used: false,
-      number: null,
+      // number: null,
       answer: '',
-      across: null,
-      down: null,
+      // across: null,
+      // down: null,
       locked: false,
       guess: '',
     };
@@ -211,7 +215,7 @@ describe('createGridData()', () => {
 describe('fillClues()', () => {
   it('fillClues can fill across', () => {
     const gridData = createEmptyGrid(3);
-    const clues = { across: [] };
+    const clues: CluesData = { across: [], down: [] };
 
     fillClues(gridData, clues, simpleData, 'across');
 
@@ -227,12 +231,15 @@ describe('fillClues()', () => {
     expect(gridData[0][2].answer).toBe('O');
     expect(gridData[0][2].across).toBe('1');
 
-    expect(clues).toEqual({ across: [{ clue: 'one plus one', number: '1' }] });
+    expect(clues).toEqual({
+      across: [{ clue: 'one plus one', number: '1' }],
+      down: [],
+    });
   });
 
   it('fillClues can fill down', () => {
     const gridData = createEmptyGrid(3);
-    const clues = { down: [] };
+    const clues: CluesData = { across: [], down: [] };
 
     fillClues(gridData, clues, simpleData, 'down');
 
@@ -248,7 +255,10 @@ describe('fillClues()', () => {
     expect(gridData[2][2].answer).toBe('E');
     expect(gridData[2][2].down).toBe('2');
 
-    expect(clues).toEqual({ down: [{ clue: 'three minus two', number: '2' }] });
+    expect(clues).toEqual({
+      across: [],
+      down: [{ clue: 'three minus two', number: '2' }],
+    });
   });
 });
 
@@ -306,20 +316,22 @@ describe('findCorrectAnswers()', () => {
 
 describe('localStorage', () => {
   const storageKey = 'DUMMY';
-  const gridData = [[{ guess: 'X' }]];
+  const gridData: GuessData = [[{ guess: 'X' }]];
 
-  let mockStorage;
-  const setItem = jest.fn();
+  let mockStorage: jest.SpyInstance<Storage, []>;
+  const setItem = jest.fn<void, [string]>();
   const getItem = jest
-    .fn()
+    .fn<string | null, [string]>()
     .mockReturnValue(JSON.stringify({ guesses: { '0_0': 'X' } }));
-  const removeItem = jest.fn();
+  const removeItem = jest.fn<void, [string]>();
 
   beforeEach(() => {
     setItem.mockClear();
     getItem.mockClear();
     removeItem.mockClear();
 
+    // @ts-ignore -- 'MockFunctionResult[]' is not assignable to type
+    // 'MockResult<Storage>[]' error!
     mockStorage = jest.spyOn(window, 'localStorage', 'get');
   });
 
@@ -328,10 +340,24 @@ describe('localStorage', () => {
   });
 
   function withStorage() {
-    mockStorage.mockReturnValue({ setItem, getItem, removeItem });
+    // unused props...
+    const length = 0;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const clear = () => {};
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const key = (index: number) => null;
+    mockStorage.mockReturnValue({
+      setItem,
+      getItem,
+      removeItem,
+      length,
+      clear,
+      key,
+    });
   }
 
   function withoutStorage() {
+    // @ts-ignore -- need 'undefined' to fake "no storage" condition
     mockStorage.mockReturnValue(undefined);
   }
 

@@ -1,4 +1,17 @@
-const directionInfo = {
+import type {
+  AnswerTuple,
+  CluesData,
+  CluesInput,
+  Direction,
+  GridData,
+} from './types';
+
+type RowOrCol = 'row' | 'col';
+
+const directionInfo: Record<
+  Direction,
+  { primary: RowOrCol; orthogonal: RowOrCol }
+> = {
   across: {
     primary: 'col',
     orthogonal: 'row',
@@ -9,22 +22,22 @@ const directionInfo = {
   },
 };
 
-export const bothDirections = Object.keys(directionInfo);
+export const bothDirections = Object.keys(directionInfo) as Direction[];
 
-export function isAcross(direction) {
+export function isAcross(direction: Direction) {
   return direction === 'across';
 }
 
-export function otherDirection(direction) {
+export function otherDirection(direction: Direction) {
   return isAcross(direction) ? 'down' : 'across';
 }
 
-export function calculateExtents(data, direction) {
+export function calculateExtents(data: CluesInput, direction: Direction) {
   const dir = directionInfo[direction];
   let primaryMax = 0;
   let orthogonalMax = 0;
 
-  Object.entries(data[direction]).forEach(([i, info]) => {
+  Object.entries(data[direction]).forEach(([, info]) => {
     const primary = info[dir.primary] + info.answer.length - 1;
     if (primary > primaryMax) {
       primaryMax = primary;
@@ -44,18 +57,18 @@ export function calculateExtents(data, direction) {
 
 const emptyCellData = {
   used: false,
-  number: null,
+  // number: undefined, // null,
   answer: '',
   guess: '',
   locked: false,
   // row: r,
   // col: c,
-  across: null,
-  down: null,
+  // across: '', //null,
+  // down: '', //null,
 };
 
-export function createEmptyGrid(size) {
-  const gridData = Array(size);
+export function createEmptyGrid(size: number) {
+  const gridData: GridData = Array(size);
   // Rather than [x][y] in column-major order, the cells are indexed as
   // [row][col] in row-major order.
   for (let r = 0; r < size; r++) {
@@ -72,7 +85,12 @@ export function createEmptyGrid(size) {
   return gridData;
 }
 
-export function fillClues(gridData, clues, data, direction) {
+export function fillClues(
+  gridData: GridData,
+  clues: CluesData,
+  data: CluesInput,
+  direction: Direction
+) {
   const dir = directionInfo[direction];
 
   Object.entries(data[direction]).forEach(([number, info]) => {
@@ -101,7 +119,7 @@ export function fillClues(gridData, clues, data, direction) {
 
 // Given the "nice format" for a crossword, generate the usable data optimized
 // for rendering and our interactivity.
-export function createGridData(data) {
+export function createGridData(data: CluesInput) {
   const acrossMax = calculateExtents(data, 'across');
   const downMax = calculateExtents(data, 'down');
 
@@ -111,7 +129,7 @@ export function createGridData(data) {
   const gridData = createEmptyGrid(size);
 
   // Now fill with answers... and also collect the clues
-  const clues = {
+  const clues: CluesData = {
     across: [],
     down: [],
   };
@@ -123,14 +141,21 @@ export function createGridData(data) {
 }
 
 // sort helper for clues...
-export function byNumber(a, b) {
+interface HasNumber {
+  number: string;
+}
+
+export function byNumber(a: HasNumber, b: HasNumber) {
   const aNum = Number.parseInt(a.number, 10);
   const bNum = Number.parseInt(b.number, 10);
 
   return aNum - bNum;
 }
 
-export function clearGuesses(storageKey) {
+// Guesses *really* only needs the "guess" property...
+export type GuessData = { guess?: string }[][];
+
+export function clearGuesses(storageKey: string) {
   if (!window.localStorage) {
     return;
   }
@@ -138,7 +163,7 @@ export function clearGuesses(storageKey) {
   window.localStorage.removeItem(storageKey);
 }
 
-export function saveGuesses(gridData, storageKey) {
+export function saveGuesses(gridData: GuessData, storageKey: string) {
   const { localStorage } = window;
   if (!localStorage) {
     return;
@@ -154,21 +179,23 @@ export function saveGuesses(gridData, storageKey) {
   localStorage.setItem(storageKey, JSON.stringify(saveData));
 }
 
-export function serializeGuesses(gridData) {
-  const guesses = gridData.reduce((memo, row, r) => {
-    return row.reduce((memoInner, cellData, c) => {
-      const { guess } = cellData;
-      if (guess !== '') {
-        memoInner[`${r}_${c}`] = cellData.guess;
-      }
-      return memoInner;
-    }, memo);
-  }, {});
+export function serializeGuesses(gridData: GuessData) {
+  const guesses = gridData.reduce(
+    (memo, row, r) =>
+      row.reduce<Record<string, string>>((memoInner, cellData, c) => {
+        const { guess } = cellData;
+        if (guess !== '') {
+          memoInner[`${r}_${c}`] = cellData.guess ?? '';
+        }
+        return memoInner;
+      }, memo),
+    {}
+  );
 
   return guesses;
 }
 
-export function loadGuesses(gridData, storageKey) {
+export function loadGuesses(gridData: GuessData, storageKey: string) {
   const { localStorage } = window;
   if (!localStorage) {
     return;
@@ -185,9 +212,14 @@ export function loadGuesses(gridData, storageKey) {
   deserializeGuesses(gridData, saveData.guesses);
 }
 
-export function deserializeGuesses(gridData, guesses) {
+export function deserializeGuesses(
+  gridData: GuessData,
+  guesses: Record<string, string>
+) {
   Object.entries(guesses).forEach(([key, val]) => {
-    const [r, c] = key.split('_');
+    const [rStr, cStr] = key.split('_');
+    const r = parseInt(rStr, 10);
+    const c = parseInt(cStr, 10);
     // ignore any out-of-bounds guesses!
     if (r <= gridData.length - 1 && c <= gridData[0].length - 1) {
       gridData[r][c].guess = val;
@@ -195,8 +227,8 @@ export function deserializeGuesses(gridData, guesses) {
   });
 }
 
-export function findCorrectAnswers(data, gridData) {
-  const correctAnswers = [];
+export function findCorrectAnswers(data: CluesInput, gridData: GuessData) {
+  const correctAnswers: AnswerTuple[] = [];
 
   bothDirections.forEach((direction) => {
     const across = isAcross(direction);

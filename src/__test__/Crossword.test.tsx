@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { act, render, cleanup, fireEvent } from '@testing-library/react';
@@ -6,7 +7,7 @@ import renderer from 'react-test-renderer';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import Crossword from '../Crossword';
+import Crossword, { CrosswordImperative } from '../Crossword';
 
 afterEach(cleanup);
 
@@ -661,7 +662,7 @@ describe('onCrosswordCorrect callback', () => {
 
 describe('imperative commands', () => {
   it('sets focus when requested', () => {
-    const ref = React.createRef();
+    const ref = React.createRef<CrosswordImperative>();
     const { getByLabelText, container } = render(
       <Crossword {...defaultProps} data={simpleData} ref={ref} />
     );
@@ -674,14 +675,14 @@ describe('imperative commands', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current.focus();
+      ref.current?.focus();
     });
 
     expect(doc.activeElement).toBe(input);
   });
 
   it('resets data when requested', () => {
-    const ref = React.createRef();
+    const ref = React.createRef<CrosswordImperative>();
     const { getByLabelText, queryByText } = render(
       <Crossword {...defaultProps} data={simpleData} ref={ref} />
     );
@@ -696,7 +697,7 @@ describe('imperative commands', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current.reset();
+      ref.current?.reset();
     });
 
     textEl = queryByText('X');
@@ -704,7 +705,7 @@ describe('imperative commands', () => {
   });
 
   it('fills answers when requested', () => {
-    const ref = React.createRef();
+    const ref = React.createRef<CrosswordImperative>();
     const { queryByText } = render(
       <Crossword {...defaultProps} data={simpleData} ref={ref} />
     );
@@ -714,7 +715,7 @@ describe('imperative commands', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current.fillAllAnswers();
+      ref.current?.fillAllAnswers();
     });
 
     textEl = queryByText('T');
@@ -723,7 +724,7 @@ describe('imperative commands', () => {
 
   it('calls onLoadedCorrect after filling answers', () => {
     const onLoadedCorrect = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<CrosswordImperative>();
     render(
       <Crossword
         {...defaultProps}
@@ -735,7 +736,7 @@ describe('imperative commands', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current.fillAllAnswers();
+      ref.current?.fillAllAnswers();
     });
 
     expect(onLoadedCorrect).toBeCalledWith([
@@ -746,7 +747,7 @@ describe('imperative commands', () => {
 
   it('calls onCrosswordCorrect after filling answers', () => {
     const onCrosswordCorrect = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<CrosswordImperative>();
     render(
       <Crossword
         {...defaultProps}
@@ -759,7 +760,7 @@ describe('imperative commands', () => {
     onCrosswordCorrect.mockClear();
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current.fillAllAnswers();
+      ref.current?.fillAllAnswers();
     });
 
     expect(onCrosswordCorrect).toBeCalledTimes(1);
@@ -767,9 +768,11 @@ describe('imperative commands', () => {
   });
 });
 
-function posForText(textEl) {
+// for ease of calling, textEl is an HTMLElement.... but it's *really* a
+// SVGTextElement!
+function posForText(textEl: HTMLElement) {
   // get the position from the <rect> that's the first child of the enclosing
   // <g>...
-  const rect = textEl.parentElement.firstChild;
+  const rect = textEl!.parentElement!.firstChild! as SVGRectElement;
   return { x: rect.getAttribute('x'), y: rect.getAttribute('y') };
 }

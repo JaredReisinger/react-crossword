@@ -3,8 +3,35 @@ import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 
 import { CrosswordSizeContext } from './context';
+import type { CellData, EnhancedProps } from './types';
 
-// expected props: row, col, answer, crossword, cellSize
+const cellPropTypes = {
+  /** the data specific to this cell */
+  cellData: PropTypes.shape({
+    row: PropTypes.number.isRequired,
+    col: PropTypes.number.isRequired,
+    guess: PropTypes.string.isRequired,
+    number: PropTypes.string,
+    answer: PropTypes.string,
+  }).isRequired,
+
+  /** whether this cell has focus */
+  focus: PropTypes.bool,
+
+  /** whether this cell is highlighted */
+  highlight: PropTypes.bool,
+
+  /** handler called when the cell is clicked */
+  onClick: PropTypes.func,
+};
+
+export type CellProps = EnhancedProps<
+  typeof cellPropTypes,
+  {
+    cellData: CellData;
+    onClick?: (cellData: CellData) => void;
+  }
+>;
 
 /**
  * An individual-letter answer cell within the crossword grid.
@@ -13,10 +40,14 @@ import { CrosswordSizeContext } from './context';
  * a location determined by the `row`, `col`, and `cellSize` properties from
  * `cellData` and `renderContext`.
  */
-export default function Cell({ cellData, onClick, focus, highlight }) {
-  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } = useContext(
-    CrosswordSizeContext
-  );
+export default function Cell({
+  cellData,
+  onClick,
+  focus,
+  highlight,
+}: CellProps) {
+  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } =
+    useContext(CrosswordSizeContext);
   const {
     // gridBackground,
     cellBackground,
@@ -37,7 +68,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     [cellData, onClick]
   );
 
-  const { row, col, guess, number } = cellData;
+  const { row, col, guess, number, answer } = cellData;
 
   const x = col * cellSize;
   const y = row * cellSize;
@@ -46,6 +77,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     <g
       onClick={handleClick}
       style={{ cursor: 'default', fontSize: `${fontSize}px` }}
+      className="clue-cell"
     >
       <rect
         x={x + cellPadding}
@@ -79,6 +111,9 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
         textAnchor="middle"
         dominantBaseline="middle"
         style={{ fill: textColor }}
+        className={
+          answer === guess ? 'guess-text-correct' : 'guess-text-incorrect'
+        }
       >
         {guess}
       </text>
@@ -86,24 +121,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
   );
 }
 
-Cell.propTypes = {
-  /** the data specific to this cell */
-  cellData: PropTypes.shape({
-    row: PropTypes.number.isRequired,
-    col: PropTypes.number.isRequired,
-    guess: PropTypes.string.isRequired,
-    number: PropTypes.string,
-  }).isRequired,
-
-  /** whether this cell has focus */
-  focus: PropTypes.bool,
-
-  /** whether this cell is highlighted */
-  highlight: PropTypes.bool,
-
-  /** handler called when the cell is clicked */
-  onClick: PropTypes.func,
-};
+Cell.propTypes = cellPropTypes;
 
 Cell.defaultProps = {
   focus: false,

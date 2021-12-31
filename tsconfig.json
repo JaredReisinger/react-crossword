@@ -1,0 +1,21 @@
+{
+  "include": ["src"],
+  "exclude": ["src/__test__/**/*", "**/*.test.*"],
+
+  "compilerOptions": {
+    "outDir": "dist",
+    // I'd *like* to makes this a pure ESM library, but that doesn't really play
+    // nicely with React/tooling.  Fortunately, we can let Typescript manage
+    // transpiling this to CJS for us.
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "declaration": true,
+    "sourceMap": true
+  }
+}

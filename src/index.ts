@@ -4,18 +4,31 @@
 import { ThemeProvider } from 'styled-components';
 
 import Cell from './Cell';
+
 import Clue from './Clue';
+
 import DirectionClues from './DirectionClues';
-import Crossword from './Crossword';
+
+import Crossword, { CrosswordImperative, CrosswordProps } from './Crossword';
+
 import { CrosswordContext, CrosswordSizeContext } from './context';
+
+import { AnswerTuple, CluesInput, ClueType, CellData, Location } from './types';
 
 export {
   Cell,
   Clue,
   DirectionClues,
+  Crossword,
+  CrosswordImperative,
+  CrosswordProps,
   CrosswordContext,
   CrosswordSizeContext,
-  Crossword,
+  AnswerTuple,
+  CluesInput,
+  ClueType,
+  CellData,
+  Location,
   ThemeProvider,
 };
 

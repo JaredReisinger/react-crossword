@@ -3,8 +3,21 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import Clue from './Clue';
+import type { Direction, EnhancedProps } from './types';
 
-export default function DirectionClues({ direction, clues }) {
+interface ClueInfo {
+  number: string;
+  clue: string;
+  correct?: boolean;
+}
+
+export default function DirectionClues({
+  direction,
+  clues,
+}: EnhancedProps<
+  typeof DirectionClues.propTypes,
+  { direction: Direction; clues: ClueInfo[] }
+>) {
   return (
     <div className="direction">
       {/* use something other than h3? */}

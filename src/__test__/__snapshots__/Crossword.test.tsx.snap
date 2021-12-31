@@ -2,10 +2,10 @@
 
 exports[`matches snapshot 1`] = `
 <div
-  className="sc-gtssRu kajSLZ crossword"
+  className="sc-gsDKAQ XgzKk crossword"
 >
   <div
-    className="sc-dlnjPT KWriD grid"
+    className="sc-dkPtRN jMzQyW grid"
   >
     <div
       style={
@@ -59,7 +59,7 @@ exports[`matches snapshot 1`] = `
     </div>
   </div>
   <div
-    className="sc-hKFyIo lllDHv clues"
+    className="sc-hKwDye ODdHP clues"
   />
 </div>
 `;
