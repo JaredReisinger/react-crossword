@@ -33,8 +33,8 @@ const GridWrapper = styled.div.attrs((/* props */) => ({
   className: 'grid',
 }))`
   /* position: relative; */
-  min-width: 20rem;
-  max-width: 60rem; /* Should the size matter? */
+  /* min-width: 20rem; */
+  /* max-width: 60rem; Should the size matter? */
   width: auto;
   flex: 2 1 50%;
 `;

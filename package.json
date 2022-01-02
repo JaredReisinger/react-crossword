@@ -26,10 +26,10 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx,ts,tsx}'",
     "test:dev": "jest --watch",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
-    "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
+    "stylelint": "stylelint src/**/*.{js,jsx,ts,tsx,css,scss,less}",
     "commit": "git-cz",
     "#release": "npm run dist && semantic-release",
     "build": "tsc",

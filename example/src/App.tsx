@@ -4,6 +4,7 @@ import Crossword, {
   CrosswordGrid,
   CrosswordProvider,
   CrosswordProviderImperative,
+  DirectionClues,
   AnswerTuple,
 } from '@jaredreisinger/react-crossword';
 import styled from 'styled-components';
@@ -78,10 +79,28 @@ const CrosswordWrapper = styled.div`
   }
 `;
 
+const CrosswordProviderWrapper = styled(CrosswordWrapper)`
+  max-width: 50em;
+  display: flex;
+  gap: 1em;
+
+  .direction {
+    width: 10em;
+
+    .header {
+      margin-top: 0;
+    }
+  }
+
+  .grid {
+    width: 10em;
+  }
+`;
+
 const Messages = styled.pre`
   flex: auto;
   background-color: rgb(230, 230, 230);
-  /* margin: 1em 0; */
+  margin: 0;
   padding: 1em;
   overflow: auto;
 `;
@@ -290,7 +309,7 @@ function App() {
       </Commands>
 
       <CrosswordMessageBlock>
-        <CrosswordWrapper>
+        <CrosswordProviderWrapper>
           <CrosswordProvider
             ref={crosswordProvider}
             data={data}
@@ -299,11 +318,11 @@ function App() {
             onCrosswordCorrect={onCrosswordCorrectProvider}
             onCellChange={onCellChangeProvider}
           >
-            LALALA
+            <DirectionClues direction="across" />
             <CrosswordGrid />
-            HAHAHA
+            <DirectionClues direction="down" />
           </CrosswordProvider>
-        </CrosswordWrapper>
+        </CrosswordProviderWrapper>
 
         <Messages ref={messagesProviderRef}>{messagesProvider}</Messages>
       </CrosswordMessageBlock>

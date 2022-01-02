@@ -64,7 +64,6 @@ interface OuterWrapperProps {
   correct?: boolean;
 }
 
-// eslint-disable-next-line
 const OuterWrapper = styled.div.attrs<OuterWrapperProps>((props) => ({
   className: `crossword${props.correct ? ' correct' : ''}`,
 }))<OuterWrapperProps>`
@@ -1017,11 +1016,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
               <CluesWrapper>
                 {clues &&
                   bothDirections.map((direction) => (
-                    <DirectionClues
-                      key={direction}
-                      direction={direction}
-                      clues={clues[direction]}
-                    />
+                    <DirectionClues key={direction} direction={direction} />
                   ))}
               </CluesWrapper>
             </OuterWrapper>
