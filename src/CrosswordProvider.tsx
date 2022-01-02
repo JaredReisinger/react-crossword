@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
+
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -10,147 +11,40 @@ import React, {
 import PropTypes from 'prop-types';
 
 import produce from 'immer';
-import styled, { ThemeContext, ThemeProvider } from 'styled-components';
 
-import Cell from './Cell';
-import DirectionClues from './DirectionClues';
-
-import {
-  bothDirections,
-  createGridData,
-  isAcross,
-  otherDirection,
-  clearGuesses,
-  saveGuesses,
-  loadGuesses,
-  findCorrectAnswers,
-} from './util';
-
-import {
-  CrosswordContext,
-  CrosswordContextType,
-  CrosswordSizeContext,
-} from './context';
-
+import { CrosswordContext, CrosswordContextType } from './context';
 import {
   AnswerTuple,
-  CellData,
-  clueShapeOriginal,
   CluesData,
   CluesInput,
+  cluesInputShapeOriginal,
   Direction,
   EnhancedProps,
-  GridData,
+  FocusHandler,
   GridPosition,
-  UnusedCellData,
+  GridData,
   UsedCellData,
+  CellData,
+  UnusedCellData,
 } from './types';
+import {
+  bothDirections,
+  clearGuesses,
+  createGridData,
+  isAcross,
+  loadGuesses,
+  otherDirection,
+  saveGuesses,
+} from './util';
 
-// TODO: make this a component property!
 const defaultStorageKey = 'guesses';
 
-const defaultTheme = {
-  columnBreakpoint: '768px',
-  gridBackground: 'rgb(0,0,0)',
-  cellBackground: 'rgb(255,255,255)',
-  cellBorder: 'rgb(0,0,0)',
-  textColor: 'rgb(0,0,0)',
-  numberColor: 'rgba(0,0,0, 0.25)',
-  focusBackground: 'rgb(255,255,0)',
-  highlightBackground: 'rgb(255,255,204)',
-};
-
-interface OuterWrapperProps {
-  correct?: boolean;
-}
-
-// eslint-disable-next-line
-const OuterWrapper = styled.div.attrs<OuterWrapperProps>((props) => ({
-  className: `crossword${props.correct ? ' correct' : ''}`,
-}))<OuterWrapperProps>`
-  margin: 0;
-  padding: 0;
-  border: 0;
-  /* position: relative; */
-  /* width: 40%; */
-  display: flex;
-  flex-direction: row;
-
-  @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
-    flex-direction: column;
-  }
-`;
-
-const GridWrapper = styled.div.attrs((/* props */) => ({
-  className: 'grid',
-}))`
-  /* position: relative; */
-  min-width: 20rem;
-  max-width: 60rem; /* Should the size matter? */
-  width: auto;
-  flex: 2 1 50%;
-`;
-
-const CluesWrapper = styled.div.attrs((/* props */) => ({
-  className: 'clues',
-}))`
-  padding: 0 1em;
-  flex: 1 2 25%;
-
-  @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
-    margin-top: 2em;
-  }
-
-  .direction {
-    margin-bottom: 2em;
-    /* padding: 0 1em;
-    flex: 1 1 20%; */
-
-    .header {
-      margin-top: 0;
-      margin-bottom: 0.5em;
-    }
-
-    div {
-      margin-top: 0.5em;
-    }
-  }
-`;
-
-const CrosswordPropTypes = {
+const crosswordProviderPropTypes = {
   /**
    * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
    * details.
    */
-  data: PropTypes.shape({
-    /** "across" clues and answers */
-    across: PropTypes.objectOf(clueShapeOriginal.isRequired).isRequired,
-    /** "down" clues and answers */
-    down: PropTypes.objectOf(clueShapeOriginal.isRequired).isRequired,
-  }).isRequired,
-
-  /** presentation values for the crossword; these override any values coming from a parent ThemeProvider context. */
-  theme: PropTypes.shape({
-    /** browser-width at which the clues go from showing beneath the grid to showing beside the grid */
-    columnBreakpoint: PropTypes.string,
-
-    /** overall background color (fill) for the crossword grid; can be `'transparent'` to show through a page background image */
-    gridBackground: PropTypes.string,
-    /**  background for an answer cell */
-    cellBackground: PropTypes.string,
-    /** border for an answer cell */
-    cellBorder: PropTypes.string,
-    /** color for answer text (entered by the player) */
-    textColor: PropTypes.string,
-    /** color for the across/down numbers in the grid */
-    numberColor: PropTypes.string,
-    /** background color for the cell with focus, the one that the player is typing into */
-    focusBackground: PropTypes.string,
-    /** background color for the cells in the answer the player is working on,
-     * helps indicate in which direction focus will be moving; also used as a
-     * background on the active clue  */
-    highlightBackground: PropTypes.string,
-  }),
+  data: cluesInputShapeOriginal.isRequired,
 
   /** whether to use browser storage to persist the player's work-in-progress */
   useStorage: PropTypes.bool,
@@ -181,14 +75,14 @@ const CrosswordPropTypes = {
    * letter); called with `(row, col, char)` arguments, where the `row` and
    * `column` are the 0-based position of the cell, and `char` is the character
    * typed (already massaged into upper-case)
-   *
-   * @since 2.1.0
    */
   onCellChange: PropTypes.func,
+
+  children: PropTypes.node,
 };
 
-export type CrosswordProps = EnhancedProps<
-  typeof CrosswordPropTypes,
+export type CrosswordProviderProps = EnhancedProps<
+  typeof crosswordProviderPropTypes,
   {
     /**
      * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
@@ -222,14 +116,12 @@ export type CrosswordProps = EnhancedProps<
      * letter); called with `(row, col, char)` arguments, where the `row` and
      * `column` are the 0-based position of the cell, and `char` is the
      * character typed (already massaged into upper-case)
-     *
-     * @since 2.1.0
      */
     onCellChange?: (row: number, col: number, char: string) => void;
   }
 >;
 
-export interface CrosswordImperative {
+export interface CrosswordProviderImperative {
   /**
    * Sets focus to the crossword component.
    */
@@ -249,17 +141,20 @@ export interface CrosswordImperative {
 
   /**
    * Returns whether the crossword is entirely correct or not.
-   *
-   * @since 2.2.0
    */
   isCrosswordCorrect: () => boolean;
 }
 
 /**
- * The primary, and default, export from the react-crossword library, Crossword
- * renders an answer grid and clues, and manages data and user interaction.
+ * The fundamental logic and data management component for react-crossword.
+ * This *will* be a imperative-handle-supporting component, eventually.
+ *
+ * @since 3.1.0
  */
-const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
+const CrosswordProvider = React.forwardRef<
+  CrosswordProviderImperative,
+  CrosswordProviderProps
+>(
   (
     {
       data,
@@ -268,33 +163,44 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       onCrosswordCorrect,
       onCellChange,
       useStorage,
-      theme,
+      children,
     },
     ref
   ) => {
-    const [size, setSize] = useState<number>(0);
+    // The original Crossword implementation used separate state to track size and
+    // grid data, and conflated the clues-input-data-based grid data and the
+    // player input guesses.  Let's see if we can keep the clues-input and player
+    // data segregated.
+    const {
+      size,
+      gridData: masterGridData,
+      clues: masterClues,
+    } = useMemo(() => createGridData(data), [data]);
+
     const [gridData, setGridData] = useState<GridData>([]);
     const [clues, setClues] = useState<CluesData | undefined>();
-    // {
-    // across: [],
-    // down: [],
-    // }
+
+    // We can't seem to use state to track the registeredFocusHandler, because
+    // there seems to be a delay in 'focus' being usable after it's set.  We use
+    // a Ref instead.
+    const registeredFocusHandler = useRef<FocusHandler | null>(null);
+    // const [registeredFocusHandler, setRegisteredFocusHandler] =
+    //   useState<FocusHandler | null>(null);
+
+    // interactive player state
     const [focused, setFocused] = useState(false);
-    const [focusedRow, setFocusedRow] = useState(0);
+    const [focusedRow, setFocusedRow] = useState(0); // rename to selectedRow?
     const [focusedCol, setFocusedCol] = useState(0);
     const [currentDirection, setCurrentDirection] =
       useState<Direction>('across');
     const [currentNumber, setCurrentNumber] = useState('1');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bulkChange, setBulkChange] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [checkQueue, setCheckQueue] = useState<GridPosition[]>([]);
-    // const [crosswordCorrect, setCrosswordCorrect] = useState(false);
 
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    const contextTheme = useContext(ThemeContext);
-
-    // Can we know that the provided row/col is valid as input? If so, we could
-    // assert that the return value is a "used" cell, always!
+    // This *internal* getCellData assumes that it's only ever asked for a valid
+    // cell (one that's used).
     const getCellData = useCallback(
       (row: number, col: number) => {
         if (row >= 0 && row < size && col >= 0 && col < size) {
@@ -455,9 +361,17 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
 
     // focus and movement
     const focus = useCallback(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
+      // console.log('CrosswordProvider.focus() called...');
+
+      // If there's a registered focus handler, use it!
+      if (registeredFocusHandler.current) {
+        // console.log('calling registered focus handler...');
+        registeredFocusHandler.current();
         setFocused(true);
+      } else {
+        console.warn(
+          'CrosswordProvider: focus() has no registered handler to call!'
+        );
       }
     }, []);
 
@@ -649,30 +563,26 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       setBulkChange(bulkChange.length === 1 ? null : bulkChange.substring(1));
     }, [bulkChange, handleSingleCharacter]);
 
-    // When the data changes, recalculate the gridData, size, etc.
+    // When the clues *input* data changes, reset/reload the player data
     useEffect(() => {
-      const {
-        size: newSize,
-        gridData: newGridData,
-        clues: newClues,
-      } = createGridData(data);
+      // deep-clone the grid data...
+      const newGridData = masterGridData.map((row) =>
+        row.map((cell) => ({ ...cell }))
+      );
 
-      let loadedCorrect: AnswerTuple[] | undefined;
+      // deep-clone the clue data...
+      const newCluesData: CluesData = {
+        across: masterClues.across.map((clue) => ({ ...clue })),
+        down: masterClues.down.map((clue) => ({ ...clue })),
+      };
+
       if (useStorage) {
         loadGuesses(newGridData, defaultStorageKey);
-        loadedCorrect = findCorrectAnswers(data, newGridData);
-
-        loadedCorrect.forEach(([direction, num]) => {
-          const clueInfo = newClues[direction].find((i) => i.number === num);
-          if (clueInfo) {
-            clueInfo.correct = true;
-          }
-        });
+        // TODO: find correct answers...
       }
 
-      setSize(newSize);
+      setClues(newCluesData);
       setGridData(newGridData);
-      setClues(newClues);
 
       // Should we start with 1-across highlighted/focused?
 
@@ -682,15 +592,9 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       setFocusedCol(0);
       setCurrentDirection('across');
       setCurrentNumber('1');
+    }, [masterClues, masterGridData, useStorage]);
 
-      setBulkChange(null);
-
-      // trigger any "loaded correct" guesses...
-      if (loadedCorrect && loadedCorrect.length > 0 && onLoadedCorrect) {
-        onLoadedCorrect(loadedCorrect);
-      }
-    }, [data, onLoadedCorrect, useStorage]);
-
+    // save the guesses any time they change...
     useEffect(() => {
       if (gridData === null || !useStorage) {
         return;
@@ -731,7 +635,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
 
         focus();
       },
-      [focused, focusedRow, focusedCol, currentDirection, focus]
+      [focused, focusedRow, focusedCol, currentDirection]
     );
 
     const handleInputClick = useCallback<
@@ -757,29 +661,51 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
         setCurrentNumber(cellData[direction] ?? '');
         focus();
       },
-      [currentDirection, focusedRow, focusedCol, getCellData, focus]
+      [currentDirection, focusedRow, focusedCol, getCellData]
     );
 
     const handleClueSelected = useCallback(
       (direction: Direction, number: string) => {
-        const info = data[direction][number];
+        const info = clues?.[direction].find((clue) => clue.number === number);
+
+        if (!info) {
+          return;
+        }
+
+        // console.log('CrosswordProvider.handleClueSelected', { info });
         // TODO: sanity-check info?
         moveTo(info.row, info.col, direction);
+
         focus();
       },
-      [data, moveTo, focus]
+      [clues]
     );
 
-    // expose some imperative methods
+    const registerFocusHandler = useCallback(
+      (focusHandler: FocusHandler | null) => {
+        // console.log('CrosswordProvider.registerFocusHandler() called', {
+        //   name: focusHandler?.name ?? '(NULL)',
+        //   focusHandler,
+        // });
+
+        // *If* registeredFocusHandler is implemented as state, realize that we
+        // can't simply pass it to the setter... the useState React setter would
+        // *invoke* the function and take the return value!  So, we would have
+        // to wrap it in a functional setter (setState(() => focusHandler)).
+        // But, since we're using a Ref, this is just a simple assignment!
+        registeredFocusHandler.current = focusHandler;
+      },
+      []
+    );
+
+    // imperative commands...
     useImperativeHandle(
       ref,
       () => ({
         /**
          * Sets focus to the crossword component.
          */
-        focus: () => {
-          focus();
-        },
+        focus,
 
         /**
          * Resets the entire crossword; clearing all answers in the grid and
@@ -844,8 +770,8 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
           if (onLoadedCorrect) {
             const loadedCorrect: AnswerTuple[] = [];
             bothDirections.forEach((direction) => {
-              Object.entries(data[direction]).forEach(([number, info]) => {
-                loadedCorrect.push([direction, number, info.answer]);
+              clues?.[direction].forEach(({ number, answer }) => {
+                loadedCorrect.push([direction, number, answer]);
               });
             });
 
@@ -855,15 +781,12 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
 
         /**
          * Returns whether the crossword is entirely correct or not.
-         *
-         * @since 2.2.0
          */
         isCrosswordCorrect: () => crosswordCorrect,
       }),
-      [data, onLoadedCorrect, useStorage, focus, crosswordCorrect]
+      [clues, crosswordCorrect, onLoadedCorrect, useStorage]
     );
 
-    // constants for rendering...
     const crosswordContext = useMemo<CrosswordContextType>(
       () => ({
         size,
@@ -875,9 +798,7 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
         handleCellClick,
         handleInputClick,
         handleClueSelected,
-        registerFocusHandler: () => {
-          console.warn('NYI!');
-        },
+        registerFocusHandler,
 
         focused,
         selectedPosition: { row: focusedRow, col: focusedCol },
@@ -905,144 +826,25 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       ]
     );
 
-    // We have several properties that we bundle together as context for the
-    // cells, rather than have them as independent properties.  (Or should they
-    // stay separate? Or be passed as "spread" values?)
-    const cellSize = 100 / size;
-    const cellPadding = 0.125;
-    const cellInner = cellSize - cellPadding * 2;
-    const cellHalf = cellSize / 2;
-    const fontSize = cellInner * 0.7;
-
-    const sizeContext = useMemo(
-      () => ({ cellSize, cellPadding, cellInner, cellHalf, fontSize }),
-      [cellSize, cellPadding, cellInner, cellHalf, fontSize]
-    );
-
-    // The final theme is the merger of three values: the "theme" property
-    // passed to the component (which takes precedence), any values from
-    // ThemeContext, and finally the "defaultTheme" values fill in for any
-    // needed ones that are missing.  (We create this in standard last-one-wins
-    // order in Javascript, of course.)
-    const finalTheme = useMemo(
-      () => ({ ...defaultTheme, ...contextTheme, ...theme }),
-      [defaultTheme, contextTheme, theme]
-    );
-
-    // REVIEW: do we want to recalc this all the time, or cache in state?
-    const cells: React.ReactElement[] = [];
-    if (gridData) {
-      gridData.forEach((rowData, row) => {
-        rowData.forEach((cellData, col) => {
-          if (!cellData.used) {
-            return;
-          }
-          cells.push(
-            <Cell
-              // eslint-disable-next-line react/no-array-index-key
-              key={`R${row}C${col}`}
-              cellData={cellData}
-              focus={focused && row === focusedRow && col === focusedCol}
-              highlight={
-                focused &&
-                !!currentNumber &&
-                cellData[currentDirection] === currentNumber
-              }
-              onClick={handleCellClick}
-            />
-          );
-        });
-      });
-    }
-
     return (
       <CrosswordContext.Provider value={crosswordContext}>
-        <CrosswordSizeContext.Provider value={sizeContext}>
-          <ThemeProvider theme={finalTheme}>
-            <OuterWrapper correct={crosswordCorrect}>
-              <GridWrapper>
-                {/*
-                This div is hard-coded because we *need* a zero-padded,
-                relative-positioned element for aligning the <input> with the
-                cells in the <svg>.
-              */}
-                <div style={{ margin: 0, padding: 0, position: 'relative' }}>
-                  <svg viewBox="0 0 100 100">
-                    <rect
-                      x={0}
-                      y={0}
-                      width={100}
-                      height={100}
-                      fill={finalTheme.gridBackground}
-                    />
-                    {cells}
-                  </svg>
-                  <input
-                    ref={inputRef}
-                    aria-label="crossword-input"
-                    type="text"
-                    onClick={handleInputClick}
-                    onKeyDown={handleInputKeyDown}
-                    onChange={handleInputChange}
-                    value=""
-                    // onInput={this.handleInput}
-                    autoComplete="off"
-                    spellCheck="false"
-                    autoCorrect="off"
-                    style={{
-                      position: 'absolute',
-                      // In order to ensure the top/left positioning makes sense,
-                      // there is an absolutely-positioned <div> with no
-                      // margin/padding that we *don't* expose to consumers.  This
-                      // keeps the math much more reliable.  (But we're still
-                      // seeing a slight vertical deviation towards the bottom of
-                      // the grid!  The "* 0.995" seems to help.)
-                      top: `calc(${focusedRow * cellSize * 0.995}% + 2px)`,
-                      left: `calc(${focusedCol * cellSize}% + 2px)`,
-                      width: `calc(${cellSize}% - 4px)`,
-                      height: `calc(${cellSize}% - 4px)`,
-                      fontSize: `${fontSize * 6}px`, // waaay too small...?
-                      textAlign: 'center',
-                      textAnchor: 'middle',
-                      backgroundColor: 'transparent',
-                      caretColor: 'transparent',
-                      margin: 0,
-                      padding: 0,
-                      border: 0,
-                      cursor: 'default',
-                    }}
-                  />
-                </div>
-              </GridWrapper>
-              <CluesWrapper>
-                {clues &&
-                  bothDirections.map((direction) => (
-                    <DirectionClues
-                      key={direction}
-                      direction={direction}
-                      clues={clues[direction]}
-                    />
-                  ))}
-              </CluesWrapper>
-            </OuterWrapper>
-          </ThemeProvider>
-        </CrosswordSizeContext.Provider>
+        BEFORE
+        {children}
+        AFTER
       </CrosswordContext.Provider>
     );
   }
 );
 
-Crossword.displayName = 'Crossword';
-Crossword.propTypes = CrosswordPropTypes;
+export default CrosswordProvider;
 
-Crossword.defaultProps = {
-  theme: null,
-  useStorage: true,
-  // useStorage: false,
+CrosswordProvider.displayName = 'CrosswordProvider';
+CrosswordProvider.propTypes = crosswordProviderPropTypes;
+CrosswordProvider.defaultProps = {
+  useStorage: undefined,
   onCorrect: undefined,
   onLoadedCorrect: undefined,
   onCrosswordCorrect: undefined,
   onCellChange: undefined,
+  children: undefined,
 };
-
-export default Crossword;

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 
 import { CrosswordSizeContext } from './context';
-import type { CellData, EnhancedProps } from './types';
+import type { UsedCellData, EnhancedProps } from './types';
 
 const cellPropTypes = {
   /** the data specific to this cell */
   cellData: PropTypes.shape({
     row: PropTypes.number.isRequired,
     col: PropTypes.number.isRequired,
-    guess: PropTypes.string.isRequired,
+    guess: PropTypes.string, // .isRequired,
     number: PropTypes.string,
     answer: PropTypes.string,
   }).isRequired,
@@ -29,9 +29,9 @@ export type CellProps = EnhancedProps<
   typeof cellPropTypes,
   {
     /** the data specific to this cell */
-    cellData: CellData;
+    cellData: UsedCellData;
     /** handler called when the cell is clicked */
-    onClick?: (cellData: CellData) => void;
+    onClick?: (cellData: UsedCellData) => void;
   }
 >;
 
@@ -39,7 +39,7 @@ export type CellProps = EnhancedProps<
  * An individual-letter answer cell within the crossword grid.
  *
  * A `Cell` lives inside the SVG for a [`Crossword`](#crossword), and renders at
- * a location determined by the `row`, `col`, and `cellSize` properties from
+ * a position determined by the `row`, `col`, and `cellSize` properties from
  * `cellData` and `renderContext`.
  */
 export default function Cell({

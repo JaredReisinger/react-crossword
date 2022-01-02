@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import '@testing-library/jest-dom/extend-expect';
 
-import { CluesData } from '../types';
+import { CluesData, GridData } from '../types';
 import {
   isAcross,
   otherDirection,
@@ -119,20 +119,9 @@ describe('createGridData()', () => {
   it('creates grid data', () => {
     const { size, gridData, clues } = createGridData(simpleData);
 
-    const cellDefaults = {
-      used: false,
-      // number: null,
-      answer: '',
-      // across: null,
-      // down: null,
-      locked: false,
-      guess: '',
-    };
-
-    const expectedData = [
+    const expectedData: GridData = [
       [
         {
-          ...cellDefaults,
           row: 0,
           col: 0,
           used: true,
@@ -141,7 +130,6 @@ describe('createGridData()', () => {
           across: '1',
         },
         {
-          ...cellDefaults,
           row: 0,
           col: 1,
           used: true,
@@ -149,7 +137,6 @@ describe('createGridData()', () => {
           across: '1',
         },
         {
-          ...cellDefaults,
           row: 0,
           col: 2,
           used: true,
@@ -161,17 +148,16 @@ describe('createGridData()', () => {
       ],
       [
         {
-          ...cellDefaults,
           row: 1,
           col: 0,
+          used: false,
         },
         {
-          ...cellDefaults,
           row: 1,
           col: 1,
+          used: false,
         },
         {
-          ...cellDefaults,
           row: 1,
           col: 2,
           used: true,
@@ -181,17 +167,16 @@ describe('createGridData()', () => {
       ],
       [
         {
-          ...cellDefaults,
           row: 2,
           col: 0,
+          used: false,
         },
         {
-          ...cellDefaults,
           row: 2,
           col: 1,
+          used: false,
         },
         {
-          ...cellDefaults,
           row: 2,
           col: 2,
           used: true,
@@ -202,8 +187,24 @@ describe('createGridData()', () => {
     ];
 
     const expectedClues = {
-      across: [{ number: '1', clue: simpleData.across[1].clue }],
-      down: [{ number: '2', clue: simpleData.down[2].clue }],
+      across: [
+        {
+          number: '1',
+          clue: simpleData.across[1].clue,
+          row: 0,
+          col: 0,
+          answer: 'TWO',
+        },
+      ],
+      down: [
+        {
+          number: '2',
+          clue: simpleData.down[2].clue,
+          row: 0,
+          col: 2,
+          answer: 'ONE',
+        },
+      ],
     };
 
     expect(size).toBe(3);
@@ -220,19 +221,27 @@ describe('fillClues()', () => {
     fillClues(gridData, clues, simpleData, 'across');
 
     expect(gridData[0][0].used).toBeTruthy();
-    expect(gridData[0][0].answer).toBe('T');
-    expect(gridData[0][0].across).toBe('1');
+    if (gridData[0][0].used) {
+      expect(gridData[0][0].answer).toBe('T');
+      expect(gridData[0][0].across).toBe('1');
+    }
 
     expect(gridData[0][1].used).toBeTruthy();
-    expect(gridData[0][1].answer).toBe('W');
-    expect(gridData[0][1].across).toBe('1');
+    if (gridData[0][1].used) {
+      expect(gridData[0][1].answer).toBe('W');
+      expect(gridData[0][1].across).toBe('1');
+    }
 
     expect(gridData[0][2].used).toBeTruthy();
-    expect(gridData[0][2].answer).toBe('O');
-    expect(gridData[0][2].across).toBe('1');
+    if (gridData[0][2].used) {
+      expect(gridData[0][2].answer).toBe('O');
+      expect(gridData[0][2].across).toBe('1');
+    }
 
     expect(clues).toEqual({
-      across: [{ clue: 'one plus one', number: '1' }],
+      across: [
+        { clue: 'one plus one', number: '1', row: 0, col: 0, answer: 'TWO' },
+      ],
       down: [],
     });
   });
@@ -244,20 +253,28 @@ describe('fillClues()', () => {
     fillClues(gridData, clues, simpleData, 'down');
 
     expect(gridData[0][2].used).toBeTruthy();
-    expect(gridData[0][2].answer).toBe('O');
-    expect(gridData[0][2].down).toBe('2');
+    if (gridData[0][2].used) {
+      expect(gridData[0][2].answer).toBe('O');
+      expect(gridData[0][2].down).toBe('2');
+    }
 
     expect(gridData[1][2].used).toBeTruthy();
-    expect(gridData[1][2].answer).toBe('N');
-    expect(gridData[1][2].down).toBe('2');
+    if (gridData[1][2].used) {
+      expect(gridData[1][2].answer).toBe('N');
+      expect(gridData[1][2].down).toBe('2');
+    }
 
     expect(gridData[2][2].used).toBeTruthy();
-    expect(gridData[2][2].answer).toBe('E');
-    expect(gridData[2][2].down).toBe('2');
+    if (gridData[2][2].used) {
+      expect(gridData[2][2].answer).toBe('E');
+      expect(gridData[2][2].down).toBe('2');
+    }
 
     expect(clues).toEqual({
       across: [],
-      down: [{ clue: 'three minus two', number: '2' }],
+      down: [
+        { clue: 'three minus two', number: '2', row: 0, col: 2, answer: 'ONE' },
+      ],
     });
   });
 });
