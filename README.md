@@ -9,7 +9,7 @@
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![contributors](https://img.shields.io/badge/contributors-3-orange.svg)](#contributors)
+[![contributors](https://img.shields.io/badge/contributors-4-orange.svg)](#contributors)
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -108,9 +108,10 @@ help your application "understand" the player's progress:
 | property             | description                                                                                                                                                                                                                                                |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `onCorrect`          | callback function that fires when a player answers a clue correctly; called with `(direction, number, answer)` arguments, where `direction` is `'across'` or `'down'`, `number` is the clue number as text (like `'1'`), and `answer` is the answer itself |
-| `onLoadedCorrect`    | callback function that's called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
-| `onCrosswordCorrect` | callback function that's called when the overall crossword is completely correct (or not)                                                                                                                                                                  |
+| `onLoadedCorrect`    | callback function that’s called when a crossword is loaded, to batch up correct answers loaded from storage; passed an array of the same values that `onCorrect` would recieve                                                                             |
+| `onCrosswordCorrect` | callback function that’s called when the overall crossword is completely correct (or not)                                                                                                                                                                  |
 | `onCellChange`       | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
+| `onClueSelected`     | callback function called when a clue is selected; passed the direction and the “number”                                                                                                                                                                    |
 
 ### Imperative methods
 
@@ -135,10 +136,6 @@ There are several things about the Crossword component from `@guardian/react-cro
 
 This is an attempt to create a less-opinionated component that's much easier to drop in to an arbitrary React page.
 
-## License
-
-[MIT](./LICENSE), © 2019-2022 [Jared Reisinger](https://github.com/JaredReisinger)
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -151,6 +148,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/dreamer01"><img src="https://avatars.githubusercontent.com/u/16663935?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pushpendra Singh</b></sub></a><br /><a href="#ideas-dreamer01" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://www.maincross.net/"><img src="https://avatars.githubusercontent.com/u/8095144?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Amit Bansal</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Azehawki" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/embeddedt"><img src="https://avatars.githubusercontent.com/u/42941056?v=4?s=100" width="100px;" alt=""/><br /><sub><b>embeddedt</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/commits?author=embeddedt" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.soindaial.com.br/"><img src="https://avatars.githubusercontent.com/u/42916864?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Albranco</b></sub></a><br /><a href="#ideas-drero" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
