@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matches snapshot 1`] = `
-<div
-  className="sc-gsDKAQ XgzKk crossword"
->
+Array [
   <div
-    className="sc-dkPtRN jMzQyW grid"
+    className="sc-bdvvtL fECXGP crossword grid"
   >
     <div
       style={
@@ -41,25 +39,44 @@ exports[`matches snapshot 1`] = `
             "border": 0,
             "caretColor": "transparent",
             "cursor": "default",
-            "fontSize": "Infinitypx",
-            "height": "calc(Infinity% - 4px)",
-            "left": "calc(NaN% + 2px)",
+            "fontSize": "418.94999999999993px",
+            "height": "calc(100% - 4px)",
+            "left": "calc(0% + 2px)",
             "margin": 0,
             "padding": 0,
             "position": "absolute",
             "textAlign": "center",
             "textAnchor": "middle",
-            "top": "calc(NaN% + 2px)",
-            "width": "calc(Infinity% - 4px)",
+            "top": "calc(0% + 2px)",
+            "width": "calc(100% - 4px)",
           }
         }
         type="text"
         value=""
       />
     </div>
-  </div>
+  </div>,
   <div
-    className="sc-hKwDye ODdHP clues"
-  />
-</div>
+    className="sc-dkPtRN fFCnQE clues"
+  >
+    <div
+      className="direction"
+    >
+      <h3
+        className="header"
+      >
+        ACROSS
+      </h3>
+    </div>
+    <div
+      className="direction"
+    >
+      <h3
+        className="header"
+      >
+        DOWN
+      </h3>
+    </div>
+  </div>,
+]
 `;

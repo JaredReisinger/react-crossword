@@ -52,7 +52,7 @@ const defaultTheme = {
   highlightBackground: 'rgb(255,255,204)',
 };
 
-const crosswordProviderPropTypes = {
+export const crosswordProviderPropTypes = {
   /**
    * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
    * details.
