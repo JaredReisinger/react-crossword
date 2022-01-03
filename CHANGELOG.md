@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/JaredReisinger/react-crossword/compare/v4.0.1...v4.0.2) (2022-01-03)
+
+
+### Bug Fixes
+
+* update homepage link in package.json to point to new docs location ([f284c63](https://github.com/JaredReisinger/react-crossword/commit/f284c6398b586bb6f860ea65dc0e913600e98764))
+
 ## [4.0.1](https://github.com/JaredReisinger/react-crossword/compare/v4.0.0...v4.0.1) (2022-01-03)
 
 
