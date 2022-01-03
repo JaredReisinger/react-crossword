@@ -13,6 +13,19 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Please see the [complete docs](https://react-crossword.jaredreisinger.com) for in-depth details.
+
+- [Install](#install)
+- [Usage](#usage)
+  - [Clue/data format](#cluedata-format)
+- [Styling](#styling)
+- [Player progress events](#player-progress-events)
+  - [Imperative methods](#imperative-methods)
+- [Background](#background)
+- [Contributors ✨](#contributors-)
+
+---
+
 ## Install
 
 ```sh
@@ -22,8 +35,6 @@ yarn add @jaredreisinger/react-crossword
 ```
 
 ## Usage
-
-> See also the [styleguidist docs for Crossword](https://jaredreisinger.github.io/react-crossword/).
 
 ```javascript
 import React from 'react';
