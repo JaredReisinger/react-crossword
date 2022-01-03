@@ -612,6 +612,21 @@ describe('imperative commands', () => {
     expect(doc.activeElement).toBe(input);
   });
 
+  it('focus without grid does nothing (except log)', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    /* const { container } = */ render(<Simple withClues forwardedRef={ref} />);
+
+    // const doc = container.ownerDocument;
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.focus();
+    });
+
+    // TODO?: start with focus elsewhere and check that it doesn't change?
+    // expect(doc.activeElement).toBe(input);
+  });
+
   it('resets data when requested', () => {
     const ref = React.createRef<CrosswordProviderImperative>();
     const { getByLabelText, queryByText } = render(
