@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/JaredReisinger/react-crossword/compare/v4.0.2...v4.1.0) (2022-01-03)
+
+
+### Features
+
+* add `setGuess(row, col, guess)` imperative ([5cf5110](https://github.com/JaredReisinger/react-crossword/commit/5cf51103e4530574631cc136a8cccb2a6a57992d)), closes [#104](https://github.com/JaredReisinger/react-crossword/issues/104) [#104](https://github.com/JaredReisinger/react-crossword/issues/104)
+
 ## [4.0.2](https://github.com/JaredReisinger/react-crossword/compare/v4.0.1...v4.0.2) (2022-01-03)
 
 
