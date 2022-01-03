@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/JaredReisinger/react-crossword/compare/v4.0.0...v4.0.1) (2022-01-03)
+
+
+### Bug Fixes
+
+* update dev dependencies, force release to update README ([f59241e](https://github.com/JaredReisinger/react-crossword/commit/f59241eb7ab2cd6fb1b240e46f2067c5246e3f99))
+
 # [4.0.0](https://github.com/JaredReisinger/react-crossword/compare/v3.1.0...v4.0.0) (2022-01-03)
 
 
