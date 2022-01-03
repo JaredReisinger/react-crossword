@@ -62,9 +62,10 @@ In addition to providing properties for styling, there are some properties to he
 
 The following imperative methods can be called on a "ref" handle to the component:
 
-| method name            | parameters | description                                                                                         |
-| ---------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
-| `focus()`              | _(none)_   | Sets focus to the crossword component.                                                              |
-| `reset()`              | _(none)_   | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
-| `fillAllAnswers()`     | _(none)_   | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
-| `isCrosswordCorrect()` | _(none)_   | Returns whether the crossword is entirely correct or not.                                           |
+| method name                 | parameters                                  | description                                                                                         |
+| --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `focus()`                   | _(none)_                                    | Sets focus to the crossword component.                                                              |
+| `reset()`                   | _(none)_                                    | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
+| `fillAllAnswers()`          | _(none)_                                    | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
+| `isCrosswordCorrect()`      | _(none)_                                    | Returns whether the crossword is entirely correct or not.                                           |
+| `setGuess(row, col, guess)` | `(row: number, col: number, guess: string)` | Sets the “guess” value for a specific grid position.                                                |

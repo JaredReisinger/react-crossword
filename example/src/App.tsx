@@ -115,6 +115,10 @@ function App() {
     crossword.current?.focus();
   }, []);
 
+  const fillOneCell = useCallback((event) => {
+    crossword.current?.setGuess(0, 2, 'O');
+  }, []);
+
   const fillAllAnswers = useCallback((event) => {
     crossword.current?.fillAllAnswers();
   }, []);
@@ -191,6 +195,10 @@ function App() {
 
   const focusProvider = useCallback((event) => {
     crosswordProvider.current?.focus();
+  }, []);
+
+  const fillOneCellProvider = useCallback((event) => {
+    crosswordProvider.current?.setGuess(0, 2, 'O');
   }, []);
 
   const fillAllAnswersProvider = useCallback((event) => {
@@ -276,6 +284,7 @@ function App() {
 
       <Commands>
         <Command onClick={focus}>Focus</Command>
+        <Command onClick={fillOneCell}>Fill the first letter of 2-down</Command>
         <Command onClick={fillAllAnswers}>Fill all answers</Command>
         <Command onClick={reset}>Reset</Command>
         <Command onClick={clearMessages}>Clear messages</Command>
@@ -303,6 +312,9 @@ function App() {
 
       <Commands>
         <Command onClick={focusProvider}>Focus</Command>
+        <Command onClick={fillOneCellProvider}>
+          Fill the first letter of 2-down
+        </Command>
         <Command onClick={fillAllAnswersProvider}>Fill all answers</Command>
         <Command onClick={resetProvider}>Reset</Command>
         <Command onClick={clearMessagesProvider}>Clear messages</Command>

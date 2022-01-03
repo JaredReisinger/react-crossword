@@ -612,6 +612,21 @@ describe('imperative commands', () => {
     expect(doc.activeElement).toBe(input);
   });
 
+  it('focus without grid does nothing (except log)', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    /* const { container } = */ render(<Simple withClues forwardedRef={ref} />);
+
+    // const doc = container.ownerDocument;
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.focus();
+    });
+
+    // TODO?: start with focus elsewhere and check that it doesn't change?
+    // expect(doc.activeElement).toBe(input);
+  });
+
   it('resets data when requested', () => {
     const ref = React.createRef<CrosswordProviderImperative>();
     const { getByLabelText, queryByText } = render(
@@ -731,6 +746,34 @@ describe('imperative commands', () => {
     });
 
     expect(isCorrect).toBeFalsy();
+  });
+
+  it('setGuess() can set a guess', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    const { queryByText } = render(
+      <Simple withGrid withClues forwardedRef={ref} />
+    );
+
+    let textEl = queryByText('T');
+    expect(textEl).toBeFalsy();
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.setGuess(0, 0, 'T');
+    });
+
+    textEl = queryByText('T');
+    expect(textEl).toBeTruthy();
+  });
+
+  it('setGuess() throws on an unused cell', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    render(<Simple withGrid withClues forwardedRef={ref} />);
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      expect(() => ref.current?.setGuess(1, 0, 'T')).toThrow();
+    });
   });
 });
 

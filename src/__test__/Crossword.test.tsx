@@ -194,4 +194,22 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
 
     expect(isCorrect).toBeFalsy();
   });
+
+  it('setGuess() can set a guess', () => {
+    const ref = React.createRef<CrosswordProvider>();
+    const { queryByText } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
+
+    let textEl = queryByText('T');
+    expect(textEl).toBeFalsy();
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.setGuess(0, 0, 'T');
+    });
+
+    textEl = queryByText('T');
+    expect(textEl).toBeTruthy();
+  });
 });
