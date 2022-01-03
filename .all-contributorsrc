@@ -8,7 +8,7 @@
   ],
   "imageSize": 100,
   "badgeTemplate": "[![contributors](https://img.shields.io/badge/contributors-<%= contributors.length %>-orange.svg)](#contributors)",
-  "commit": false,
+  "commit": true,
   "skipCi": true,
   "commitConvention": "angular",
   "contributorsPerLine": 7,
@@ -45,6 +45,15 @@
       "name": "Albranco",
       "avatar_url": "https://avatars.githubusercontent.com/u/42916864?v=4",
       "profile": "https://www.soindaial.com.br/",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "robmccollough",
+      "name": "Rob McCollough",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42196611?v=4",
+      "profile": "https://www.robmccollough.dev/",
       "contributions": [
         "ideas"
       ]
