@@ -1,3 +1,16 @@
+# [4.0.0](https://github.com/JaredReisinger/react-crossword/compare/v3.1.0...v4.0.0) (2022-01-03)
+
+
+### Documentation
+
+* **readme:** fix README, force breaking change ([08d758e](https://github.com/JaredReisinger/react-crossword/commit/08d758e7a506a8e548dcad0eccb9b6858baae043))
+
+
+### BREAKING CHANGES
+
+* **readme:** The refactoring (a previous commit) was intended to reflect a breaking change...
+doing that now.
+
 # [3.1.0](https://github.com/JaredReisinger/react-crossword/compare/v3.0.0...v3.1.0) (2022-01-03)
 
 
