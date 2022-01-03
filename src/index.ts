@@ -11,9 +11,19 @@ import DirectionClues from './DirectionClues';
 
 import Crossword, { CrosswordImperative, CrosswordProps } from './Crossword';
 
+import CrosswordGrid, {
+  // CrosswordGridImperative,
+  CrosswordGridProps,
+} from './CrosswordGrid';
+
+import CrosswordProvider, {
+  CrosswordProviderImperative,
+  CrosswordProviderProps,
+} from './CrosswordProvider';
+
 import { CrosswordContext, CrosswordSizeContext } from './context';
 
-import { AnswerTuple, CluesInput, ClueType, CellData, Location } from './types';
+import { AnswerTuple, CluesInput, CellData, GridPosition } from './types';
 
 export {
   Cell,
@@ -22,13 +32,18 @@ export {
   Crossword,
   CrosswordImperative,
   CrosswordProps,
+  CrosswordGrid,
+  // CrosswordGridImperative,
+  CrosswordGridProps,
+  CrosswordProvider,
+  CrosswordProviderImperative,
+  CrosswordProviderProps,
   CrosswordContext,
   CrosswordSizeContext,
   AnswerTuple,
   CluesInput,
-  ClueType,
   CellData,
-  Location,
+  GridPosition,
   ThemeProvider,
 };
 

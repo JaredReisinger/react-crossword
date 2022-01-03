@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
     branches: [main, dev]
 
@@ -36,13 +36,13 @@ jobs:
         # with:
         #   verbose: true
 
-      - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
+      - if: ${{ github.event_name == 'push' && github.ref_name == 'main' && startsWith(matrix.node-version, '14.') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
 
-      - if: ${{ github.event_name == 'push' && startsWith(matrix.node-version, '14.') }}
+      - if: ${{ github.event_name == 'push' && github.ref_name == 'main' && startsWith(matrix.node-version, '14.') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

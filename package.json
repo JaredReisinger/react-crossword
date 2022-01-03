@@ -26,10 +26,10 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx,ts,tsx}'",
     "test:dev": "jest --watch",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
-    "stylelint": "stylelint src/**/*.{ts,tsx,jsx,js,css,scss,less}",
+    "stylelint": "stylelint src/**/*.{js,jsx,ts,tsx,css,scss,less}",
     "commit": "git-cz",
     "#release": "npm run dist && semantic-release",
     "build": "tsc",
@@ -64,7 +64,8 @@
   },
   "dependencies": {
     "immer": "^9.0.7",
-    "prop-types": "^15.8.0"
+    "prop-types": "^15.8.0",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.7",
@@ -110,7 +111,6 @@
     "rimraf": "^3.0.2",
     "semantic-release": "^18.0.1",
     "snyk": "^1.812.0",
-    "styled-components": "^5.3.3",
     "stylelint": "^14.2.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^6.0.0",

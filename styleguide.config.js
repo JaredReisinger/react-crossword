@@ -87,19 +87,37 @@ module.exports = {
   pagePerSection: true,
   sections: [
     {
-      name: 'Default component',
+      name: 'Simple usage',
       description:
-        'By and large you should only ever care about the default export from this library, the `Crossword` component itself.',
+        'For the easiest usage, the `Crossword` component is a simple drop-in component that provides a basic layout and the vast majority of the functionality.',
       components: 'src/Crossword.tsx',
       // usageMode: 'expand',
-      exampleMode: 'expand',
+      // exampleMode: 'expand',
+    },
+    {
+      name: 'Configuration and customization',
+      sections: [
+        { name: 'Clue input format', content: 'docs/ClueInputFormat.md' },
+        { name: 'Styling and theming', content: 'docs/Styling.md' },
+      ],
+    },
+    {
+      name: 'Complex layouts',
+      description:
+        'For more-complex layouts, use the `CrosswordProvider` to drive the crossword logic, and `CrosswordGrid` and `DirectionClues` to render the UI as desired.',
+      components: [
+        'src/CrosswordProvider.tsx',
+        'src/CrosswordGrid.tsx',
+        'src/DirectionClues.tsx',
+      ],
     },
     {
       name: 'All other components',
       description:
         'You should not typically need to use these components; they are documented here for completeness.',
       components: componentsGlob,
-      ignore: 'src/Crossword.{ts,tsx}',
+      ignore:
+        'src/{Crossword,CrosswordProvider,CrosswordGrid,DirectionClues}.tsx',
     },
     {
       name: 'Installable package (npm)',

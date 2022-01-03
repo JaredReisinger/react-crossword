@@ -1,9 +1,11 @@
 import type {
   AnswerTuple,
+  CellData,
   CluesData,
   CluesInput,
   Direction,
   GridData,
+  UsedCellData,
 } from './types';
 
 type RowOrCol = 'row' | 'col';
@@ -55,17 +57,16 @@ export function calculateExtents(data: CluesInput, direction: Direction) {
   };
 }
 
-const emptyCellData = {
-  used: false,
-  // number: undefined, // null,
-  answer: '',
-  guess: '',
-  locked: false,
-  // row: r,
-  // col: c,
-  // across: '', //null,
-  // down: '', //null,
-};
+// const emptyCellData: Partial<CellData> = {
+//   used: false,
+//   // number: undefined, // null,
+//   // answer: '',
+//   // guess: '',
+//   // row: r,
+//   // col: c,
+//   // across: '', //null,
+//   // down: '', //null,
+// } as const;
 
 export function createEmptyGrid(size: number) {
   const gridData: GridData = Array(size);
@@ -75,9 +76,10 @@ export function createEmptyGrid(size: number) {
     gridData[r] = Array(size);
     for (let c = 0; c < size; c++) {
       gridData[r][c] = {
-        ...emptyCellData,
+        // ...emptyCellData,
         row: r,
         col: c,
+        used: false,
       };
     }
   }
@@ -98,7 +100,7 @@ export function fillClues(
     for (let i = 0; i < answer.length; i++) {
       const row = rowStart + (dir.primary === 'row' ? i : 0);
       const col = colStart + (dir.primary === 'col' ? i : 0);
-      const cellData = gridData[row][col];
+      const cellData = gridData[row][col] as UsedCellData;
 
       // TODO?: check to ensure the answer is the same if it's already set?
       cellData.used = true;
@@ -111,7 +113,13 @@ export function fillClues(
       }
     }
 
-    clues[direction].push({ number, clue });
+    clues[direction].push({
+      number,
+      clue,
+      answer,
+      col: colStart,
+      row: rowStart,
+    });
   });
 
   clues[direction].sort(byNumber);
@@ -153,7 +161,7 @@ export function byNumber(a: HasNumber, b: HasNumber) {
 }
 
 // Guesses *really* only needs the "guess" property...
-export type GuessData = { guess?: string }[][];
+export type GuessData = ({ guess?: string } | CellData)[][];
 
 export function clearGuesses(storageKey: string) {
   if (!window.localStorage) {
@@ -180,12 +188,12 @@ export function saveGuesses(gridData: GuessData, storageKey: string) {
 }
 
 export function serializeGuesses(gridData: GuessData) {
-  const guesses = gridData.reduce(
+  const guesses = gridData.reduce<Record<string, string>>(
     (memo, row, r) =>
       row.reduce<Record<string, string>>((memoInner, cellData, c) => {
-        const { guess } = cellData;
+        const { guess } = cellData as UsedCellData;
         if (guess !== '') {
-          memoInner[`${r}_${c}`] = cellData.guess ?? '';
+          memoInner[`${r}_${c}`] = (cellData as UsedCellData).guess ?? '';
         }
         return memoInner;
       }, memo),
@@ -222,7 +230,7 @@ export function deserializeGuesses(
     const c = parseInt(cStr, 10);
     // ignore any out-of-bounds guesses!
     if (r <= gridData.length - 1 && c <= gridData[0].length - 1) {
-      gridData[r][c].guess = val;
+      (gridData[r][c] as UsedCellData).guess = val;
     }
   });
 }
@@ -238,7 +246,7 @@ export function findCorrectAnswers(data: CluesInput, gridData: GuessData) {
       for (let i = 0; i < info.answer.length; i++) {
         const r = across ? row : row + i;
         const c = across ? col + i : col;
-        if (gridData[r][c].guess !== info.answer[i]) {
+        if ((gridData[r][c] as UsedCellData).guess !== info.answer[i]) {
           correct = false;
           break;
         }
