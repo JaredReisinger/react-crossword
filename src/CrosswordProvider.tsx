@@ -54,8 +54,9 @@ const defaultTheme = {
 
 export const crosswordProviderPropTypes = {
   /**
-   * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
-   * details.
+   * clue/answer data; see <a
+   * href="#/Configuration%20and%20customization/Clue%20input%20format">Clue
+   * input format</a> for details.
    */
   data: cluesInputShapeOriginal.isRequired,
 
@@ -126,8 +127,9 @@ export type CrosswordProviderProps = EnhancedProps<
   typeof crosswordProviderPropTypes,
   {
     /**
-     * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
-     * details.
+     * clue/answer data; see <a
+     * href="#/Configuration%20and%20customization/Clue%20input%20format">Clue
+     * input format</a> for details.
      */
     data: CluesInput;
 
@@ -193,9 +195,11 @@ export interface CrosswordProviderImperative {
 
 /**
  * The fundamental logic and data management component for react-crossword.
- * This *will* be a imperative-handle-supporting component, eventually.
+ * Prior to 4.0, puzzle management was built into the `Crossword` component.  As
+ * of 4.0, the logic implementation has been refactored such that `Crossword`
+ * leverages `CrosswordProvider` to do the heavy lifting.
  *
- * @since 3.1.0
+ * @since 4.0
  */
 const CrosswordProvider = React.forwardRef<
   CrosswordProviderImperative,
@@ -215,10 +219,10 @@ const CrosswordProvider = React.forwardRef<
     },
     ref
   ) => {
-    // The original Crossword implementation used separate state to track size and
-    // grid data, and conflated the clues-input-data-based grid data and the
-    // player input guesses.  Let's see if we can keep the clues-input and player
-    // data segregated.
+    // The original Crossword implementation used separate state to track size
+    // and grid data, and conflated the clues-input-data-based grid data and the
+    // player input guesses.  Let's see if we can keep the clues-input and
+    // player data segregated.
     const {
       size,
       gridData: masterGridData,

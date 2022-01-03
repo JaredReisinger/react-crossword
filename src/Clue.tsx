@@ -19,6 +19,11 @@ const ClueWrapper = styled.div.attrs<ClueWrapperProps>((props) => ({
     props.highlight ? props.highlightBackground : 'transparent'};
 `;
 
+/**
+ * Renders an individual clue, with its number. Makes use of `CrosswordContext`
+ * to know whether to render as “highlighted” or not, and uses the theme to
+ * provide the highlighting color.
+ */
 export default function Clue({
   direction,
   number,
@@ -28,7 +33,7 @@ export default function Clue({
 }: EnhancedProps<
   typeof Clue.propTypes,
   {
-    /** direction of the clue: "across" or "down"; passed back in onClick */
+    /** direction of the clue: “across” or “down”; passed back in onClick */
     direction: Direction;
   }
 >) {

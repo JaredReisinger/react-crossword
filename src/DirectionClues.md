@@ -1,32 +1,31 @@
-Provides the list of clues for one direction (either "across" or "down").
+Provides the list of clues for one direction (either “across” or “down”).
 
 ```jsx
 import {
+  CrosswordProvider,
   DirectionClues,
-  CrosswordContext,
-  CrosswordSizeContext,
-  ThemeProvider,
 } from '@jaredreisinger/react-crossword';
 
-<ThemeProvider
-  theme={{
-    highlightBackground: 'rgb(255,255,204)',
-  }}
->
-  <CrosswordContext.Provider
-    value={{
-      focused: true,
-      selectedDirection: 'across',
-      selectedNumber: '2',
-    }}
-  >
-    <DirectionClues
-      direction="across"
-      clues={[
-        { number: '1', clue: 'This is a clue.' },
-        { number: '2', clue: 'This is another (highlighted) clue.' },
-      ]}
-    />
-  </CrosswordContext.Provider>
-</ThemeProvider>;
+const data = {
+  across: {
+    1: {
+      clue: 'This is a clue.',
+      answer: 'ANSWER',
+      row: 0,
+      col: 0,
+    },
+    2: {
+      clue: 'This is another clue.',
+      answer: 'ANOTHER',
+      row: 1,
+      col: 0,
+    },
+  },
+  down: {
+  },
+};
+
+<CrosswordProvider data={data}>
+  <DirectionClues direction="across" />
+</CrosswordContext.Provider>;
 ```

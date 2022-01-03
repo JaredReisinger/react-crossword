@@ -67,8 +67,9 @@ export type CrosswordProps = Omit<CrosswordProviderProps, 'children'>;
 export type CrosswordImperative = CrosswordProviderImperative;
 
 /**
- * The primary, and default, export from the react-crossword library, Crossword
- * renders an answer grid and clues, and manages data and user interaction.
+ * The default export from the react-crossword library, `Crossword` renders an
+ * answer grid and clues in a basic layout and provides access to most
+ * functionality.
  */
 const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
   (props, ref) => {

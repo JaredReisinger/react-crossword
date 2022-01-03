@@ -38,8 +38,9 @@ export type CellProps = EnhancedProps<
 /**
  * An individual-letter answer cell within the crossword grid.
  *
- * A `Cell` lives inside the SVG for a [`Crossword`](#crossword), and renders at
- * a position determined by the `row`, `col`, and `cellSize` properties from
+ * A `Cell` lives inside the SVG for a
+ * [`CrosswordGrid`](#/Complex%20layouts/CrosswordGrid), and renders at a
+ * position determined by the `row`, `col`, and `cellSize` properties from
  * `cellData` and `renderContext`.
  */
 export default function Cell({

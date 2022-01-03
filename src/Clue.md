@@ -1,5 +1,3 @@
-Renders an individual clue, with its number. Makes use of CrosswordContext to know whether to render as "highlighted" or not, and uses the CrosswordSizeContext (TBD "theme"?) to provide the highlighting color.
-
 ```jsx
 import {
   Clue,
