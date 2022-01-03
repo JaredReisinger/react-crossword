@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# echo "COMMIT-MSG HOOK"
+
 npx --no-install commitlint --edit $1

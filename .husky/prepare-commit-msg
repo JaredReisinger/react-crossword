@@ -1,4 +1,17 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-exec < /dev/tty && npx --no-install git-cz --hook || true
+# echo "PREPARE-COMMIT-MSG HOOK: $0 -- $1 -- $2 -- $3"
+
+# echo "----- incoming message... -----"
+# cat $1
+# echo "-------------------------------"
+
+# If there's an existing message, we're probably commiting from some tool, and
+# the interactive git-cz is the wrong thing to do... in that case, we do nothing
+# and allow the regular commit/hook experience to happen.  Or, in other words,
+# *only* do the git-cz logic if the incoming message is blank.
+
+if [ "$(grep -v '^#' $1 | wc --max-line-length)" -eq "0" ]; then
+  exec < /dev/tty && npx --no-install git-cz --hook || true
+fi

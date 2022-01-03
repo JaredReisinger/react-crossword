@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# echo "PRE-COMMIT HOOK"
+
 npx --no-install pretty-quick --staged && npx --no-install lint-staged
