@@ -102,6 +102,14 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
          * @since 2.2.0
          */
         isCrosswordCorrect: () => !!providerRef.current?.isCrosswordCorrect(),
+
+        /**
+         * Sets the “guess” character for a specific grid position.
+         *
+         * @since 4.1.0
+         */
+        setGuess: (row: number, col: number, guess: string) =>
+          providerRef.current?.setGuess(row, col, guess),
       }),
       []
     );

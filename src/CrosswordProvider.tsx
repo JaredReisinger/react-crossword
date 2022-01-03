@@ -191,6 +191,13 @@ export interface CrosswordProviderImperative {
    * Returns whether the crossword is entirely correct or not.
    */
   isCrosswordCorrect: () => boolean;
+
+  /**
+   * Sets the “guess” character for a specific grid position.
+   *
+   * @since 4.1.0
+   */
+  setGuess: (row: number, col: number, guess: string) => void;
 }
 
 /**
@@ -848,6 +855,16 @@ const CrosswordProvider = React.forwardRef<
          * Returns whether the crossword is entirely correct or not.
          */
         isCrosswordCorrect: () => crosswordCorrect,
+
+        /**
+         * Sets the “guess” character for a specific grid position.
+         *
+         * @since 4.1.0
+         */
+        setGuess: (row: number, col: number, guess: string) => {
+          // REVIEW: should we force-case this?
+          setCellCharacter(row, col, guess.toUpperCase());
+        },
       }),
       [clues, crosswordCorrect, onLoadedCorrect, useStorage]
     );
