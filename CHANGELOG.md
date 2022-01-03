@@ -1,3 +1,16 @@
+# [3.1.0](https://github.com/JaredReisinger/react-crossword/compare/v3.0.0...v3.1.0) (2022-01-03)
+
+
+### Bug Fixes
+
+* **components:** changed DirectionClues to use CrosswordContext ([a3a83ef](https://github.com/JaredReisinger/react-crossword/commit/a3a83efb68bb3677942e4e0471e9e939b6f121d7))
+* **tests:** increase test coverage, fix components as needed ([5baf1c4](https://github.com/JaredReisinger/react-crossword/commit/5baf1c458c317f9e760e3c5ad5fae6144695dd11))
+
+
+### Features
+
+* **components:** begin factoring of logic/rendering ([20589d4](https://github.com/JaredReisinger/react-crossword/commit/20589d4fa23bc2513eb63f8cbce8646f658b2166)), closes [#140](https://github.com/JaredReisinger/react-crossword/issues/140)
+
 # [3.0.0](https://github.com/JaredReisinger/react-crossword/compare/v2.3.1...v3.0.0) (2021-12-31)
 
 ### Features
