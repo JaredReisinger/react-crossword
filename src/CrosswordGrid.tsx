@@ -30,7 +30,7 @@ const defaultTheme = {
 };
 
 const GridWrapper = styled.div.attrs((/* props */) => ({
-  className: 'grid',
+  className: 'crossword grid',
 }))`
   /* position: relative; */
   /* min-width: 20rem; */

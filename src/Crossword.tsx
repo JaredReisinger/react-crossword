@@ -882,7 +882,6 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
         selectedPosition: { row: focusedRow, col: focusedCol },
         selectedDirection: currentDirection,
         selectedNumber: currentNumber,
-        onClueSelected: handleClueSelected,
 
         crosswordCorrect,
       }),

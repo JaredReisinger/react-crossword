@@ -52,26 +52,6 @@ const defaultTheme = {
   highlightBackground: 'rgb(255,255,204)',
 };
 
-// interface OuterWrapperProps {
-//   correct?: boolean;
-// }
-
-// const OuterWrapper = styled.div.attrs<OuterWrapperProps>((props) => ({
-//   className: `crossword${props.correct ? ' correct' : ''}`,
-// }))<OuterWrapperProps>`
-//   margin: 0;
-//   padding: 0;
-//   border: 0;
-//   /* position: relative; */
-//   /* width: 40%; */
-//   display: flex;
-//   flex-direction: row;
-
-//   @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
-//     flex-direction: column;
-//   }
-// `;
-
 const crosswordProviderPropTypes = {
   /**
    * clue/answer data; see <a href="#cluedata-format">Clue/data format</a> for
@@ -134,6 +114,11 @@ const crosswordProviderPropTypes = {
    */
   onCellChange: PropTypes.func,
 
+  /**
+   * callback function called when a clue is selected
+   */
+  onClueSelected: PropTypes.func,
+
   children: PropTypes.node,
 };
 
@@ -174,6 +159,11 @@ export type CrosswordProviderProps = EnhancedProps<
      * character typed (already massaged into upper-case)
      */
     onCellChange?: (row: number, col: number, char: string) => void;
+
+    /**
+     * callback function called when a clue is selected
+     */
+    onClueSelected?: (direction: Direction, number: string) => void;
   }
 >;
 
@@ -219,6 +209,7 @@ const CrosswordProvider = React.forwardRef<
       onLoadedCorrect,
       onCrosswordCorrect,
       onCellChange,
+      onClueSelected,
       useStorage,
       children,
     },
@@ -241,8 +232,6 @@ const CrosswordProvider = React.forwardRef<
     // there seems to be a delay in 'focus' being usable after it's set.  We use
     // a Ref instead.
     const registeredFocusHandler = useRef<FocusHandler | null>(null);
-    // const [registeredFocusHandler, setRegisteredFocusHandler] =
-    //   useState<FocusHandler | null>(null);
 
     // interactive player state
     const [focused, setFocused] = useState(false);
@@ -288,7 +277,7 @@ const CrosswordProvider = React.forwardRef<
         const cell = getCellData(row, col);
 
         if (!cell.used) {
-          return;
+          throw new Error('unexpected setCellCharacter call');
         }
 
         // If the character is already the cell's guess, there's nothing to do.
@@ -340,7 +329,7 @@ const CrosswordProvider = React.forwardRef<
       (row: number, col: number) => {
         const cell = getCellData(row, col);
         if (!cell.used) {
-          return;
+          throw new Error('unexpected unused cell');
         }
 
         // check all the cells for both across and down answers that use this
@@ -744,8 +733,11 @@ const CrosswordProvider = React.forwardRef<
         // console.log('CrosswordProvider.handleClueSelected', { info });
         // TODO: sanity-check info?
         moveTo(info.row, info.col, direction);
-
         focus();
+
+        if (onClueSelected) {
+          onClueSelected(direction, number);
+        }
       },
       [clues]
     );
@@ -873,7 +865,6 @@ const CrosswordProvider = React.forwardRef<
         selectedPosition: { row: focusedRow, col: focusedCol },
         selectedDirection: currentDirection,
         selectedNumber: currentNumber,
-        onClueSelected: handleClueSelected,
 
         crosswordCorrect,
       }),
@@ -897,11 +888,9 @@ const CrosswordProvider = React.forwardRef<
 
     return (
       <ThemeProvider theme={finalTheme}>
-        {/* <OuterWrapper correct={crosswordCorrect}> */}
         <CrosswordContext.Provider value={crosswordContext}>
           {children}
         </CrosswordContext.Provider>
-        {/* </OuterWrapper> */}
       </ThemeProvider>
     );
   }
@@ -913,10 +902,11 @@ CrosswordProvider.displayName = 'CrosswordProvider';
 CrosswordProvider.propTypes = crosswordProviderPropTypes;
 CrosswordProvider.defaultProps = {
   theme: undefined,
-  useStorage: undefined,
+  useStorage: true,
   onCorrect: undefined,
   onLoadedCorrect: undefined,
   onCrosswordCorrect: undefined,
   onCellChange: undefined,
+  onClueSelected: undefined,
   children: undefined,
 };

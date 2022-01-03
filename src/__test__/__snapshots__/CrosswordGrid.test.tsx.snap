@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="sc-bdvvtL fECXGP crossword grid"
+>
+  <div
+    style={
+      Object {
+        "margin": 0,
+        "padding": 0,
+        "position": "relative",
+      }
+    }
+  >
+    <svg
+      viewBox="0 0 100 100"
+    >
+      <rect
+        fill="rgb(0,0,0)"
+        height={100}
+        width={100}
+        x={0}
+        y={0}
+      />
+    </svg>
+    <input
+      aria-label="crossword-input"
+      autoComplete="off"
+      autoCorrect="off"
+      onChange={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      spellCheck="false"
+      style={
+        Object {
+          "backgroundColor": "transparent",
+          "border": 0,
+          "caretColor": "transparent",
+          "cursor": "default",
+          "fontSize": "138.95000000000002px",
+          "height": "calc(33.333333333333336% - 4px)",
+          "left": "calc(0% + 2px)",
+          "margin": 0,
+          "padding": 0,
+          "position": "absolute",
+          "textAlign": "center",
+          "textAnchor": "middle",
+          "top": "calc(0% + 2px)",
+          "width": "calc(33.333333333333336% - 4px)",
+        }
+      }
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

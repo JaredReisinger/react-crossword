@@ -41,7 +41,6 @@ export interface CrosswordContextType {
   selectedPosition: GridPosition;
   selectedDirection: Direction;
   selectedNumber: string;
-  onClueSelected: (direction: Direction, number: string) => void;
 
   crosswordCorrect: boolean;
 }
@@ -71,7 +70,6 @@ export const CrosswordContext = React.createContext<CrosswordContextType>({
   selectedPosition: { row: 0, col: 0 },
   selectedDirection: 'across',
   selectedNumber: '',
-  onClueSelected: nop,
 
   crosswordCorrect: false,
 });

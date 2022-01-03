@@ -33,17 +33,15 @@ export default function Clue({
   }
 >) {
   const { highlightBackground } = useContext(ThemeContext);
-  const { focused, selectedDirection, selectedNumber, onClueSelected } =
+  const { focused, selectedDirection, selectedNumber, handleClueSelected } =
     useContext(CrosswordContext);
 
   const handleClick = useCallback(
     (event) => {
       event.preventDefault();
-      if (onClueSelected) {
-        onClueSelected(direction, number);
-      }
+      handleClueSelected(direction, number);
     },
-    [direction, number, onClueSelected]
+    [direction, number, handleClueSelected]
   );
 
   return (
