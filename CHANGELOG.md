@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/JaredReisinger/react-crossword/compare/v4.1.0...v4.1.1) (2022-01-04)
+
+
+### Bug Fixes
+
+* apply dev branch updates to main ([a8add9a](https://github.com/JaredReisinger/react-crossword/commit/a8add9a76ce03c587df24c389b5d0504784bdcb9)), closes [#164](https://github.com/JaredReisinger/react-crossword/issues/164)
+
 # [4.1.0](https://github.com/JaredReisinger/react-crossword/compare/v4.0.2...v4.1.0) (2022-01-03)
 
 
