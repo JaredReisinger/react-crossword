@@ -64,14 +64,14 @@
   },
   "dependencies": {
     "immer": "^9.0.7",
-    "prop-types": "^15.8.0",
-    "styled-components": ">=5.3.3"
+    "prop-types": "^15.8.1",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
-    "@commitlint/cli": "^16.0.1",
+    "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -84,12 +84,12 @@
     "@types/react-test-renderer": "^17.0.1",
     "@types/styled-components": "^5.1.19",
     "@types/testing-library__jest-dom": "^5.14.2",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
-    "@typescript-eslint/parser": "^5.8.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
     "all-contributors-cli": "^6.20.0",
     "commitizen": "^4.2.4",
     "eslint": "^8.6.0",
-    "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.4",
@@ -97,10 +97,10 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "gh-pages": "^3.2.3",
-    "husky": "^7.0.0",
+    "husky": "^7.0.4",
     "is-ci": "^3.0.1",
-    "jest": "^27.4.5",
-    "lint-staged": "^12.1.5",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
     "pretty-quick": "^3.1.3",
     "react": "^17.0.2",
@@ -110,7 +110,7 @@
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
     "semantic-release": "^18.0.1",
-    "snyk": "^1.812.0",
+    "snyk": "^1.821.0",
     "stylelint": "^14.2.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^6.0.0",
@@ -124,8 +124,7 @@
   },
   "peerDependencies": {
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2",
-    "styled-components": ">=5.3.3"
+    "react-dom": ">=17.0.2"
   },
   "snyk": true
 }
