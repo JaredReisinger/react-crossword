@@ -109,7 +109,7 @@
     "react-styleguidist": "^12.0.0-alpha9.9",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
-    "semantic-release": "^18.0.1",
+    "semantic-release": "^19.0.0",
     "snyk": "^1.812.0",
     "stylelint": "^14.2.0",
     "stylelint-config-prettier": "^9.0.3",
