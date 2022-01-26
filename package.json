@@ -110,7 +110,7 @@
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
     "semantic-release": "^18.0.1",
-    "snyk": "^1.812.0",
+    "snyk": "^1.816.0",
     "stylelint": "^14.2.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^6.0.0",
