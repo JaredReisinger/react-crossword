@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "immer": "^9.0.7",
-    "prop-types": "^15.8.0",
+    "prop-types": "^15.8.1",
     "styled-components": ">=5.3.3"
   },
   "devDependencies": {
