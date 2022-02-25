@@ -1,3 +1,11 @@
+## [4.1.2](https://github.com/JaredReisinger/react-crossword/compare/v4.1.1...v4.1.2) (2022-02-25)
+
+
+### Bug Fixes
+
+* **dependencies:** npm audit fix ([ccadd2e](https://github.com/JaredReisinger/react-crossword/commit/ccadd2e1bfdfdc2f3ea9685ec29507fe4c7bf0cc))
+* **dependencies:** update all dependencies ([1bb4f16](https://github.com/JaredReisinger/react-crossword/commit/1bb4f1686977af68509c2f66a243c26e6ea7ec9f))
+
 ## [4.1.1](https://github.com/JaredReisinger/react-crossword/compare/v4.1.0...v4.1.1) (2022-01-04)
 
 
