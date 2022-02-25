@@ -196,7 +196,7 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
   });
 
   it('setGuess() can set a guess', () => {
-    const ref = React.createRef<CrosswordProvider>();
+    const ref = React.createRef<CrosswordImperative>();
     const { queryByText } = render(
       <Crossword {...defaultProps} data={simpleData} ref={ref} />
     );
