@@ -16,17 +16,9 @@ import Clue from './Clue';
 const directionCluesPropTypes = {
   /** direction of this list of clues ("across" or "down") */
   direction: PropTypes.string.isRequired,
-  // /** clues for this List's direction */
-  // clues: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     /** number of the clue (the label shown) */
-  //     number: PropTypes.string.isRequired,
-  //     /** clue text */
-  //     clue: PropTypes.node.isRequired,
-  //     /** whether the answer/guess is correct */
-  //     correct: PropTypes.bool,
-  //   })
-  // ).isRequired,
+
+  /** a label to use instead of the (English) default */
+  label: PropTypes.string,
 };
 
 export type DirectionCluesProps = EnhancedProps<
@@ -34,18 +26,16 @@ export type DirectionCluesProps = EnhancedProps<
   { direction: Direction }
 >;
 
-export default function DirectionClues({ direction }: DirectionCluesProps) {
-  const {
-    clues,
-    // selectedPosition: { row: focusedRow, col: focusedCol },
-    // selectedDirection: currentDirection,
-    // selectedNumber: currentNumber,
-  } = useContext(CrosswordContext);
+export default function DirectionClues({
+  direction,
+  label,
+}: DirectionCluesProps) {
+  const { clues } = useContext(CrosswordContext);
 
   return (
     <div className="direction">
       {/* use something other than h3? */}
-      <h3 className="header">{direction.toUpperCase()}</h3>
+      <h3 className="header">{label || direction.toUpperCase()}</h3>
       {clues?.[direction].map(({ number, clue, correct }) => (
         <Clue
           key={number}
@@ -60,20 +50,8 @@ export default function DirectionClues({ direction }: DirectionCluesProps) {
   );
 }
 
-DirectionClues.propTypes = {
-  /** direction of this list of clues ("across" or "down") */
-  direction: PropTypes.string.isRequired,
-  // /** clues for this List's direction */
-  // clues: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     /** number of the clue (the label shown) */
-  //     number: PropTypes.string.isRequired,
-  //     /** clue text */
-  //     clue: PropTypes.node.isRequired,
-  //     /** whether the answer/guess is correct */
-  //     correct: PropTypes.bool,
-  //   })
-  // ).isRequired,
-};
+DirectionClues.propTypes = directionCluesPropTypes;
 
-DirectionClues.defaultProps = {};
+DirectionClues.defaultProps = {
+  label: undefined,
+};

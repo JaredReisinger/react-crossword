@@ -69,3 +69,7 @@ The following imperative methods can be called on a "ref" handle to the componen
 | `fillAllAnswers()`          | _(none)_                                    | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
 | `isCrosswordCorrect()`      | _(none)_                                    | Returns whether the crossword is entirely correct or not.                                           |
 | `setGuess(row, col, guess)` | `(row: number, col: number, guess: string)` | Sets the “guess” value for a specific grid position.                                                |
+
+### Custom storage / multiple crosswords per-page
+
+If you have more than one crossword at a given URL, you can use the `storageKey` property to provide a specific key under which to save the player's progress. (Just make sure to _not_ set `useStorage` to `false`!)
