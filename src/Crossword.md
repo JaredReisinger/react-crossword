@@ -60,6 +60,37 @@ The following imperative methods can be called on a "ref" handle to the componen
 | `isCrosswordCorrect()`      | _(none)_                                    | Returns whether the crossword is entirely correct or not.                                           |
 | `setGuess(row, col, guess)` | `(row: number, col: number, guess: string)` | Sets the “guess” value for a specific grid position.                                                |
 
+### Clue direction labels
+
+Providing the `acrossLabel` and/or `downLabel` properties will override the default "ACROSS" and "DOWN" used for the clues.
+
+```jsx
+import Crossword from '@jaredreisinger/react-crossword';
+
+const data = {
+  across: {
+    1: {
+      clue: 'one plus one',
+      answer: 'TWO',
+      row: 0,
+      col: 0,
+    },
+  },
+  down: {
+    2: {
+      clue: 'three minus two',
+      answer: 'ONE',
+      row: 0,
+      col: 2,
+    },
+  },
+};
+
+<div style={{ width: '25em', display: 'flex' }}>
+  <Crossword data={data} acrossLabel="Lefty-righty" downLabel="Upsie-downsie" />
+</div>;
+```
+
 ### Another example
 
 Purely to show the grid rendering...

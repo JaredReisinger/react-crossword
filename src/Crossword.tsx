@@ -1,8 +1,10 @@
 import React, { useImperativeHandle, useRef } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // import produce from 'immer';
 import styled from 'styled-components';
+
+import { EnhancedProps } from './types';
 
 import CrosswordProvider, {
   CrosswordProviderImperative,
@@ -58,12 +60,26 @@ const CluesWrapper = styled.div.attrs((/* props */) => ({
   }
 `;
 
-const crosswordPropTypes = { ...crosswordProviderPropTypes };
+const crosswordPropTypes = {
+  ...crosswordProviderPropTypes,
+
+  /** the label for the "across" clues */
+  acrossLabel: PropTypes.string,
+
+  /** the label for the "down" clues */
+  downLabel: PropTypes.string,
+};
+
 // @ts-expect-error TS doesn't allow non-optional props to be deleted, but we're
 // building this into a new type!
 delete crosswordPropTypes.children;
 
-export type CrosswordProps = Omit<CrosswordProviderProps, 'children'>;
+// This somewhat non-obvious construction is to get the typings from
+// CrosswordProvider where they are "better" than the default inferred types.
+export type CrosswordProps = EnhancedProps<
+  typeof crosswordPropTypes,
+  Omit<CrosswordProviderProps, 'children'>
+>;
 export type CrosswordImperative = CrosswordProviderImperative;
 
 /**
@@ -72,7 +88,7 @@ export type CrosswordImperative = CrosswordProviderImperative;
  * functionality.
  */
 const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
-  (props, ref) => {
+  ({ acrossLabel, downLabel, ...props }, ref) => {
     const providerRef = useRef<CrosswordProviderImperative>(null);
 
     // expose some imperative methods
@@ -118,8 +134,8 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
       <CrosswordProvider {...props} ref={providerRef}>
         <CrosswordGrid />
         <CluesWrapper>
-          <DirectionClues direction="across" />
-          <DirectionClues direction="down" />
+          <DirectionClues direction="across" label={acrossLabel} />
+          <DirectionClues direction="down" label={downLabel} />
         </CluesWrapper>
       </CrosswordProvider>
     );
@@ -128,6 +144,10 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
 
 Crossword.displayName = 'Crossword';
 Crossword.propTypes = crosswordPropTypes;
-Crossword.defaultProps = CrosswordProvider.defaultProps;
+Crossword.defaultProps = {
+  ...CrosswordProvider.defaultProps,
+  acrossLabel: undefined,
+  downLabel: undefined,
+};
 
 export default Crossword;

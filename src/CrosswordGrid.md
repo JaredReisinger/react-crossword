@@ -29,5 +29,5 @@ const data = {
   <div style={{ width: '10em' }}>
     <CrosswordGrid />
   </div>
-</CrosswordContext.Provider>;
+</CrosswordProvider>;
 ```

@@ -9,7 +9,7 @@
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![contributors](https://img.shields.io/badge/contributors-5-orange.svg)](#contributors-)
+[![contributors](https://img.shields.io/badge/contributors-6-orange.svg)](#contributors-)
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -161,6 +161,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/embeddedt"><img src="https://avatars.githubusercontent.com/u/42941056?v=4?s=100" width="100px;" alt=""/><br /><sub><b>embeddedt</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/commits?author=embeddedt" title="Code">💻</a></td>
     <td align="center"><a href="https://www.soindaial.com.br/"><img src="https://avatars.githubusercontent.com/u/42916864?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Albranco</b></sub></a><br /><a href="#ideas-drero" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://www.robmccollough.dev/"><img src="https://avatars.githubusercontent.com/u/42196611?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rob McCollough</b></sub></a><br /><a href="#ideas-robmccollough" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/lorddaedra"><img src="https://avatars.githubusercontent.com/u/26400787?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lorddaedra</b></sub></a><br /><a href="#ideas-lorddaedra" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
