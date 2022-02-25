@@ -1,3 +1,11 @@
+# [4.2.0](https://github.com/JaredReisinger/react-crossword/compare/v4.1.2...v4.2.0) (2022-02-25)
+
+
+### Features
+
+* add props for across/down clue labels ([c41c64d](https://github.com/JaredReisinger/react-crossword/commit/c41c64d2b1dd124a78c63787133abc643edcad65)), closes [#132](https://github.com/JaredReisinger/react-crossword/issues/132)
+* **storage:** add `storageKey` for custom lovalStorage key ([d3d9334](https://github.com/JaredReisinger/react-crossword/commit/d3d93343ce2d99df05d2400777d85f777ccd1a47)), closes [#142](https://github.com/JaredReisinger/react-crossword/issues/142)
+
 ## [4.1.2](https://github.com/JaredReisinger/react-crossword/compare/v4.1.1...v4.1.2) (2022-02-25)
 
 
