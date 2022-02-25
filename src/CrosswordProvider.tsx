@@ -87,6 +87,12 @@ export const crosswordProviderPropTypes = {
   useStorage: PropTypes.bool,
 
   /**
+   * a custom storage key to use for persistence; defaults to "guesses" when not
+   * provided
+   */
+  storageKey: PropTypes.string,
+
+  /**
    * callback function that fires when a player answers a clue correctly; called
    * with `(direction, number, answer)` arguments, where `direction` is
    * `'across'` or `'down'`, `number` is the clue number as text (like `'1'`),
@@ -222,6 +228,7 @@ const CrosswordProvider = React.forwardRef<
       onCellChange,
       onClueSelected,
       useStorage,
+      storageKey,
       children,
     },
     ref
@@ -646,7 +653,7 @@ const CrosswordProvider = React.forwardRef<
       };
 
       if (useStorage) {
-        loadGuesses(newGridData, defaultStorageKey);
+        loadGuesses(newGridData, storageKey || defaultStorageKey);
         // TODO: find correct answers...
       }
 
@@ -661,7 +668,7 @@ const CrosswordProvider = React.forwardRef<
       setFocusedCol(0);
       setCurrentDirection('across');
       setCurrentNumber('1');
-    }, [masterClues, masterGridData, useStorage]);
+    }, [masterClues, masterGridData, storageKey, useStorage]);
 
     // save the guesses any time they change...
     useEffect(() => {
@@ -669,8 +676,8 @@ const CrosswordProvider = React.forwardRef<
         return;
       }
 
-      saveGuesses(gridData, defaultStorageKey);
-    }, [gridData, useStorage]);
+      saveGuesses(gridData, storageKey || defaultStorageKey);
+    }, [gridData, storageKey, useStorage]);
 
     const handleCellClick = useCallback(
       (cellData: CellData) => {
@@ -807,7 +814,7 @@ const CrosswordProvider = React.forwardRef<
           );
 
           if (useStorage) {
-            clearGuesses(defaultStorageKey);
+            clearGuesses(storageKey || defaultStorageKey);
           }
         },
 
@@ -866,7 +873,7 @@ const CrosswordProvider = React.forwardRef<
           setCellCharacter(row, col, guess.toUpperCase());
         },
       }),
-      [clues, crosswordCorrect, onLoadedCorrect, useStorage]
+      [clues, crosswordCorrect, onLoadedCorrect, storageKey, useStorage]
     );
 
     const crosswordContext = useMemo<CrosswordContextType>(
@@ -924,6 +931,7 @@ CrosswordProvider.propTypes = crosswordProviderPropTypes;
 CrosswordProvider.defaultProps = {
   theme: undefined,
   useStorage: true,
+  storageKey: undefined,
   onCorrect: undefined,
   onLoadedCorrect: undefined,
   onCrosswordCorrect: undefined,

@@ -91,6 +91,10 @@ const data = {
 </div>;
 ```
 
+### Custom storage / multiple crosswords per-page
+
+If you have more than one crossword at a given URL, you can use the `storageKey` property to provide a specific key under which to save the player's progress. (Just make sure to _not_ set `useStorage` to `false`!)
+
 ### Another example
 
 Purely to show the grid rendering...
