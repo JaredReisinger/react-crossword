@@ -6,13 +6,16 @@ import type { Direction, EnhancedProps } from './types';
 import { CrosswordContext } from './context';
 
 interface ClueWrapperProps {
+  complete?: boolean | null;
   correct?: boolean | null;
   highlight?: boolean | null;
   highlightBackground?: string | null;
 }
 
 const ClueWrapper = styled.div.attrs<ClueWrapperProps>((props) => ({
-  className: `clue${props.correct ? ' correct' : ''}`,
+  className: `clue${
+    props.complete ? (props.correct ? ' correct' : ' incorrect') : ''
+  }`,
 }))<ClueWrapperProps>`
   cursor: default;
   background-color: ${(props) =>
@@ -28,6 +31,7 @@ export default function Clue({
   direction,
   number,
   children,
+  complete,
   correct,
   ...props
 }: EnhancedProps<
@@ -55,6 +59,7 @@ export default function Clue({
       highlight={
         focused && direction === selectedDirection && number === selectedNumber
       }
+      complete={complete}
       correct={correct}
       {...props}
       onClick={handleClick}
@@ -72,11 +77,14 @@ Clue.propTypes = {
   number: PropTypes.string.isRequired,
   /** clue text */
   children: PropTypes.node.isRequired,
+  /** whether the answer/guess is complete */
+  complete: PropTypes.bool,
   /** whether the answer/guess is correct */
   correct: PropTypes.bool,
 };
 
 Clue.defaultProps = {
   // children: undefined,
+  complete: undefined,
   correct: undefined,
 };

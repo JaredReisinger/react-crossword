@@ -105,7 +105,11 @@ export type GridData = CellData[][];
 
 export type CluesData = Record<
   Direction,
-  (ClueTypeOriginal & { number: string; correct?: boolean })[]
+  (ClueTypeOriginal & {
+    number: string;
+    complete?: boolean;
+    correct?: boolean;
+  })[]
 >;
 
 export type AnswerTuple = [Direction, string, string];
