@@ -171,7 +171,7 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
   // order in Javascript, of course.)
   const finalTheme = useMemo(
     () => ({ ...defaultTheme, ...contextTheme, ...theme }),
-    [defaultTheme, contextTheme, theme]
+    [contextTheme, theme]
   );
 
   return (

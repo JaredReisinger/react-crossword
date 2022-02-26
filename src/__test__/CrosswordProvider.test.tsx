@@ -413,11 +413,11 @@ describe('keyboard navigation', () => {
   });
 });
 
-describe('onCorrect callback', () => {
-  it('fires onCorrect when an answer is entered', () => {
-    const onCorrect = jest.fn();
+describe('onAnswerComplete', () => {
+  it('fires onAnswerComplete when all cells in an answer are filled correctly', () => {
+    const onAnswerComplete = jest.fn();
     const { getByLabelText } = render(
-      <Simple withGrid withClues onCorrect={onCorrect} />
+      <Simple withGrid withClues onAnswerComplete={onAnswerComplete} />
     );
 
     userEvent.click(getByLabelText('clue-1-across'));
@@ -427,35 +427,99 @@ describe('onCorrect callback', () => {
       skipClick: true,
     });
 
-    expect(onCorrect).toBeCalledTimes(1);
-    expect(onCorrect).toBeCalledWith('across', '1', 'TWO');
+    expect(onAnswerComplete).toBeCalledTimes(1);
+    expect(onAnswerComplete).toBeCalledWith('across', '1', true, 'TWO');
   });
 
-  it('does not fire onCorrect when a wrong answer is entered', () => {
-    const onCorrect = jest.fn();
+  it('fires onAnswerComplete when all cells in an answer are filled, even if incorrectly', () => {
+    const onAnswerComplete = jest.fn();
     const { getByLabelText } = render(
-      <Simple withGrid withClues onCorrect={onCorrect} />
+      <Simple withGrid withClues onAnswerComplete={onAnswerComplete} />
+    );
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'XXX', {
+      skipClick: true,
+    });
+
+    expect(onAnswerComplete).toBeCalledTimes(1);
+    expect(onAnswerComplete).toBeCalledWith('across', '1', false, 'TWO');
+  });
+});
+
+['onAnswerCorrect', 'onCorrect'].forEach((handler) => {
+  describe(`${handler} callback`, () => {
+    it(`fires ${handler} when an answer is entered correctly`, () => {
+      const onAnswerCorrect = jest.fn();
+      const handlerProp = { [handler]: onAnswerCorrect };
+      const { getByLabelText } = render(
+        <Simple withGrid withClues {...handlerProp} />
+      );
+
+      userEvent.click(getByLabelText('clue-1-across'));
+      userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+        skipClick: true,
+      });
+
+      expect(onAnswerCorrect).toBeCalledTimes(1);
+      expect(onAnswerCorrect).toBeCalledWith('across', '1', 'TWO');
+    });
+
+    it(`does not fire ${handler} when a wrong answer is entered`, () => {
+      const onAnswerCorrect = jest.fn();
+      const handlerProp = { [handler]: onAnswerCorrect };
+      const { getByLabelText } = render(
+        <Simple withGrid withClues {...handlerProp} />
+      );
+
+      const input = getByLabelText('crossword-input');
+
+      userEvent.click(getByLabelText('clue-1-across'));
+      userEvent.type(getByLabelText('crossword-input'), 'XXX', {
+        skipClick: true,
+      });
+
+      expect(onAnswerCorrect).toBeCalledTimes(0);
+
+      fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
+      expect(onAnswerCorrect).toBeCalledTimes(0);
+    });
+  });
+});
+
+describe('onAnswerIncorrect callback', () => {
+  it('fires onAnswerIncorrect when an answer is entered incorrectly', () => {
+    const onAnswerIncorrect = jest.fn();
+    const { getByLabelText } = render(
+      <Simple withGrid withClues onAnswerIncorrect={onAnswerIncorrect} />
+    );
+
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'XXX', {
+      skipClick: true,
+    });
+
+    expect(onAnswerIncorrect).toBeCalledTimes(1);
+    expect(onAnswerIncorrect).toBeCalledWith('across', '1', 'TWO');
+  });
+
+  it('does not fire onAnswerIncorrect when a correct answer is entered', () => {
+    const onAnswerIncorrect = jest.fn();
+    const { getByLabelText } = render(
+      <Simple withGrid withClues onAnswerIncorrect={onAnswerIncorrect} />
     );
 
     const input = getByLabelText('crossword-input');
 
     userEvent.click(getByLabelText('clue-1-across'));
-    // We enter an invalid answer, then a valid one (so we get the onCorrect
-    // that gets us out of this test).  Our *not* getting the onCorrect for
-    // the first answer is the actual test.
-    userEvent.type(getByLabelText('crossword-input'), 'XXX', {
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
       skipClick: true,
     });
 
-    expect(onCorrect).toBeCalledTimes(0);
+    expect(onAnswerIncorrect).toBeCalledTimes(0);
 
     fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
-    userEvent.type(getByLabelText('crossword-input'), 'ONE', {
-      skipClick: true,
-    });
-
-    expect(onCorrect).toBeCalledTimes(1);
-    expect(onCorrect).toBeCalledWith('down', '2', 'ONE');
+    expect(onAnswerIncorrect).toBeCalledTimes(0);
   });
 });
 
@@ -491,16 +555,64 @@ describe('onCellChange callback', () => {
   });
 });
 
-describe('onCrosswordCorrect callback', () => {
-  it('fires onCrosswordCorrect(falsy) when the crossword loads', () => {
-    const onCrosswordCorrect = jest.fn();
-    render(
-      <Simple withGrid withClues onCrosswordCorrect={onCrosswordCorrect} />
+describe('onCrosswordComplete callback', () => {
+  it('fires onCrosswordComplete(true) when the crossword becomes entirely correct', () => {
+    const onCrosswordComplete = jest.fn();
+    const { getByLabelText } = render(
+      <Simple withGrid withClues onCrosswordComplete={onCrosswordComplete} />
     );
 
-    expect(onCrosswordCorrect).toBeCalledWith(false);
-    expect(onCrosswordCorrect).not.toBeCalledWith(true);
+    onCrosswordComplete.mockClear();
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+      skipClick: true,
+    });
+    userEvent.click(getByLabelText('clue-2-down'));
+    userEvent.type(getByLabelText('crossword-input'), 'ON', {
+      skipClick: true,
+    });
+    expect(onCrosswordComplete).toBeCalledTimes(0);
+    userEvent.type(getByLabelText('crossword-input'), 'E', { skipClick: true });
+
+    expect(onCrosswordComplete).toBeCalledTimes(1);
+    expect(onCrosswordComplete).toBeCalledWith(true);
   });
+
+  it('fires onCrosswordComplete(false) when the crossword is filled but *not* entirely correct', () => {
+    const onCrosswordComplete = jest.fn();
+    const { getByLabelText } = render(
+      <Simple withGrid withClues onCrosswordComplete={onCrosswordComplete} />
+    );
+
+    onCrosswordComplete.mockClear();
+    userEvent.click(getByLabelText('clue-1-across'));
+    userEvent.type(getByLabelText('crossword-input'), 'TWO', {
+      skipClick: true,
+    });
+    userEvent.click(getByLabelText('clue-2-down'));
+    userEvent.type(getByLabelText('crossword-input'), 'ONE', {
+      skipClick: true,
+    });
+    expect(onCrosswordComplete).toBeCalledTimes(1);
+    onCrosswordComplete.mockClear();
+
+    userEvent.type(getByLabelText('crossword-input'), 'X', { skipClick: true });
+
+    expect(onCrosswordComplete).toBeCalledTimes(1);
+    expect(onCrosswordComplete).toBeCalledWith(false);
+  });
+});
+
+describe('onCrosswordCorrect callback', () => {
+  // it('fires onCrosswordCorrect(falsy) when the crossword loads', () => {
+  //   const onCrosswordCorrect = jest.fn();
+  //   render(
+  //     <Simple withGrid withClues onCrosswordCorrect={onCrosswordCorrect} />
+  //   );
+
+  //   expect(onCrosswordCorrect).toBeCalledWith(false);
+  //   expect(onCrosswordCorrect).not.toBeCalledWith(true);
+  // });
 
   it('fires onCrosswordCorrect(true) when the crossword becomes entirely correct', () => {
     const onCrosswordCorrect = jest.fn();
@@ -714,26 +826,26 @@ describe('imperative commands', () => {
     ]);
   });
 
-  it('calls onCrosswordCorrect after filling answers', () => {
-    const onCrosswordCorrect = jest.fn();
+  it('calls onCrosswordComplete after filling answers', () => {
+    const onCrosswordComplete = jest.fn();
     const ref = React.createRef<CrosswordProviderImperative>();
     render(
       <Simple
         withGrid
         withClues
-        onCrosswordCorrect={onCrosswordCorrect}
+        onCrosswordComplete={onCrosswordComplete}
         forwardedRef={ref}
       />
     );
 
-    onCrosswordCorrect.mockClear();
+    onCrosswordComplete.mockClear();
     expect(ref.current).toBeTruthy();
     act(() => {
       ref.current?.fillAllAnswers();
     });
 
-    expect(onCrosswordCorrect).toBeCalledTimes(1);
-    expect(onCrosswordCorrect).toBeCalledWith(true);
+    expect(onCrosswordComplete).toBeCalledTimes(1);
+    expect(onCrosswordComplete).toBeCalledWith(true);
   });
 
   it('returns whether the crossword is correct', () => {
