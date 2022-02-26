@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/JaredReisinger/react-crossword/compare/v4.2.0...v4.3.0) (2022-02-26)
+
+
+### Features
+
+* add per-answer "complete" and "incomplete" callbacks, and tweak crossword-level ([d761a75](https://github.com/JaredReisinger/react-crossword/commit/d761a756ef62e05a22855a0f6ede166da06340c3)), closes [#131](https://github.com/JaredReisinger/react-crossword/issues/131)
+
 # [4.2.0](https://github.com/JaredReisinger/react-crossword/compare/v4.1.2...v4.2.0) (2022-02-25)
 
 
