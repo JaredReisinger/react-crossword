@@ -46,7 +46,7 @@ export interface CrosswordContextType {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-function nop() {}
+function nop() { }
 
 /**
  * CrosswordContext represents the crossword puzzle itself, as well as provides
@@ -75,18 +75,13 @@ export const CrosswordContext = React.createContext<CrosswordContextType>({
 });
 
 export interface CrosswordSizeContextType {
-  cellSize: number;
-  cellPadding: number;
-  cellInner: number;
-  cellHalf: number;
-  fontSize: number;
+  cellSize?: number;
+  cellPadding?: number;
+  cellInner?: number;
+  cellHalf?: number;
+  cellTextVerticalOffset?: number;
+  fontSize?: number;
 }
 
 export const CrosswordSizeContext =
-  React.createContext<CrosswordSizeContextType>({
-    cellSize: 0,
-    cellPadding: 0,
-    cellInner: 0,
-    cellHalf: 0,
-    fontSize: 0,
-  });
+  React.createContext<CrosswordSizeContextType>({});

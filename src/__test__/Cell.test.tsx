@@ -28,6 +28,7 @@ const sizeContext = {
   cellPadding: 1,
   cellInner: 8,
   cellHalf: 4,
+  cellTextVerticalOffset: 1,
   fontSize: 7,
 };
 

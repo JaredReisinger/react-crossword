@@ -130,12 +130,25 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
   const cellPadding = 0.125;
   const cellInner = cellSize - cellPadding * 2;
   const cellHalf = cellSize / 2;
+  const cellTextVerticalOffset = 1; // +1 for visual alignment?
   const fontSize = cellInner * 0.7;
 
-  const sizeContext = useMemo(
-    () => ({ cellSize, cellPadding, cellInner, cellHalf, fontSize }),
-    [cellSize, cellPadding, cellInner, cellHalf, fontSize]
-  );
+  const contextSize = useContext(CrosswordSizeContext);
+
+  // The final size is the merger of two values: any values from an outer
+  // CrosswordSizeContext.Provider, then the "defaultSize" values fill in for any
+  // needed ones that are missing.
+  const finalSize = useMemo(() => {
+    const defaultSize = {
+      cellSize,
+      cellPadding,
+      cellInner,
+      cellHalf,
+      cellTextVerticalOffset,
+      fontSize,
+    };
+    return { ...defaultSize, ...contextSize };
+  }, [cellSize, cellInner, cellHalf, fontSize, contextSize]);
 
   const inputStyle = useMemo(
     () =>
@@ -175,7 +188,7 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
   );
 
   return (
-    <CrosswordSizeContext.Provider value={sizeContext}>
+    <CrosswordSizeContext.Provider value={finalSize}>
       <ThemeProvider theme={finalTheme}>
         <GridWrapper>
           {/*
