@@ -3,7 +3,7 @@
 exports[`matches snapshot 1`] = `
 Array [
   <div
-    className="sc-bdvvtL fECXGP crossword grid"
+    className="sc-bczRLJ bjyPA crossword grid"
   >
     <div
       style={
@@ -57,7 +57,7 @@ Array [
     </div>
   </div>,
   <div
-    className="sc-dkPtRN fFCnQE clues"
+    className="sc-dkzDqf fWCYib clues"
   >
     <div
       className="direction"
