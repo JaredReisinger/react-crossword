@@ -1,3 +1,19 @@
+# [5.0.0](https://github.com/JaredReisinger/react-crossword/compare/v4.3.2...v5.0.0) (2022-12-03)
+
+
+### Bug Fixes
+
+* **depedencies:** update all dependencies ([57da3b5](https://github.com/JaredReisinger/react-crossword/commit/57da3b55903ad94ed2034dd7e8b23608bb8189d9))
+* **dependencies:** update dependencies (some time ago!) ([90cb96b](https://github.com/JaredReisinger/react-crossword/commit/90cb96b0bffaeeaa92b455a65c5f64d3d7e0f224))
+* **example:** fix up example to use updated crossword component ([5b08cab](https://github.com/JaredReisinger/react-crossword/commit/5b08cab8edccc4c022b774b0060a2ce945e737c3))
+* fix one lingering typescript error ([1a2af83](https://github.com/JaredReisinger/react-crossword/commit/1a2af83107fdc7b5d06c1d659ca626354e9d7692))
+* missed saving one file! ([9430ea3](https://github.com/JaredReisinger/react-crossword/commit/9430ea3ca82d716b3e778601a828e01fa805661d))
+
+
+### BREAKING CHANGES
+
+* **depedencies:** Now requires React >=18.2.0 and Node >= 18.7.0
+
 ## [4.3.2](https://github.com/JaredReisinger/react-crossword/compare/v4.3.1...v4.3.2) (2022-03-10)
 
 
