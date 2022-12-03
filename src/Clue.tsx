@@ -45,7 +45,7 @@ export default function Clue({
   const { focused, selectedDirection, selectedNumber, handleClueSelected } =
     useContext(CrosswordContext);
 
-  const handleClick = useCallback(
+  const handleClick = useCallback<React.MouseEventHandler>(
     (event) => {
       event.preventDefault();
       handleClueSelected(direction, number);
