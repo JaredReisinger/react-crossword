@@ -8,7 +8,7 @@ exports[`matches snapshot 1`] = `
     className="clue-cell"
     onClick={[Function]}
     style={
-      Object {
+      {
         "cursor": "default",
         "fontSize": "7px",
       }
@@ -27,16 +27,14 @@ exports[`matches snapshot 1`] = `
       className="guess-text-incorrect"
       dominantBaseline="middle"
       style={
-        Object {
+        {
           "fill": "#666",
         }
       }
       textAnchor="middle"
       x={4}
       y={5}
-    >
-      
-    </text>
+    />
   </g>
 </svg>
 `;

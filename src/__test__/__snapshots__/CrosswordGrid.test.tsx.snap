@@ -2,11 +2,11 @@
 
 exports[`matches snapshot 1`] = `
 <div
-  className="sc-bczRLJ bjyPA crossword grid"
+  className="sc-bcXHqe gsMPLZ crossword grid"
 >
   <div
     style={
-      Object {
+      {
         "margin": 0,
         "padding": 0,
         "position": "relative",
@@ -33,7 +33,7 @@ exports[`matches snapshot 1`] = `
       onKeyDown={[Function]}
       spellCheck="false"
       style={
-        Object {
+        {
           "backgroundColor": "transparent",
           "border": 0,
           "caretColor": "transparent",

@@ -1,7 +1,7 @@
 // import { jest } from '@jest/globals';
 import React from 'react';
-import ReactDom from 'react-dom';
-import { cleanup } from '@testing-library/react';
+// import { createRoot } from 'react-dom/client';
+import { cleanup, render } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
@@ -10,9 +10,11 @@ import { Simple } from './providers';
 afterEach(cleanup);
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDom.render(<Simple withClues />, div);
-  ReactDom.unmountComponentAtNode(div);
+  // const div = document.createElement('div');
+  // const root = createRoot(div);
+  // root.render(<Simple withClues />);
+  // root.unmount();
+  render(<Simple withClues />);
 });
 
 // it('fires onClueSelected when clue is clicked', () => {

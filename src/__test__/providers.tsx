@@ -1,6 +1,6 @@
 // import { jest } from '@jest/globals';
 import React from 'react';
-// import ReactDom from 'react-dom';
+// import { createRoot } from 'react-dom/client';
 
 import CrosswordProvider, {
   CrosswordProviderImperative,

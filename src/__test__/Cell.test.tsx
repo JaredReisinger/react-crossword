@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import ReactDom from 'react-dom';
+// import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
@@ -59,9 +59,11 @@ function cellFromContainer(container: HTMLElement) {
 }
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDom.render(<CellHelper {...defaultProps} />, div);
-  ReactDom.unmountComponentAtNode(div);
+  // const div = document.createElement('div');
+  // const root = createRoot(div);
+  // root.render();
+  // root.unmount();
+  render(<CellHelper {...defaultProps} />);
 });
 
 it('renders Cell component correctly', () => {

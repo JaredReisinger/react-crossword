@@ -1,11 +1,13 @@
 import { jest } from '@jest/globals';
 import React from 'react';
-import ReactDom from 'react-dom';
+// import { createRoot } from 'react-dom/client';
 import { act, render, cleanup, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+// import userEvent from '@testing-library/user-event';
 import renderer from 'react-test-renderer';
 
 import '@testing-library/jest-dom/extend-expect';
+
+import { setup } from './helpers';
 
 import Crossword, { CrosswordImperative } from '../Crossword';
 
@@ -41,9 +43,11 @@ const defaultProps = {
 };
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDom.render(<Crossword {...defaultProps} />, div);
-  ReactDom.unmountComponentAtNode(div);
+  // const div = document.createElement('div');
+  // const root = createRoot(div);
+  // root.render(<Crossword {...defaultProps} />);
+  // root.unmount();
+  render(<Crossword {...defaultProps} />);
 });
 
 it('renders Crossword component correctly', () => {
@@ -97,13 +101,13 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
     expect(doc.activeElement).toBe(input);
   });
 
-  it('resets data when requested', () => {
+  it('resets data when requested', async () => {
     const ref = React.createRef<CrosswordImperative>();
-    const { getByLabelText, queryByText } = render(
+    const { getByLabelText, queryByText, user } = setup(
       <Crossword {...defaultProps} data={simpleData} ref={ref} />
     );
 
-    userEvent.click(getByLabelText('clue-1-across'));
+    await user.click(getByLabelText('clue-1-across'));
 
     const input = getByLabelText('crossword-input');
 
@@ -187,7 +191,7 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
     const ref = React.createRef<CrosswordImperative>();
     render(<Crossword {...defaultProps} data={simpleData} ref={ref} />);
     expect(ref.current).toBeTruthy();
-    let isCorrect = true;
+    let isCorrect: boolean | undefined = true;
     act(() => {
       isCorrect = ref.current?.isCrosswordCorrect();
     });
