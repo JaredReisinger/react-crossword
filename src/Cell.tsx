@@ -61,7 +61,7 @@ export default function Cell({
     highlightBackground,
   } = useContext(ThemeContext);
 
-  const handleClick = useCallback(
+  const handleClick = useCallback<React.MouseEventHandler>(
     (event) => {
       event.preventDefault();
       if (onClick) {

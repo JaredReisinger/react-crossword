@@ -24,7 +24,21 @@ exports[`matches snapshot 1`] = `
       y={1}
     />
     <text
-      className="guess-text-incorrect"
+      dominantBaseline="hanging"
+      style={
+        {
+          "fill": "red",
+          "fontSize": "50%",
+        }
+      }
+      textAnchor="start"
+      x={4}
+      y={4}
+    >
+      1
+    </text>
+    <text
+      className="guess-text-correct"
       dominantBaseline="middle"
       style={
         {
