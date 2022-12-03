@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import React from 'react';
-import ReactDom from 'react-dom';
+// import { createRoot } from 'react-dom/client';
 import { render, cleanup } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 
@@ -13,9 +13,11 @@ import DirectionClues from '../DirectionClues';
 afterEach(cleanup);
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDom.render(<Empty withClues />, div);
-  ReactDom.unmountComponentAtNode(div);
+  // const div = document.createElement('div');
+  // const root = createRoot(div);
+  // root.render(<Empty withClues />);
+  // root.unmount();
+  render(<Empty withClues />);
 });
 
 it('renders DirectionClues component correctly', () => {
@@ -36,8 +38,8 @@ it('labels "across" with "ACROSS" by default', () => {
   );
 
   expect(container.firstChild).toHaveClass('direction');
-  expect(container.firstChild.firstChild).toHaveClass('header');
-  expect(container.firstChild.firstChild.textContent).toBe('ACROSS');
+  expect(container.firstChild?.firstChild).toHaveClass('header');
+  expect(container.firstChild?.firstChild?.textContent).toBe('ACROSS');
 });
 
 it('labels "down" with "DOWN" by default', () => {
@@ -48,8 +50,8 @@ it('labels "down" with "DOWN" by default', () => {
   );
 
   expect(container.firstChild).toHaveClass('direction');
-  expect(container.firstChild.firstChild).toHaveClass('header');
-  expect(container.firstChild.firstChild.textContent).toBe('DOWN');
+  expect(container.firstChild?.firstChild).toHaveClass('header');
+  expect(container.firstChild?.firstChild?.textContent).toBe('DOWN');
 });
 
 it('labels with provided override when given', () => {
@@ -60,6 +62,6 @@ it('labels with provided override when given', () => {
   );
 
   expect(container.firstChild).toHaveClass('direction');
-  expect(container.firstChild.firstChild).toHaveClass('header');
-  expect(container.firstChild.firstChild.textContent).toBe('CUSTOM');
+  expect(container.firstChild?.firstChild).toHaveClass('header');
+  expect(container.firstChild?.firstChild?.textContent).toBe('CUSTOM');
 });

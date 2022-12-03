@@ -69,7 +69,7 @@ export type CluesInput = CluesInputOriginal;
  */
 export type UsedCellData = GridPosition & {
   /** Whether the position/cell is used at all. */
-  used: true;
+  used: boolean;
   // /** The clue related to this cell? what? Shouldn't be needed! */
   // clue: string;
   /** If present, a display "number" label for the cell */

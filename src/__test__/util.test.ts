@@ -335,12 +335,13 @@ describe('localStorage', () => {
   const storageKey = 'DUMMY';
   const gridData: GuessData = [[{ guess: 'X' }]];
 
-  let mockStorage: jest.SpyInstance<Storage, []>;
-  const setItem = jest.fn<void, [string]>();
+  let mockStorage: jest.SpiedGetter<Storage>;
+  // let mockStorage: jest.SpyInstance<Storage, []>;
+  const setItem = jest.fn<Storage['setItem']>();
   const getItem = jest
-    .fn<string | null, [string]>()
+    .fn<Storage['getItem']>()
     .mockReturnValue(JSON.stringify({ guesses: { '0_0': 'X' } }));
-  const removeItem = jest.fn<void, [string]>();
+  const removeItem = jest.fn<Storage['remove']>();
 
   beforeEach(() => {
     setItem.mockClear();

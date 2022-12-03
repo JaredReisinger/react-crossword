@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matches snapshot 1`] = `
-Array [
+[
   <div
-    className="sc-bdvvtL fECXGP crossword grid"
+    className="sc-bcXHqe gsMPLZ crossword grid"
   >
     <div
       style={
-        Object {
+        {
           "margin": 0,
           "padding": 0,
           "position": "relative",
@@ -34,7 +34,7 @@ Array [
         onKeyDown={[Function]}
         spellCheck="false"
         style={
-          Object {
+          {
             "backgroundColor": "transparent",
             "border": 0,
             "caretColor": "transparent",
@@ -57,7 +57,7 @@ Array [
     </div>
   </div>,
   <div
-    className="sc-dkPtRN fFCnQE clues"
+    className="sc-dkrFOg blVNBR clues"
   >
     <div
       className="direction"

@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Crossword, {
   CrosswordImperative,
   CrosswordGrid,
+  CrosswordProps,
   CrosswordProvider,
   CrosswordProviderImperative,
+  CrosswordProviderProps,
   DirectionClues,
-  AnswerTuple,
 } from '@jaredreisinger/react-crossword';
 import styled from 'styled-components';
 
@@ -111,19 +112,19 @@ const Messages = styled.pre`
 function App() {
   const crossword = useRef<CrosswordImperative>(null);
 
-  const focus = useCallback((event) => {
+  const focus = useCallback<React.MouseEventHandler>((event) => {
     crossword.current?.focus();
   }, []);
 
-  const fillOneCell = useCallback((event) => {
+  const fillOneCell = useCallback<React.MouseEventHandler>((event) => {
     crossword.current?.setGuess(0, 2, 'O');
   }, []);
 
-  const fillAllAnswers = useCallback((event) => {
+  const fillAllAnswers = useCallback<React.MouseEventHandler>((event) => {
     crossword.current?.fillAllAnswers();
   }, []);
 
-  const reset = useCallback((event) => {
+  const reset = useCallback<React.MouseEventHandler>((event) => {
     crossword.current?.reset();
   }, []);
 
@@ -133,7 +134,7 @@ function App() {
   const messagesRef = useRef<HTMLPreElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
 
-  const clearMessages = useCallback((event) => {
+  const clearMessages = useCallback<React.MouseEventHandler>((event) => {
     setMessages([]);
   }, []);
 
@@ -150,7 +151,7 @@ function App() {
   }, [messages]);
 
   // onCorrect is called with the direction, number, and the correct answer.
-  const onCorrect = useCallback(
+  const onCorrect = useCallback<Required<CrosswordProps>['onCorrect']>(
     (direction, number, answer) => {
       addMessage(`onCorrect: "${direction}", "${number}", "${answer}"`);
     },
@@ -160,8 +161,10 @@ function App() {
   // onLoadedCorrect is called with an array of the already-correct answers,
   // each element itself is an array with the same values as in onCorrect: the
   // direction, number, and the correct answer.
-  const onLoadedCorrect = useCallback(
-    (answers: AnswerTuple[]) => {
+  const onLoadedCorrect = useCallback<
+    Required<CrosswordProps>['onLoadedCorrect']
+  >(
+    (answers) => {
       addMessage(
         `onLoadedCorrect:\n${answers
           .map(
@@ -175,16 +178,18 @@ function App() {
   );
 
   // onCrosswordCorrect is called with a truthy/falsy value.
-  const onCrosswordCorrect = useCallback(
-    (isCorrect: boolean) => {
+  const onCrosswordCorrect = useCallback<
+    Required<CrosswordProps>['onCrosswordCorrect']
+  >(
+    (isCorrect) => {
       addMessage(`onCrosswordCorrect: ${JSON.stringify(isCorrect)}`);
     },
     [addMessage]
   );
 
   // onCellChange is called with the row, column, and character.
-  const onCellChange = useCallback(
-    (row: number, col: number, char: string) => {
+  const onCellChange = useCallback<Required<CrosswordProps>['onCellChange']>(
+    (row, col, char) => {
       addMessage(`onCellChange: "${row}", "${col}", "${char}"`);
     },
     [addMessage]
@@ -193,19 +198,22 @@ function App() {
   // all the same functionality, but for the decomposed CrosswordProvider
   const crosswordProvider = useRef<CrosswordProviderImperative>(null);
 
-  const focusProvider = useCallback((event) => {
+  const focusProvider = useCallback<React.MouseEventHandler>((event) => {
     crosswordProvider.current?.focus();
   }, []);
 
-  const fillOneCellProvider = useCallback((event) => {
+  const fillOneCellProvider = useCallback<React.MouseEventHandler>((event) => {
     crosswordProvider.current?.setGuess(0, 2, 'O');
   }, []);
 
-  const fillAllAnswersProvider = useCallback((event) => {
-    crosswordProvider.current?.fillAllAnswers();
-  }, []);
+  const fillAllAnswersProvider = useCallback<React.MouseEventHandler>(
+    (event) => {
+      crosswordProvider.current?.fillAllAnswers();
+    },
+    []
+  );
 
-  const resetProvider = useCallback((event) => {
+  const resetProvider = useCallback<React.MouseEventHandler>((event) => {
     crosswordProvider.current?.reset();
   }, []);
 
@@ -215,9 +223,12 @@ function App() {
   const messagesProviderRef = useRef<HTMLPreElement>(null);
   const [messagesProvider, setMessagesProvider] = useState<string[]>([]);
 
-  const clearMessagesProvider = useCallback((event) => {
-    setMessagesProvider([]);
-  }, []);
+  const clearMessagesProvider = useCallback<React.MouseEventHandler>(
+    (event) => {
+      setMessagesProvider([]);
+    },
+    []
+  );
 
   const addMessageProvider = useCallback((message: string) => {
     setMessagesProvider((m) => m.concat(`${message}\n`));
@@ -232,7 +243,9 @@ function App() {
   }, [messagesProvider]);
 
   // onCorrect is called with the direction, number, and the correct answer.
-  const onCorrectProvider = useCallback(
+  const onCorrectProvider = useCallback<
+    Required<CrosswordProviderProps>['onCorrect']
+  >(
     (direction, number, answer) => {
       addMessageProvider(`onCorrect: "${direction}", "${number}", "${answer}"`);
     },
@@ -242,8 +255,10 @@ function App() {
   // onLoadedCorrect is called with an array of the already-correct answers,
   // each element itself is an array with the same values as in onCorrect: the
   // direction, number, and the correct answer.
-  const onLoadedCorrectProvider = useCallback(
-    (answers: AnswerTuple[]) => {
+  const onLoadedCorrectProvider = useCallback<
+    Required<CrosswordProviderProps>['onLoadedCorrect']
+  >(
+    (answers) => {
       addMessageProvider(
         `onLoadedCorrect:\n${answers
           .map(
@@ -257,16 +272,20 @@ function App() {
   );
 
   // onCrosswordCorrect is called with a truthy/falsy value.
-  const onCrosswordCorrectProvider = useCallback(
-    (isCorrect: boolean) => {
+  const onCrosswordCorrectProvider = useCallback<
+    Required<CrosswordProviderProps>['onCrosswordCorrect']
+  >(
+    (isCorrect) => {
       addMessageProvider(`onCrosswordCorrect: ${JSON.stringify(isCorrect)}`);
     },
     [addMessageProvider]
   );
 
   // onCellChange is called with the row, column, and character.
-  const onCellChangeProvider = useCallback(
-    (row: number, col: number, char: string) => {
+  const onCellChangeProvider = useCallback<
+    Required<CrosswordProviderProps>['onCellChange']
+  >(
+    (row, col, char) => {
       addMessageProvider(`onCellChange: "${row}", "${col}", "${char}"`);
     },
     [addMessageProvider]
@@ -278,7 +297,7 @@ function App() {
 
       <p>
         This is a demo app that makes use of the @jaredreisinger/react-crossword
-        component. It excersizes most of the functionality, so that you can see
+        component. It exercizes most of the functionality, so that you can see
         how to do so.
       </p>
 
