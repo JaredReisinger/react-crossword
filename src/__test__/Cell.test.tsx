@@ -31,12 +31,14 @@ const sizeContext = {
   fontSize: 7,
 };
 
-const defaultProps = {
+const defaultProps: CellProps = {
   cellData: {
     row: 0,
     col: 0,
     guess: '',
-    // number: '1',
+    number: '1',
+    used: false,
+    answer: '',
   },
   focus: false,
   highlight: false,
