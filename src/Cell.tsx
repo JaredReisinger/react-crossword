@@ -49,8 +49,14 @@ export default function Cell({
   focus,
   highlight,
 }: CellProps) {
-  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } =
-    useContext(CrosswordSizeContext);
+  const {
+    cellSize,
+    cellPadding,
+    cellInner,
+    cellHalf,
+    cellTextVerticalOffset,
+    fontSize,
+  } = useContext(CrosswordSizeContext);
   const {
     // gridBackground,
     cellBackground,
@@ -110,7 +116,7 @@ export default function Cell({
       )}
       <text
         x={x + cellHalf}
-        y={y + cellHalf + 1} // +1 for visual alignment?
+        y={y + cellHalf + cellTextVerticalOffset}
         textAnchor="middle"
         dominantBaseline="middle"
         style={{ fill: textColor }}
