@@ -1,3 +1,15 @@
+# [5.1.0](https://github.com/JaredReisinger/react-crossword/compare/v5.0.0...v5.1.0) (2022-12-13)
+
+
+### Bug Fixes
+
+* check answer correctness when loading/reloading guesses ([40b9cd5](https://github.com/JaredReisinger/react-crossword/commit/40b9cd5b206c4524b3cad32229f1cb9d31ab7d4e)), closes [#271](https://github.com/JaredReisinger/react-crossword/issues/271)
+
+
+### Features
+
+* allow non-square rendering ([74a608e](https://github.com/JaredReisinger/react-crossword/commit/74a608e877f5643da1ca12ad9c0803d17b748f38)), closes [#17](https://github.com/JaredReisinger/react-crossword/issues/17)
+
 # [5.0.0](https://github.com/JaredReisinger/react-crossword/compare/v4.3.2...v5.0.0) (2022-12-03)
 
 
