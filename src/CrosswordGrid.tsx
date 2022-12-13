@@ -78,7 +78,8 @@ export type CrosswordGridProps = InferProps<typeof CrosswordGridPropTypes>;
  */
 export default function CrosswordGrid({ theme }: CrosswordGridProps) {
   const {
-    size,
+    rows,
+    cols,
     gridData,
     handleInputKeyDown,
     handleInputChange,
@@ -110,47 +111,52 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
     };
   }, [focus, registerFocusHandler]);
 
-  // // expose some imperative methods -- should we do this here, or make the
-  // // caller go through the crossword provider?
-  // useImperativeHandle(
-  //   ref,
-  //   () => ({
-  //     /**
-  //      * Sets focus to the crossword component.
-  //      */
-  //     focus: () => { console.log('CrosswordGrid.focus() imperative!'); focus();},
-  //   }),
-  //   [focus]
-  // );
-
   // We have several properties that we bundle together as context for the
   // cells, rather than have them as independent properties.  (Or should they
   // stay separate? Or be passed as "spread" values?)
-  const cellSize = 100 / size;
+  //
+  // We used to calculate sizes as "fractions of 100", meaning that the more
+  // rows or columns, the smaller the values would get.  In order to support
+  // non-square crossword grids, it makes much more sense to use a "fixed" cell
+  // size, and then calculate the overall extents as a multiple of the cell
+  // size.
+  const cellSize = 10;
   const cellPadding = 0.125;
   const cellInner = cellSize - cellPadding * 2;
   const cellHalf = cellSize / 2;
   const fontSize = cellInner * 0.7;
 
   const sizeContext = useMemo(
-    () => ({ cellSize, cellPadding, cellInner, cellHalf, fontSize }),
+    () => ({
+      cellSize,
+      cellPadding,
+      cellInner,
+      cellHalf,
+      fontSize,
+    }),
     [cellSize, cellPadding, cellInner, cellHalf, fontSize]
   );
 
+  const height = useMemo(() => rows * cellSize, [rows]);
+  const width = useMemo(() => cols * cellSize, [cols]);
+  const cellWidthHtmlPct = useMemo(() => 100 / cols, [cols]);
+  const cellHeightHtmlPct = useMemo(() => 100 / rows, [rows]);
+
+  // In order to ensure the top/left positioning makes sense, there is an
+  // absolutely-positioned <div> with no margin/padding that we *don't* expose
+  // to consumers.  This keeps the math much more reliable.  (But we're still
+  // seeing a slight vertical deviation towards the bottom of the grid!  The "*
+  // 0.995" seems to help.)  We also need to calculate the effective px size of
+  // the automatically-scaled SVG cells.  We know that "100% width" === "number
+  // of columns".
   const inputStyle = useMemo(
     () =>
       ({
         position: 'absolute',
-        // In order to ensure the top/left positioning makes sense,
-        // there is an absolutely-positioned <div> with no
-        // margin/padding that we *don't* expose to consumers.  This
-        // keeps the math much more reliable.  (But we're still
-        // seeing a slight vertical deviation towards the bottom of
-        // the grid!  The "* 0.995" seems to help.)
-        top: `calc(${focusedRow * cellSize * 0.995}% + 2px)`,
-        left: `calc(${focusedCol * cellSize}% + 2px)`,
-        width: `calc(${cellSize}% - 4px)`,
-        height: `calc(${cellSize}% - 4px)`,
+        top: `calc(${focusedRow * cellHeightHtmlPct * 0.995}% + 2px)`,
+        left: `calc(${focusedCol * cellWidthHtmlPct}% + 2px)`,
+        width: `calc(${cellWidthHtmlPct}% - 4px)`,
+        height: `calc(${cellHeightHtmlPct}% - 4px)`,
         fontSize: `${fontSize * 6}px`, // waaay too small...?
         textAlign: 'center',
         textAnchor: 'middle',
@@ -161,7 +167,7 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
         border: 0,
         cursor: 'default',
       } as const),
-    [cellSize, focusedRow, focusedCol, fontSize]
+    [cellWidthHtmlPct, cellHeightHtmlPct, focusedRow, focusedCol, fontSize]
   );
 
   // The final theme is the merger of three values: the "theme" property
@@ -184,12 +190,12 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
             <svg>.
           */}
           <div style={{ margin: 0, padding: 0, position: 'relative' }}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox={`0 0 ${width} ${height}`}>
               <rect
                 x={0}
                 y={0}
-                width={100}
-                height={100}
+                width={width}
+                height={height}
                 fill={finalTheme.gridBackground}
               />
               {gridData.flatMap((rowData, row) =>

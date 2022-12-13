@@ -41,17 +41,6 @@ import {
 
 const defaultStorageKey = 'guesses';
 
-const defaultTheme = {
-  columnBreakpoint: '768px',
-  gridBackground: 'rgb(0,0,0)',
-  cellBackground: 'rgb(255,255,255)',
-  cellBorder: 'rgb(0,0,0)',
-  textColor: 'rgb(0,0,0)',
-  numberColor: 'rgba(0,0,0, 0.25)',
-  focusBackground: 'rgb(255,255,0)',
-  highlightBackground: 'rgb(255,255,204)',
-};
-
 export const crosswordProviderPropTypes = {
   /**
    * clue/answer data; see <a
@@ -62,6 +51,12 @@ export const crosswordProviderPropTypes = {
 
   /** presentation values for the crossword; these override any values coming from a parent ThemeProvider context. */
   theme: PropTypes.shape({
+    /**
+     * whether to allow a non-square rendering
+     * @since 5.1.0
+     */
+    allowNonSquare: PropTypes.bool,
+
     /** browser-width at which the clues go from showing beneath the grid to showing beside the grid */
     columnBreakpoint: PropTypes.string,
 
@@ -77,9 +72,11 @@ export const crosswordProviderPropTypes = {
     numberColor: PropTypes.string,
     /** background color for the cell with focus, the one that the player is typing into */
     focusBackground: PropTypes.string,
-    /** background color for the cells in the answer the player is working on,
+    /**
+     * background color for the cells in the answer the player is working on,
      * helps indicate in which direction focus will be moving; also used as a
-     * background on the active clue  */
+     * background on the active clue
+     */
     highlightBackground: PropTypes.string,
   }),
 
@@ -306,6 +303,18 @@ export interface CrosswordProviderImperative {
   setGuess: (row: number, col: number, guess: string) => void;
 }
 
+const defaultTheme: CrosswordProviderProps['theme'] = {
+  allowNonSquare: false,
+  columnBreakpoint: '768px',
+  gridBackground: 'rgb(0,0,0)',
+  cellBackground: 'rgb(255,255,255)',
+  cellBorder: 'rgb(0,0,0)',
+  textColor: 'rgb(0,0,0)',
+  numberColor: 'rgba(0,0,0, 0.25)',
+  focusBackground: 'rgb(255,255,0)',
+  highlightBackground: 'rgb(255,255,204)',
+};
+
 /**
  * The fundamental logic and data management component for react-crossword.
  * Prior to 4.0, puzzle management was built into the `Crossword` component.  As
@@ -337,15 +346,32 @@ const CrosswordProvider = React.forwardRef<
     },
     ref
   ) => {
+    const contextTheme =
+      useContext<CrosswordProviderProps['theme']>(ThemeContext);
+
+    // The final theme is the merger of three values: the "theme" property
+    // passed to the component (which takes precedence), any values from
+    // ThemeContext, and finally the "defaultTheme" values fill in for any
+    // needed ones that are missing.  (We create this in standard last-one-wins
+    // order in Javascript, of course.)
+    const finalTheme = useMemo(
+      () => ({ ...defaultTheme, ...contextTheme, ...theme }),
+      [contextTheme, theme]
+    );
+
     // The original Crossword implementation used separate state to track size
     // and grid data, and conflated the clues-input-data-based grid data and the
     // player input guesses.  Let's see if we can keep the clues-input and
     // player data segregated.
     const {
-      size,
+      rows,
+      cols,
       gridData: masterGridData,
       clues: masterClues,
-    } = useMemo(() => createGridData(data), [data]);
+    } = useMemo(
+      () => createGridData(data, finalTheme.allowNonSquare ?? false),
+      [data, finalTheme.allowNonSquare]
+    );
 
     const [gridData, setGridData] = useState<GridData>([]);
     const [clues, setClues] = useState<CluesData | undefined>();
@@ -367,23 +393,11 @@ const CrosswordProvider = React.forwardRef<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [checkQueue, setCheckQueue] = useState<GridPosition[]>([]);
 
-    const contextTheme = useContext(ThemeContext);
-
-    // The final theme is the merger of three values: the "theme" property
-    // passed to the component (which takes precedence), any values from
-    // ThemeContext, and finally the "defaultTheme" values fill in for any
-    // needed ones that are missing.  (We create this in standard last-one-wins
-    // order in Javascript, of course.)
-    const finalTheme = useMemo(
-      () => ({ ...defaultTheme, ...contextTheme, ...theme }),
-      [contextTheme, theme]
-    );
-
     // This *internal* getCellData assumes that it's only ever asked for a valid
     // cell (one that's used).
     const getCellData = useCallback(
       (row: number, col: number) => {
-        if (row >= 0 && row < size && col >= 0 && col < size) {
+        if (row >= 0 && row < rows && col >= 0 && col < cols) {
           return gridData[row][col];
         }
 
@@ -391,7 +405,7 @@ const CrosswordProvider = React.forwardRef<
         return { row, col, used: false, outOfBounds: true } as GridPosition &
           UnusedCellData;
       },
-      [size, gridData]
+      [cols, gridData, rows]
     );
 
     const setCellCharacter = useCallback(
@@ -459,6 +473,10 @@ const CrosswordProvider = React.forwardRef<
       (row: number, col: number) => {
         const cell = getCellData(row, col);
         if (!cell.used) {
+          // Because this is in an internal callback, and we only call it with a
+          // valid cell (row/col), the throw line isn't testable... so we ignore
+          // it.
+          /* istanbul ignore next */
           throw new Error('unexpected unused cell');
         }
 
@@ -594,7 +612,12 @@ const CrosswordProvider = React.forwardRef<
           return false;
         }
 
+        // If we try to move to a cell with a direction it doesn't support,
+        // switch to the other direction.  There is no codepath that can test
+        // this, though, as this callback isn't exposed, and we only call it in
+        // ways that guarantee that direction is valid.
         if (!candidate[direction]) {
+          /* istanbul ignore next */
           direction = otherDirection(direction);
         }
 
@@ -791,11 +814,30 @@ const CrosswordProvider = React.forwardRef<
 
       if (useStorage) {
         loadGuesses(newGridData, storageKey || defaultStorageKey);
-        // TODO: find correct answers...
       }
 
       setClues(newCluesData);
       setGridData(newGridData);
+
+      // Check all of the clues to see if any were correct... but only if we
+      // loaded guesses.  Since the current implementation relies on state, we
+      // leverage the checkQueue to run through all the clues/guesses.
+      //
+      // Really, the ideal thing to do would be to write the checking-logic in a
+      // way that it doesn't assume the data is already in state... that would
+      // allow us to check everything directly, and simply set the same state
+      // that checkCorrectness() does, *and* properly call onLoadedCorrect(). As
+      // it is, this implementation can cause some answers to mentioned in
+      // onCorrect() more than once (any time an across answer starts inside a
+      // down answer, or vice versa.)
+      if (useStorage) {
+        setCheckQueue(
+          bothDirections.flatMap((dir) =>
+            // simply use the row/col that starts each answer.
+            newCluesData[dir].map(({ row, col }) => ({ row, col }))
+          )
+        );
+      }
 
       // Should we start with 1-across highlighted/focused?
 
@@ -1025,7 +1067,8 @@ const CrosswordProvider = React.forwardRef<
 
     const crosswordContext = useMemo<CrosswordContextType>(
       () => ({
-        size,
+        rows,
+        cols,
         gridData,
         clues,
 
@@ -1044,7 +1087,8 @@ const CrosswordProvider = React.forwardRef<
         crosswordCorrect,
       }),
       [
-        size,
+        rows,
+        cols,
         gridData,
         clues,
         handleInputKeyDown,

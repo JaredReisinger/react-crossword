@@ -24,6 +24,11 @@ const directionInfo: Record<
   },
 };
 
+interface RowColMax {
+  row: number;
+  col: number;
+}
+
 export const bothDirections = Object.keys(directionInfo) as Direction[];
 
 export function isAcross(direction: Direction) {
@@ -51,10 +56,15 @@ export function calculateExtents(data: CluesInput, direction: Direction) {
     }
   });
 
-  return {
-    [dir.primary]: primaryMax,
-    [dir.orthogonal]: orthogonalMax,
+  const rowColMax: RowColMax = {
+    row: 0,
+    col: 0,
   };
+
+  rowColMax[dir.primary] = primaryMax;
+  rowColMax[dir.orthogonal] = orthogonalMax;
+
+  return rowColMax;
 }
 
 // const emptyCellData: Partial<CellData> = {
@@ -68,13 +78,13 @@ export function calculateExtents(data: CluesInput, direction: Direction) {
 //   // down: '', //null,
 // } as const;
 
-export function createEmptyGrid(size: number) {
-  const gridData: GridData = Array(size);
+export function createEmptyGrid(rows: number, cols: number) {
+  const gridData: GridData = Array(rows);
   // Rather than [x][y] in column-major order, the cells are indexed as
   // [row][col] in row-major order.
-  for (let r = 0; r < size; r++) {
-    gridData[r] = Array(size);
-    for (let c = 0; c < size; c++) {
+  for (let r = 0; r < rows; r++) {
+    gridData[r] = Array(cols);
+    for (let c = 0; c < cols; c++) {
       gridData[r][c] = {
         // ...emptyCellData,
         row: r,
@@ -127,14 +137,20 @@ export function fillClues(
 
 // Given the "nice format" for a crossword, generate the usable data optimized
 // for rendering and our interactivity.
-export function createGridData(data: CluesInput) {
+export function createGridData(data: CluesInput, allowNonSquare?: boolean) {
   const acrossMax = calculateExtents(data, 'across');
   const downMax = calculateExtents(data, 'down');
 
-  const size =
-    Math.max(...Object.values(acrossMax), ...Object.values(downMax)) + 1;
+  let rows = Math.max(acrossMax.row, downMax.row) + 1;
+  let cols = Math.max(acrossMax.col, downMax.col) + 1;
 
-  const gridData = createEmptyGrid(size);
+  if (!allowNonSquare) {
+    const size = Math.max(rows, cols);
+    rows = size;
+    cols = size;
+  }
+
+  const gridData = createEmptyGrid(rows, cols);
 
   // Now fill with answers... and also collect the clues
   const clues: CluesData = {
@@ -145,7 +161,7 @@ export function createGridData(data: CluesInput) {
   fillClues(gridData, clues, data, 'across');
   fillClues(gridData, clues, data, 'down');
 
-  return { size, gridData, clues };
+  return { rows, cols, gridData, clues };
 }
 
 // sort helper for clues...

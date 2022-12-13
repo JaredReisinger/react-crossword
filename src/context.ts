@@ -16,8 +16,10 @@ import type {
  * can leverage a single core implementation.
  */
 export interface CrosswordContextType {
-  /** The (square) size of the crossword. */
-  size: number;
+  /** The number of rows in the crossword. */
+  rows: number;
+  /** The number of columns in the crossword. */
+  cols: number;
   /** The crossword grid data, including player guesses and "correct" status. */
   gridData: GridData;
   /** The across/down clues, including "correct" status. */
@@ -55,7 +57,8 @@ function nop() {}
  * core implementation.
  */
 export const CrosswordContext = React.createContext<CrosswordContextType>({
-  size: 0,
+  rows: 0,
+  cols: 0,
   gridData: [],
   // clues: { across: [], down: [] },
 

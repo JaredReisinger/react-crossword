@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // dummy to make "use default export!" warning go away.
+/* istanbul ignore next */
 export function NYI() {
   // eslint-disable-next-line no-console
   console.log('NYI!');

@@ -14,6 +14,7 @@ import Cell, { CellProps } from '../Cell';
 afterEach(cleanup);
 
 const themeContext = {
+  allowNonSquare: false,
   gridBackground: 'black',
   cellBackground: 'white',
   cellBorder: '#333',

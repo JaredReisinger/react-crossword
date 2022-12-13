@@ -9,7 +9,7 @@
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![contributors](https://img.shields.io/badge/contributors-7-orange.svg)](#contributors-)
+[![contributors](https://img.shields.io/badge/contributors-9-orange.svg)](#contributors-)
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -155,15 +155,21 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/dreamer01"><img src="https://avatars.githubusercontent.com/u/16663935?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pushpendra Singh</b></sub></a><br /><a href="#ideas-dreamer01" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://www.maincross.net/"><img src="https://avatars.githubusercontent.com/u/8095144?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Amit Bansal</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Azehawki" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/embeddedt"><img src="https://avatars.githubusercontent.com/u/42941056?v=4?s=100" width="100px;" alt=""/><br /><sub><b>embeddedt</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/commits?author=embeddedt" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.soindaial.com.br/"><img src="https://avatars.githubusercontent.com/u/42916864?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Albranco</b></sub></a><br /><a href="#ideas-drero" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://www.robmccollough.dev/"><img src="https://avatars.githubusercontent.com/u/42196611?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rob McCollough</b></sub></a><br /><a href="#ideas-robmccollough" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/lorddaedra"><img src="https://avatars.githubusercontent.com/u/26400787?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lorddaedra</b></sub></a><br /><a href="#ideas-lorddaedra" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/HuHguZ"><img src="https://avatars.githubusercontent.com/u/32592443?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ilya Lukyanov</b></sub></a><br /><a href="#ideas-HuHguZ" title="Ideas, Planning, & Feedback">🤔</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dreamer01"><img src="https://avatars.githubusercontent.com/u/16663935?v=4?s=100" width="100px;" alt="Pushpendra Singh"/><br /><sub><b>Pushpendra Singh</b></sub></a><br /><a href="#ideas-dreamer01" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.maincross.net/"><img src="https://avatars.githubusercontent.com/u/8095144?v=4?s=100" width="100px;" alt="Amit Bansal"/><br /><sub><b>Amit Bansal</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Azehawki" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/embeddedt"><img src="https://avatars.githubusercontent.com/u/42941056?v=4?s=100" width="100px;" alt="embeddedt"/><br /><sub><b>embeddedt</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/commits?author=embeddedt" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.soindaial.com.br/"><img src="https://avatars.githubusercontent.com/u/42916864?v=4?s=100" width="100px;" alt="Albranco"/><br /><sub><b>Albranco</b></sub></a><br /><a href="#ideas-drero" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.robmccollough.dev/"><img src="https://avatars.githubusercontent.com/u/42196611?v=4?s=100" width="100px;" alt="Rob McCollough"/><br /><sub><b>Rob McCollough</b></sub></a><br /><a href="#ideas-robmccollough" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lorddaedra"><img src="https://avatars.githubusercontent.com/u/26400787?v=4?s=100" width="100px;" alt="lorddaedra"/><br /><sub><b>lorddaedra</b></sub></a><br /><a href="#ideas-lorddaedra" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/HuHguZ"><img src="https://avatars.githubusercontent.com/u/32592443?v=4?s=100" width="100px;" alt="Ilya Lukyanov"/><br /><sub><b>Ilya Lukyanov</b></sub></a><br /><a href="#ideas-HuHguZ" title="Ideas, Planning, & Feedback">🤔</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rhoffmann"><img src="https://avatars.githubusercontent.com/u/678772?v=4?s=100" width="100px;" alt="Richard Hoffmann"/><br /><sub><b>Richard Hoffmann</b></sub></a><br /><a href="#ideas-rhoffmann" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/gitname"><img src="https://avatars.githubusercontent.com/u/7143133?v=4?s=100" width="100px;" alt="gitname"/><br /><sub><b>gitname</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Agitname" title="Bug reports">🐛</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
