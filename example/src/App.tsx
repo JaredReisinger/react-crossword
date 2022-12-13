@@ -357,6 +357,34 @@ function App() {
 
         <Messages ref={messagesProviderRef}>{messagesProvider}</Messages>
       </CrosswordMessageBlock>
+
+      <p>And a proof-of-concept for non-square crosswords:</p>
+
+      <CrosswordMessageBlock>
+        <CrosswordWrapper>
+          <Crossword
+            data={{
+              across: {
+                1: {
+                  clue: 'one plus one',
+                  answer: 'TWO',
+                  row: 0,
+                  col: 0,
+                },
+              },
+              down: {
+                2: {
+                  clue: 'opposite of "off"',
+                  answer: 'ON',
+                  row: 0,
+                  col: 2,
+                },
+              },
+            }}
+            theme={{ allowNonSquare: true }}
+          />
+        </CrosswordWrapper>
+      </CrosswordMessageBlock>
     </Page>
   );
 }

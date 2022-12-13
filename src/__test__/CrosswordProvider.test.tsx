@@ -75,7 +75,7 @@ describe('keyboard navigation', () => {
 
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('25.125');
+    expect(x).toBe('10.125');
     expect(y).toBe('0.125');
   });
 
@@ -96,7 +96,7 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
   });
 
@@ -113,14 +113,14 @@ describe('keyboard navigation', () => {
 
     let { x, y } = posForText(getByText('X'));
 
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
 
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('left and right (across)', async () => {
@@ -140,7 +140,7 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'ArrowRight' });
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
   });
 
@@ -155,14 +155,14 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'ArrowUp' });
     fireEvent.keyDown(input, { key: 'X' });
     let { x, y } = posForText(getByText('X'));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
 
     fireEvent.keyDown(input, { key: 'ArrowDown' });
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('tab switches direction (across to down)', async () => {
@@ -178,8 +178,8 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'X' });
     const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('tab switches direction (down to across)', async () => {
@@ -211,8 +211,8 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'X' });
     const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('space switches direction (down to across)', async () => {
@@ -244,8 +244,8 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'X' });
     const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('clicking on input switches direction (down to across)', async () => {
@@ -278,8 +278,8 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'X' });
     const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
   });
 
   it('clicking on cell when focused switches direction (down to across)', async () => {
@@ -310,7 +310,7 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     let { x, y } = posForText(getByText('Z'));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
 
     fireEvent.keyDown(input, { key: 'Backspace' });
@@ -318,7 +318,7 @@ describe('keyboard navigation', () => {
 
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('25.125'); // second col!
+    expect(x).toBe('10.125'); // second col!
     expect(y).toBe('0.125');
   });
 
@@ -332,16 +332,16 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     let { x, y } = posForText(getByText('Z'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
 
     fireEvent.keyDown(input, { key: 'Backspace' });
     expect(queryByText('Z')).toBeNull();
 
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
-    expect(y).toBe('25.125'); // second row!
+    expect(x).toBe('20.125');
+    expect(y).toBe('10.125'); // second row!
   });
 
   it('delete clears and does not move back (across)', async () => {
@@ -354,7 +354,7 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     let { x, y } = posForText(getByText('Z'));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
 
     fireEvent.keyDown(input, { key: 'Delete' });
@@ -362,7 +362,7 @@ describe('keyboard navigation', () => {
 
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125'); // still third col!
+    expect(x).toBe('20.125'); // still third col!
     expect(y).toBe('0.125');
   });
 
@@ -376,16 +376,16 @@ describe('keyboard navigation', () => {
     fireEvent.keyDown(input, { key: 'End' });
     fireEvent.keyDown(input, { key: 'Z' });
     let { x, y } = posForText(getByText('Z'));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125');
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
 
     fireEvent.keyDown(input, { key: 'Delete' });
     expect(queryByText('Z')).toBeNull();
 
     fireEvent.keyDown(input, { key: 'Z' });
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
-    expect(y).toBe('50.125'); // still third row!
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125'); // still third row!
   });
 
   it('ctrl, meta, alt character go unused', async () => {
@@ -434,11 +434,11 @@ describe('keyboard navigation', () => {
     expect(y).toBe('0.125');
 
     ({ x, y } = posForText(getByText('Y')));
-    expect(x).toBe('25.125');
+    expect(x).toBe('10.125');
     expect(y).toBe('0.125');
 
     ({ x, y } = posForText(getByText('Z')));
-    expect(x).toBe('50.125');
+    expect(x).toBe('20.125');
     expect(y).toBe('0.125');
   });
 });

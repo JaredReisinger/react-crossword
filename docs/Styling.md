@@ -2,7 +2,8 @@ One other major difference (and advantage) to this crossword component is that i
 
 | theme property        | default               | description                                                                                                                                                                 |
 | --------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `columnBreakpoint`    | `'768px'`             | browser-width at which the clues go from showing beneath the grid to showing beside the grid.                                                                               |
+| `allowNonSquare`      | `false`               | allows crossword rendering to be non-square (i.e. a different number of rows and columns)                                                                                   |
+| `columnBreakpoint`    | `'768px'`             | browser-width at which the clues go from showing beneath the grid to showing beside the grid                                                                                |
 | `gridBackground`      | `'rgb(0,0,0)'`        | overall background color (fill) for the crossword grid. Can be `'transparent'` to show through a page background image.                                                     |
 | `cellBackground`      | `'rgb(255,255,255)'`  | background for an answer cell                                                                                                                                               |
 | `cellBorder`          | `'rgb(0,0,0)'`        | border for an answer cell                                                                                                                                                   |
@@ -29,8 +30,8 @@ const data = {
   },
   down: {
     2: {
-      clue: 'three minus two',
-      answer: 'ONE',
+      clue: 'opposite of "off"',
+      answer: 'ON',
       row: 0,
       col: 2,
     },
@@ -40,6 +41,7 @@ const data = {
 <div style={{ width: '30%' }}>
   <ThemeProvider
     theme={{
+      allowNonSquare: true,
       columnBreakpoint: '9999px',
       gridBackground: '#acf',
       cellBackground: '#ffe',
@@ -71,8 +73,8 @@ const data = {
   },
   down: {
     2: {
-      clue: 'three minus two',
-      answer: 'ONE',
+      clue: 'opposite of "off"',
+      answer: 'ON',
       row: 0,
       col: 2,
     },
@@ -83,6 +85,7 @@ const data = {
   <Crossword
     data={data}
     theme={{
+      allowNonSquare: true,
       columnBreakpoint: '9999px',
       gridBackground: '#acf',
       cellBackground: '#ffe',

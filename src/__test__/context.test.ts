@@ -12,7 +12,8 @@ describe('default CrosswordContext', () => {
     ._currentValue as CrosswordContextType;
 
   it('has size zero', () => {
-    expect(context.size).toBe(0);
+    expect(context.rows).toBe(0);
+    expect(context.cols).toBe(0);
   });
 
   [
