@@ -9,7 +9,7 @@
 ![more badges](https://img.shields.io/badge/badges-%F0%9F%91%8D%20are%20fun-orange)
 [![commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![contributors](https://img.shields.io/badge/contributors-8-orange.svg)](#contributors-)
+[![contributors](https://img.shields.io/badge/contributors-9-orange.svg)](#contributors-)
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -167,6 +167,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rhoffmann"><img src="https://avatars.githubusercontent.com/u/678772?v=4?s=100" width="100px;" alt="Richard Hoffmann"/><br /><sub><b>Richard Hoffmann</b></sub></a><br /><a href="#ideas-rhoffmann" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/gitname"><img src="https://avatars.githubusercontent.com/u/7143133?v=4?s=100" width="100px;" alt="gitname"/><br /><sub><b>gitname</b></sub></a><br /><a href="https://github.com/JaredReisinger/react-crossword/issues?q=author%3Agitname" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
