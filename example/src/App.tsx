@@ -297,7 +297,7 @@ function App() {
 
       <p>
         This is a demo app that makes use of the @jaredreisinger/react-crossword
-        component. It exercizes most of the functionality, so that you can see
+        component. It exercises most of the functionality, so that you can see
         how to do so.
       </p>
 
@@ -314,6 +314,7 @@ function App() {
           <Crossword
             ref={crossword}
             data={data}
+            storageKey="first-example"
             onCorrect={onCorrect}
             onLoadedCorrect={onLoadedCorrect}
             onCrosswordCorrect={onCrosswordCorrect}
@@ -344,6 +345,7 @@ function App() {
           <CrosswordProvider
             ref={crosswordProvider}
             data={data}
+            storageKey="second-example"
             onCorrect={onCorrectProvider}
             onLoadedCorrect={onLoadedCorrectProvider}
             onCrosswordCorrect={onCrosswordCorrectProvider}
@@ -382,6 +384,7 @@ function App() {
               },
             }}
             theme={{ allowNonSquare: true }}
+            storageKey="third-example"
           />
         </CrosswordWrapper>
       </CrosswordMessageBlock>

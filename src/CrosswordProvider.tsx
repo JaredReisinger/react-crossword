@@ -805,11 +805,30 @@ const CrosswordProvider = React.forwardRef<
 
       if (useStorage) {
         loadGuesses(newGridData, storageKey || defaultStorageKey);
-        // TODO: find correct answers...
       }
 
       setClues(newCluesData);
       setGridData(newGridData);
+
+      // Check all of the clues to see if any were correct... but only if we
+      // loaded guesses.  Since the current implementation relies on state, we
+      // leverage the checkQueue to run through all the clues/guesses.
+      //
+      // Really, the ideal thing to do would be to write the checking-logic in a
+      // way that it doesn't assume the data is already in state... that would
+      // allow us to check everything directly, and simply set the same state
+      // that checkCorrectness() does, *and* properly call onLoadedCorrect(). As
+      // it is, this implementation can cause some answers to mentioned in
+      // onCorrect() more than once (any time an across answer starts inside a
+      // down answer, or vice versa.)
+      if (useStorage) {
+        setCheckQueue(
+          bothDirections.flatMap((dir) =>
+            // simply use the row/col that starts each answer.
+            newCluesData[dir].map(({ row, col }) => ({ row, col }))
+          )
+        );
+      }
 
       // Should we start with 1-across highlighted/focused?
 
