@@ -80,6 +80,25 @@ const simpleData = {
   },
 };
 
+const simpleRectangularData = {
+  across: {
+    1: {
+      clue: 'one plus one',
+      answer: 'TWO',
+      row: 0,
+      col: 0,
+    },
+  },
+  down: {
+    2: {
+      clue: 'opposite of "off"',
+      answer: 'ON',
+      row: 0,
+      col: 2,
+    },
+  },
+};
+
 describe('calculateExtents()', () => {
   it('applies across length to col', () => {
     const result = calculateExtents(simpleData, 'across');
@@ -208,6 +227,184 @@ describe('createGridData()', () => {
     };
 
     expect(rows).toBe(3);
+    expect(cols).toBe(3);
+    expect(gridData).toEqual(expectedData);
+    expect(clues).toEqual(expectedClues);
+  });
+
+  it('creates square grid data by default', () => {
+    const { rows, cols, gridData, clues } = createGridData(
+      simpleRectangularData
+    );
+
+    const expectedData: GridData = [
+      [
+        {
+          row: 0,
+          col: 0,
+          used: true,
+          number: '1',
+          answer: 'T',
+          across: '1',
+        },
+        {
+          row: 0,
+          col: 1,
+          used: true,
+          answer: 'W',
+          across: '1',
+        },
+        {
+          row: 0,
+          col: 2,
+          used: true,
+          number: '2',
+          answer: 'O',
+          across: '1',
+          down: '2',
+        },
+      ],
+      [
+        {
+          row: 1,
+          col: 0,
+          used: false,
+        },
+        {
+          row: 1,
+          col: 1,
+          used: false,
+        },
+        {
+          row: 1,
+          col: 2,
+          used: true,
+          answer: 'N',
+          down: '2',
+        },
+      ],
+      [
+        {
+          row: 2,
+          col: 0,
+          used: false,
+        },
+        {
+          row: 2,
+          col: 1,
+          used: false,
+        },
+        {
+          row: 2,
+          col: 2,
+          used: false,
+        },
+      ],
+    ];
+
+    const expectedClues = {
+      across: [
+        {
+          number: '1',
+          clue: simpleRectangularData.across[1].clue,
+          row: 0,
+          col: 0,
+          answer: 'TWO',
+        },
+      ],
+      down: [
+        {
+          number: '2',
+          clue: simpleRectangularData.down[2].clue,
+          row: 0,
+          col: 2,
+          answer: 'ON',
+        },
+      ],
+    };
+
+    expect(rows).toBe(3);
+    expect(cols).toBe(3);
+    expect(gridData).toEqual(expectedData);
+    expect(clues).toEqual(expectedClues);
+  });
+
+  it('creates rectangular grid data when requested', () => {
+    const { rows, cols, gridData, clues } = createGridData(
+      simpleRectangularData,
+      true
+    );
+
+    const expectedData: GridData = [
+      [
+        {
+          row: 0,
+          col: 0,
+          used: true,
+          number: '1',
+          answer: 'T',
+          across: '1',
+        },
+        {
+          row: 0,
+          col: 1,
+          used: true,
+          answer: 'W',
+          across: '1',
+        },
+        {
+          row: 0,
+          col: 2,
+          used: true,
+          number: '2',
+          answer: 'O',
+          across: '1',
+          down: '2',
+        },
+      ],
+      [
+        {
+          row: 1,
+          col: 0,
+          used: false,
+        },
+        {
+          row: 1,
+          col: 1,
+          used: false,
+        },
+        {
+          row: 1,
+          col: 2,
+          used: true,
+          answer: 'N',
+          down: '2',
+        },
+      ],
+    ];
+
+    const expectedClues = {
+      across: [
+        {
+          number: '1',
+          clue: simpleRectangularData.across[1].clue,
+          row: 0,
+          col: 0,
+          answer: 'TWO',
+        },
+      ],
+      down: [
+        {
+          number: '2',
+          clue: simpleRectangularData.down[2].clue,
+          row: 0,
+          col: 2,
+          answer: 'ON',
+        },
+      ],
+    };
+
+    expect(rows).toBe(2);
     expect(cols).toBe(3);
     expect(gridData).toEqual(expectedData);
     expect(clues).toEqual(expectedClues);

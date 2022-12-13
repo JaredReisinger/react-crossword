@@ -473,6 +473,10 @@ const CrosswordProvider = React.forwardRef<
       (row: number, col: number) => {
         const cell = getCellData(row, col);
         if (!cell.used) {
+          // Because this is in an internal callback, and we only call it with a
+          // valid cell (row/col), the throw line isn't testable... so we ignore
+          // it.
+          /* istanbul ignore next */
           throw new Error('unexpected unused cell');
         }
 
@@ -608,7 +612,12 @@ const CrosswordProvider = React.forwardRef<
           return false;
         }
 
+        // If we try to move to a cell with a direction it doesn't support,
+        // switch to the other direction.  There is no codepath that can test
+        // this, though, as this callback isn't exposed, and we only call it in
+        // ways that guarantee that direction is valid.
         if (!candidate[direction]) {
+          /* istanbul ignore next */
           direction = otherDirection(direction);
         }
 

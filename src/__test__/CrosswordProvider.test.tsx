@@ -898,7 +898,7 @@ describe('imperative commands', () => {
     expect(ref.current).toBeTruthy();
     let isCorrect = true;
     act(() => {
-      isCorrect = ref.current?.isCrosswordCorrect();
+      isCorrect = ref.current!.isCrosswordCorrect();
     });
 
     expect(isCorrect).toBeFalsy();
