@@ -38,6 +38,8 @@
     "doc:dev": "styleguidist server",
     "doc:build": "styleguidist build",
     "doc:deploy": "npm run doc:build && gh-pages --dist styleguide --branch documentation",
+    "contributors:add": "all-contributors add",
+    "contributors:check": "all-contributors check",
     "#snyk-protect": "snyk protect",
     "#prepare": "npm run snyk-protect",
     "prepare": "is-ci || husky install"
