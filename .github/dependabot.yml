@@ -1,7 +1,17 @@
 version: 2
+
 updates:
+
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'daily'
     target-branch: dev
+
+  - package-ecosystem: 'npm'
+    directory: '/example'
+    schedule:
+      interval: 'daily'
+    target-branch: dev
+    ignore:
+      - dependency-name: '*'
