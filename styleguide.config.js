@@ -98,6 +98,7 @@ module.exports = {
       name: 'Configuration and customization',
       sections: [
         { name: 'Clue input format', content: 'docs/ClueInputFormat.md' },
+        { name: 'IPUZ support', content: 'docs/IPUZ.md' },
         { name: 'Styling and theming', content: 'docs/Styling.md' },
       ],
     },
