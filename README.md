@@ -1,7 +1,7 @@
 # ![react-crossword: A flexible, responsive, and easy-to-use crossword component for React apps.](./docs/react-crossword.png)
 
 [![npm version](https://img.shields.io/npm/v/@jaredreisinger/react-crossword.svg)](https://www.npmjs.com/package/@jaredreisinger/react-crossword)
-[![build status](https://img.shields.io/github/workflow/status/JaredReisinger/react-crossword/build/main)](https://github.com/JaredReisinger/react-crossword/actions/workflows/build.yml)
+[![build status](https://img.shields.io/github/actions/workflow/status/JaredReisinger/react-crossword/build.yml?branch=main)](https://github.com/JaredReisinger/react-crossword/actions/workflows/build.yml)
 [![code coverage](https://img.shields.io/codecov/c/gh/JaredReisinger/react-crossword.svg)](https://codecov.io/gh/JaredReisinger/react-crossword)<br />
 [![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/JaredReisinger/react-crossword.svg)](https://snyk.io/test/github/JaredReisinger/react-crossword?targetFile=package.json)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@jaredreisinger/react-crossword)](https://libraries.io/npm/@jaredreisinger%2Freact-crossword)<br />
