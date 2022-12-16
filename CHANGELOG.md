@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/JaredReisinger/react-crossword/compare/v5.1.0...v5.2.0) (2022-12-16)
+
+
+### Features
+
+* add basic IPUZ support ([7cfe47b](https://github.com/JaredReisinger/react-crossword/commit/7cfe47b4c48dcfe70ff48a94ffa45dfcf755d966)), closes [#414](https://github.com/JaredReisinger/react-crossword/issues/414)
+
 # [5.1.0](https://github.com/JaredReisinger/react-crossword/compare/v5.0.0...v5.1.0) (2022-12-13)
 
 
