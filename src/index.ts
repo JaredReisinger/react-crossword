@@ -25,6 +25,8 @@ import { CrosswordContext, CrosswordSizeContext } from './context';
 
 import { AnswerTuple, CluesInput, CellData, GridPosition } from './types';
 
+import { useIpuz } from './ipuz';
+
 export {
   Cell,
   Clue,
@@ -45,6 +47,7 @@ export {
   CellData,
   GridPosition,
   ThemeProvider,
+  useIpuz,
 };
 
 export default Crossword;
