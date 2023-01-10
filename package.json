@@ -88,7 +88,7 @@
     "@types/styled-components": "^5.1.26",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
+    "@typescript-eslint/parser": "^5.47.0",
     "all-contributors-cli": "^6.24.0",
     "commitizen": "^4.2.6",
     "eslint": "^8.29.0",
