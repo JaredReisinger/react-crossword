@@ -87,7 +87,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "@types/styled-components": "^5.1.26",
     "@types/testing-library__jest-dom": "^5.14.5",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.46.1",
     "all-contributors-cli": "^6.24.0",
     "commitizen": "^4.2.6",
