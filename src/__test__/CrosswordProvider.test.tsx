@@ -165,24 +165,39 @@ describe('keyboard navigation', () => {
     expect(y).toBe('20.125');
   });
 
-  it('tab switches direction (across to down)', async () => {
+  it('tab navigates to next clue (across-across)', async () => {
     const { getByLabelText, getByText, user } = setup(
       <Size4 withGrid withClues />
     );
     const input = getByLabelText('crossword-input');
 
     await user.click(getByLabelText('clue-1-across'));
-    fireEvent.keyDown(input, { key: 'End' });
 
-    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
-    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 3-across
     fireEvent.keyDown(input, { key: 'X' });
+
     const { x, y } = posForText(getByText('X'));
     expect(x).toBe('20.125');
-    expect(y).toBe('20.125');
+    expect(y).toBe('10.125');
   });
 
-  it('tab switches direction (down to across)', async () => {
+  it('tab navigates to previous clue (across-down)', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    await user.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: 'Tab', shiftKey: true }); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'X' });
+
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('20.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('tab navigates to next clue (down-across)', async () => {
     const { getByLabelText, getByText, user } = setup(
       <Size4 withGrid withClues />
     );
@@ -191,31 +206,46 @@ describe('keyboard navigation', () => {
     await user.click(getByLabelText('clue-2-down'));
 
     fireEvent.keyDown(input, { key: 'Tab' }); // switches to 1-across
-    fireEvent.keyDown(input, { key: 'Home' });
     fireEvent.keyDown(input, { key: 'X' });
+
     const { x, y } = posForText(getByText('X'));
     expect(x).toBe('0.125');
     expect(y).toBe('0.125');
   });
 
-  it('space switches direction (across to down)', async () => {
+  it('enter navigates to next clue (across-across)', async () => {
     const { getByLabelText, getByText, user } = setup(
       <Size4 withGrid withClues />
     );
     const input = getByLabelText('crossword-input');
 
     await user.click(getByLabelText('clue-1-across'));
-    fireEvent.keyDown(input, { key: 'End' });
 
-    fireEvent.keyDown(input, { key: ' ' }); // switches to 2-down
-    fireEvent.keyDown(input, { key: 'End' });
+    fireEvent.keyDown(input, { key: 'Enter' }); // switches to 3-across
     fireEvent.keyDown(input, { key: 'X' });
+
     const { x, y } = posForText(getByText('X'));
     expect(x).toBe('20.125');
-    expect(y).toBe('20.125');
+    expect(y).toBe('10.125');
   });
 
-  it('space switches direction (down to across)', async () => {
+  it('shift-enter navigates to previous clue (across-down)', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    await user.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: 'Enter', shiftKey: true }); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'X' });
+
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('20.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('enter navigates to next clue (down-across)', async () => {
     const { getByLabelText, getByText, user } = setup(
       <Size4 withGrid withClues />
     );
@@ -223,11 +253,27 @@ describe('keyboard navigation', () => {
 
     await user.click(getByLabelText('clue-2-down'));
 
-    fireEvent.keyDown(input, { key: ' ' }); // switches to 1-across
-    fireEvent.keyDown(input, { key: 'Home' });
+    fireEvent.keyDown(input, { key: 'Enter' }); // switches to 1-across
     fireEvent.keyDown(input, { key: 'X' });
+
     const { x, y } = posForText(getByText('X'));
     expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('space navigates forward', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    await user.click(getByLabelText('clue-1-across'));
+
+    fireEvent.keyDown(input, { key: ' ' }); // switches to 2-down
+    fireEvent.keyDown(input, { key: 'X' });
+
+    const { x, y } = posForText(getByText('X'));
+    expect(x).toBe('10.125');
     expect(y).toBe('0.125');
   });
 

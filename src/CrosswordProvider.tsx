@@ -703,19 +703,42 @@ const CrosswordProvider = React.forwardRef<
             moveRelative(0, 1);
             break;
 
-          case ' ': // treat space like tab?
+          // move to the next/last entry, switching directions if necessary
+          case 'Enter':
           case 'Tab': {
-            const other = otherDirection(currentDirection);
-            const cellData = getCellData(
-              focusedRow,
-              focusedCol
-            ) as UsedCellData;
-            if (cellData[other]) {
-              setCurrentDirection(other);
-              setCurrentNumber(cellData[other] ?? '');
+            if (!clues) break;
+
+            const delta = event.shiftKey ? -1 : 1;
+            const nextClueIndex =
+              clues[currentDirection].findIndex(
+                (clue) => clue.number === currentNumber
+              ) + delta;
+            let nextClue;
+
+            if (
+              nextClueIndex >= clues[currentDirection].length ||
+              nextClueIndex === -1
+            ) {
+              const otherDirIndex = event.shiftKey
+                ? clues[otherDirection(currentDirection)].length - 1
+                : 0;
+              nextClue = clues[otherDirection(currentDirection)][otherDirIndex];
+              moveTo(
+                nextClue.row,
+                nextClue.col,
+                otherDirection(currentDirection)
+              );
+            } else {
+              nextClue = clues[currentDirection][nextClueIndex];
+              moveTo(nextClue.row, nextClue.col);
             }
+
             break;
           }
+
+          case ' ':
+            moveForward();
+            break;
 
           // Backspace: delete the current cell, and move to the previous cell
           // Delete:    delete the current cell, but don't move
@@ -775,7 +798,9 @@ const CrosswordProvider = React.forwardRef<
         focusedCol,
         setCellCharacter,
         moveBackward,
+        moveForward,
         data,
+        clues,
         currentNumber,
         moveTo,
       ]
