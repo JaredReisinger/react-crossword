@@ -851,7 +851,7 @@ const CrosswordProvider = React.forwardRef<
 
     // save the guesses any time they change...
     useEffect(() => {
-      if (gridData === null || !useStorage) {
+      if (gridData === null || gridData.length === 0 || !useStorage) {
         return;
       }
 
