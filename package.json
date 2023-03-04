@@ -67,7 +67,7 @@
   "dependencies": {
     "immer": "^9.0.16",
     "prop-types": "^15.8.1",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
