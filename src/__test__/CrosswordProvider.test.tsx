@@ -165,39 +165,6 @@ describe('keyboard navigation', () => {
     expect(y).toBe('20.125');
   });
 
-  it('tab switches direction (across to down)', async () => {
-    const { getByLabelText, getByText, user } = setup(
-      <Size4 withGrid withClues />
-    );
-    const input = getByLabelText('crossword-input');
-
-    await user.click(getByLabelText('clue-1-across'));
-    fireEvent.keyDown(input, { key: 'End' });
-
-    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
-    fireEvent.keyDown(input, { key: 'End' });
-    fireEvent.keyDown(input, { key: 'X' });
-    const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('20.125');
-    expect(y).toBe('20.125');
-  });
-
-  it('tab switches direction (down to across)', async () => {
-    const { getByLabelText, getByText, user } = setup(
-      <Size4 withGrid withClues />
-    );
-    const input = getByLabelText('crossword-input');
-
-    await user.click(getByLabelText('clue-2-down'));
-
-    fireEvent.keyDown(input, { key: 'Tab' }); // switches to 1-across
-    fireEvent.keyDown(input, { key: 'Home' });
-    fireEvent.keyDown(input, { key: 'X' });
-    const { x, y } = posForText(getByText('X'));
-    expect(x).toBe('0.125');
-    expect(y).toBe('0.125');
-  });
-
   it('space switches direction (across to down)', async () => {
     const { getByLabelText, getByText, user } = setup(
       <Size4 withGrid withClues />
@@ -441,6 +408,72 @@ describe('keyboard navigation', () => {
     expect(x).toBe('20.125');
     expect(y).toBe('0.125');
   });
+
+  describe('auto-advance on clue completion', () => {
+    it('advances to next incomplete clue when completing an across clue', async () => {
+      const { getByLabelText, getByText, user } = setup(
+        <Size4 withGrid withClues autoJumpFromClueEnd />
+      );
+      const input = getByLabelText('crossword-input');
+
+      // Start at 1-across
+      await user.click(getByLabelText('clue-1-across'));
+
+      // Type TWO, should auto-advance to 3-across
+      await user.type(input, 'TWO', { skipClick: true });
+
+      // Type X to verify position
+      fireEvent.keyDown(input, { key: 'X' });
+      const { x, y } = posForText(getByText('X'));
+
+      // Should be at start of "NO" clue
+      expect(x).toBe('20.125');
+      expect(y).toBe('10.125'); // Second row
+    });
+
+    it('advances to next incomplete clue when completing a down clue', async () => {
+      const { getByLabelText, getByText, user } = setup(
+        <Size4 withGrid withClues autoJumpFromClueEnd />
+      );
+      const input = getByLabelText('crossword-input');
+
+      // Start at 2-down
+      await user.click(getByLabelText('clue-2-down'));
+
+      // Type ONE, should auto-advance to 1-across
+      await user.type(input, 'ONE', { skipClick: true });
+
+      // Type X to verify position
+      fireEvent.keyDown(input, { key: 'X' });
+      const { x, y } = posForText(getByText('X'));
+
+      // Should be at start of first across clue
+      expect(x).toBe('0.125');
+      expect(y).toBe('0.125');
+    });
+
+    it('progresses to the next clue once the grid is full', async () => {
+      const { getByLabelText, getByText, user } = setup(
+        <Size4 withGrid withClues autoJumpFromClueEnd />
+      );
+      const input = getByLabelText('crossword-input');
+
+      // Complete the puzzle
+      await user.click(getByLabelText('clue-1-across'));
+      await user.type(input, 'TWONOE', { skipClick: true });
+      // Type X to verify position at 0,0 and Y where we should wrap to clue 3-across
+      await user.type(input, 'XIIY', { skipClick: true });
+      const { x, y } = posForText(getByText('X'));
+
+      // Should have wrapped back to start position
+      expect(x).toBe('0.125');
+      expect(y).toBe('0.125');
+
+      const { x: x2, y: y2 } = posForText(getByText('Y'));
+      expect(x2).toBe('20.125');
+      expect(y2).toBe('10.125');
+    });
+  });
 });
 
 describe('onAnswerComplete', () => {
@@ -511,7 +544,7 @@ describe('onAnswerComplete', () => {
 
       expect(onAnswerCorrect).toBeCalledTimes(0);
 
-      fireEvent.keyDown(input, { key: 'Tab' }); // switches to 2-down
+      fireEvent.keyDown(input, { key: ' ' }); // switches to 2-down (changed from Tab)
       expect(onAnswerCorrect).toBeCalledTimes(0);
     });
   });
@@ -941,3 +974,129 @@ function posForText(textEl: HTMLElement) {
   const rect = textEl!.parentElement!.firstChild! as SVGRectElement;
   return { x: rect.getAttribute('x'), y: rect.getAttribute('y') };
 }
+
+describe('tab navigation', () => {
+  it('tab moves to next incomplete clue in current direction', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    // Start at 1-across
+    await user.click(getByLabelText('clue-1-across'));
+
+    // Fill in first answer
+    await user.type(input, 'TW', { skipClick: true });
+    // Tab over to 3-across
+    fireEvent.keyDown(input, { key: 'Tab' });
+    // Type X at the new position to verify we moved
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+
+    // Should be at start of "NO" clue
+    expect(x).toBe('20.125');
+    expect(y).toBe('10.125'); // Second row
+  });
+
+  it('tab wraps to first incomplete clue in other direction when no more in current direction', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    // Start at 2-down and begin filling it in
+    await user.click(getByLabelText('clue-2-down'));
+    await user.type(input, 'ON', { skipClick: true });
+
+    fireEvent.keyDown(input, { key: 'Tab' }); // tab to 1-across hopefully
+
+    // Type X at the new position
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+
+    // Should be at start of first across clue (1-across, which starts at third column)
+    expect(x).toBe('0.125');
+    expect(y).toBe('0.125');
+  });
+
+  it('tab goes to first cell of next clue when all clues are complete', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    // Start at and complete 1-across
+    await user.click(getByLabelText('clue-1-across'));
+    await user.type(input, 'TWO', { skipClick: true });
+
+    // Complete 3-across
+    await user.type(input, 'NO', { skipClick: true });
+
+    // Move to and complete 2-down
+    await user.type(input, 'E', { skipClick: true });
+
+    // Go back to 1-across
+    await user.click(getByLabelText('clue-1-across'));
+
+    // Tape should bring us to the first cell of 3-across
+    fireEvent.keyDown(input, { key: 'Tab' });
+    // Type X at the new position
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+
+    // Should be at start of 3-across in r2c3
+    expect(x).toBe('20.125');
+    expect(y).toBe('10.125');
+  });
+
+  it('tab moves to first empty cell in partially filled across clue', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    // Start at 3-across and fill in N
+    await user.click(getByLabelText('clue-3-across'));
+    await user.type(input, 'N', { skipClick: true });
+
+    // Move to 1-across
+    await user.click(getByLabelText('clue-1-across'));
+
+    // Tab should bring us to empty O in 3-across
+    fireEvent.keyDown(input, { key: 'Tab' });
+
+    // Type X at the new position to verify location
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+
+    // Should be at second cell of NO (3-across)
+    expect(x).toBe('30.125');
+    expect(y).toBe('10.125');
+  });
+
+  it('tab moves to first empty cell in partially filled down clue', async () => {
+    const { getByLabelText, getByText, user } = setup(
+      <Size4 withGrid withClues />
+    );
+    const input = getByLabelText('crossword-input');
+
+    // Start at 2-down and partially fill it (ON_)
+    await user.click(getByLabelText('clue-2-down'));
+    await user.type(input, 'O', { skipClick: true });
+    await user.type(input, 'N', { skipClick: true });
+
+    // Go to 1-across
+    await user.click(getByLabelText('clue-1-across'));
+    // Tab twice to go to 3-across then 2-down
+    fireEvent.keyDown(input, { key: 'Tab' });
+    fireEvent.keyDown(input, { key: 'Tab' });
+
+    // Type X at the new position to verify we're at the empty end of clue 2-down
+    fireEvent.keyDown(input, { key: 'X' });
+    const { x, y } = posForText(getByText('X'));
+
+    // Should be at middle cell of ONE
+    expect(x).toBe('20.125');
+    expect(y).toBe('20.125');
+  });
+});

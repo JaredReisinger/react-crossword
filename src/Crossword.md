@@ -144,6 +144,6 @@ const data = {
 };
 
 <div style={{ width: '30em', display: 'flex' }}>
-  <Crossword data={data} useStorage={false} />
+  <Crossword data={data} useStorage={false} autoJumpFromClueEnd={true} />
 </div>;
 ```

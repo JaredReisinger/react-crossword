@@ -166,6 +166,11 @@ export const crosswordProviderPropTypes = {
    */
   onClueSelected: PropTypes.func,
 
+  /**
+   * whether to automatically advance to the next incomplete clue (or jump to the first incomplete cell in the current clue) when entering the final character of a clue
+   */
+  autoJumpFromClueEnd: PropTypes.bool,
+
   children: PropTypes.node,
 };
 
@@ -178,6 +183,11 @@ export type CrosswordProviderProps = EnhancedProps<
      * input format</a> for details.
      */
     data: CluesInput;
+
+    /**
+     * whether to automatically advance to the next incomplete clue (or jump to the first incomplete cell in the current clue) when entering the final character of a clue
+     */
+    autoJumpFromClueEnd?: boolean;
 
     /**
      * callback function that fires when a player completes an answer, whether
@@ -342,6 +352,7 @@ const CrosswordProvider = React.forwardRef<
       onClueSelected,
       useStorage,
       storageKey,
+      autoJumpFromClueEnd,
       children,
     },
     ref
@@ -659,14 +670,147 @@ const CrosswordProvider = React.forwardRef<
       const across = isAcross(currentDirection);
       moveRelative(across ? 0 : -1, across ? -1 : 0);
     }, [currentDirection, moveRelative]);
+    /** Advances to the next open cell; wraps around to clues in the other direction, then earlier clues in the current direction
+     * If all clues are complete, jumps to the first cell of the next clue
+     */
+    const jumpToNextOpenCell = useCallback(() => {
+      const other = otherDirection(currentDirection);
+      let target = null;
+      let targetDirection = currentDirection;
 
+      // Find next incomplete clue in current direction
+      const currentClues = clues?.[currentDirection] || [];
+      const currentClueIndex = currentClues.findIndex(
+        (c) => c.number === currentNumber
+      );
+
+      // Look for incomplete clues after current position
+      const nextIncomplete = currentClues
+        .slice(currentClueIndex + 1)
+        .find((c) => !c.complete);
+
+      if (nextIncomplete) {
+        target = nextIncomplete;
+      } else {
+        // Look for incomplete clues in other direction
+        const otherClues = clues?.[other] || [];
+        const firstIncomplete = otherClues.find((c) => !c.complete);
+
+        if (firstIncomplete) {
+          target = firstIncomplete;
+          targetDirection = other;
+        } else {
+          // Look for incomplete clues before current position in original direction
+          const wrappedIncomplete = currentClues
+            .slice(0, currentClueIndex)
+            .find((c) => !c.complete);
+
+          if (wrappedIncomplete) {
+            target = wrappedIncomplete;
+          }
+        }
+      }
+
+      if (target) {
+        // Find first empty cell in the target clue
+        const info = data[targetDirection][target.number];
+        const { row, col, answer } = info;
+        const across = isAcross(targetDirection);
+        let foundEmpty = false;
+
+        for (let i = 0; i < answer.length; i++) {
+          const checkRow = row + (across ? 0 : i);
+          const checkCol = col + (across ? i : 0);
+          const cell = getCellData(checkRow, checkCol) as UsedCellData;
+
+          if (!cell.guess) {
+            // Found first empty cell, move to it
+            moveTo(checkRow, checkCol, targetDirection);
+            foundEmpty = true;
+            break;
+          }
+        }
+
+        // If we haven't found an empty cell, move to start of clue
+        if (!foundEmpty) {
+          moveTo(row, col, targetDirection);
+        }
+      }
+      // If all clues are complete, jump to the first cell of the next clue
+      else if (currentClueIndex + 1 < currentClues.length) {
+        // Find next clue in current direction
+        const nextClue = currentClues[currentClueIndex + 1];
+        // Move to first cell of next clue
+        const info = data[currentDirection][nextClue.number];
+        moveTo(info.row, info.col, currentDirection);
+      } else {
+        // If no next clue in current direction, try other direction
+        const otherClues = clues?.[other] || [];
+        if (otherClues.length > 0) {
+          const firstClue = otherClues[0];
+          const info = data[other][firstClue.number];
+          moveTo(info.row, info.col, other);
+        }
+      }
+    }, [currentDirection, clues, currentNumber, getCellData, moveTo]);
     // keyboard handling
     const handleSingleCharacter = useCallback(
       (char: string) => {
         setCellCharacter(focusedRow, focusedCol, char.toUpperCase());
-        moveForward();
+
+        // Only check for auto-advance if the feature is enabled
+        if (autoJumpFromClueEnd) {
+          // Check if we're on the last cell of the current clue
+          const info = data[currentDirection][currentNumber];
+          const { row, col, answer } = info;
+          const across = isAcross(currentDirection);
+
+          // Calculate our position within the clue
+          const cluePos = across ? focusedCol - col : focusedRow - row;
+
+          // If we're on the last cell of the clue
+          if (cluePos === answer.length - 1) {
+            // Check if current clue is complete
+            let isComplete = true;
+            for (let i = 0; i < answer.length - 1; i++) {
+              const checkRow = row + (across ? 0 : i);
+              const checkCol = col + (across ? i : 0);
+              const cell = getCellData(checkRow, checkCol) as UsedCellData;
+
+              if (!cell.guess) {
+                isComplete = false;
+                // Jump back to first open cell in the current clue
+                moveTo(checkRow, checkCol, currentDirection);
+                break;
+              }
+            }
+
+            if (isComplete) {
+              // If complete, jump to next incomplete clue
+              jumpToNextOpenCell();
+            }
+          } else {
+            // Not at end of clue, just move forward
+            moveForward();
+          }
+        } else {
+          // If auto-advance is disabled, just move forward
+          moveForward();
+        }
       },
-      [focusedRow, focusedCol, setCellCharacter, moveForward]
+      [
+        focusedRow,
+        focusedCol,
+        setCellCharacter,
+        moveForward,
+        jumpToNextOpenCell,
+        currentDirection,
+        currentNumber,
+        data,
+        getCellData,
+        moveTo,
+        autoJumpFromClueEnd,
+      ]
     );
 
     // We use the keydown event for control/arrow keys, but not for textual
@@ -702,9 +846,8 @@ const CrosswordProvider = React.forwardRef<
           case 'ArrowRight':
             moveRelative(0, 1);
             break;
-
-          case ' ': // treat space like tab?
-          case 'Tab': {
+          // Spacebard switches direction if there is a clue
+          case ' ': {
             const other = otherDirection(currentDirection);
             const cellData = getCellData(
               focusedRow,
@@ -714,6 +857,12 @@ const CrosswordProvider = React.forwardRef<
               setCurrentDirection(other);
               setCurrentNumber(cellData[other] ?? '');
             }
+            break;
+          }
+          // Tab jumps to the next open cell in the next incomplete clue
+          case 'Tab': {
+            jumpToNextOpenCell();
+            event.preventDefault();
             break;
           }
 
@@ -1133,5 +1282,6 @@ CrosswordProvider.defaultProps = {
   onCrosswordCorrect: undefined,
   onCellChange: undefined,
   onClueSelected: undefined,
+  autoJumpFromClueEnd: false,
   children: undefined,
 };
