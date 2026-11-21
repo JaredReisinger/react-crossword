@@ -839,14 +839,17 @@ const CrosswordProvider = React.forwardRef<
         );
       }
 
-      // Should we start with 1-across highlighted/focused?
+      // Start with the first actual clue highlighted/focused.
 
       // TODO: track input-field focus so we don't draw highlight when we're not
-      // really focused, *and* use first actual clue (whether across or down?)
-      setFocusedRow(0);
-      setFocusedCol(0);
-      setCurrentDirection('across');
-      setCurrentNumber('1');
+      // really focused.
+      const firstClue = newCluesData.across[0] ?? newCluesData.down[0];
+      if (firstClue) {
+        setFocusedRow(firstClue.row);
+        setFocusedCol(firstClue.col);
+        setCurrentDirection(newCluesData.across.length ? 'across' : 'down');
+        setCurrentNumber(firstClue.number);
+      }
     }, [masterClues, masterGridData, storageKey, useStorage]);
 
     // save the guesses any time they change...
