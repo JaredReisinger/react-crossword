@@ -33,6 +33,7 @@ import {
   bothDirections,
   clearGuesses,
   createGridData,
+  findCorrectAnswers,
   isAcross,
   loadGuesses,
   otherDirection,
@@ -814,6 +815,13 @@ const CrosswordProvider = React.forwardRef<
 
       if (useStorage) {
         loadGuesses(newGridData, storageKey || defaultStorageKey);
+
+        if (onLoadedCorrect) {
+          const loadedCorrect = findCorrectAnswers(data, newGridData);
+          if (loadedCorrect.length > 0) {
+            onLoadedCorrect(loadedCorrect);
+          }
+        }
       }
 
       setClues(newCluesData);
@@ -847,7 +855,10 @@ const CrosswordProvider = React.forwardRef<
       setFocusedCol(0);
       setCurrentDirection('across');
       setCurrentNumber('1');
-    }, [masterClues, masterGridData, storageKey, useStorage]);
+      // onLoadedCorrect is intentionally omitted: a changing callback identity
+      // must not reset the player's progress.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, masterClues, masterGridData, storageKey, useStorage]);
 
     // save the guesses any time they change...
     useEffect(() => {
