@@ -245,7 +245,12 @@ export function deserializeGuesses(
     const r = parseInt(rStr, 10);
     const c = parseInt(cStr, 10);
     // ignore any out-of-bounds guesses!
-    if (r <= gridData.length - 1 && c <= gridData[0].length - 1) {
+    if (
+      r >= 0 &&
+      c >= 0 &&
+      r <= gridData.length - 1 &&
+      c <= gridData[0].length - 1
+    ) {
       (gridData[r][c] as UsedCellData).guess = val;
     }
   });
